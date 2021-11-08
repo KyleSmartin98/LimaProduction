@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
+        <meta name="description" content="FREELIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
+        <meta name="author" content="Kyle Martin" />
+        <title>FreeLIMS</title>
+        <!-- Core theme CSS -->
+
+        <link href="css/Style.css" rel="stylesheet" />
+        <!--second css page-->
+        <!--link href="css/styles2.css" rel="stylesheet" /-->
+    </head>
+    <body class="Background">
+        <div class="Top"> <!--Topline Div/-->
+            <div class="Top-display-left"> <!--Clock Div left justified-->
+                <div id="clock">
+                </div>
+            </div>
+            <div class="Top-display-center"> <!--Freelims header Center-->
+                <header>
+                    FreeLIMS
+                </header>
+            </div>
+            <div class="Top-display-right"> <!--Sign out button-->
+                <button class="SignOut-btn">
+                    <span> Sign Out </span>
+                </button>
+            </div>
+
+        </div>
+        <div class="Main-Div"> <!--Main Div-->
+            <div class="left-flex-container"> <!-- Left Navigation flexbox-->
+                <a class="a-PageLink" href="Spage.html">
+                    <button class="Nav-btn"> <!--Sample log-in-->
+                        <img src="assets/tube.svg" class="Icon-paper"/>
+                        <span class="Btn-Text">Sample Log-In</span>
+                    </button>
+                </a>
+                <a class="a-PageLink" href="STestpage.html">
+                    <button class="Nav-btn"> <!--Sample Testing Initiation-->
+                        <img src="assets/checkmark.svg" class="Icon-paper"/>
+                        <span class="Btn-Text">Testing Initiation</span>
+                    </button>
+                </a>
+                <a class="a-PageLink" href="ResPage.html">
+                    <button class="Nav-btn"> <!--Result Reporting-->
+                        <img src="assets/checklist.svg" class="Icon-paper"/>
+                        <span class="Btn-Text">Result Reporting</span>
+                    </button>
+                </a>
+                <a class="a-PageLink" href="ResTrendpage.html">
+                    <button class="Nav-btn"> <!-- Result Trending-->
+                        <img src="assets/graph.svg" class="Icon-paper"/>
+                        <span class="Btn-Text">Result Trending</span>
+                    </button>
+                </a>
+                <a class="a-PageLink" href="ChemInvpage.html">
+                    <button class="Nav-btn"> <!-- Chemical Inventory-->
+                       <img src="assets/flask.svg" class="Icon-paper"/>
+                        <span class="Btn-Text">Chemical Inventory</span>
+                    </button>
+                </a>
+                <a class="a-PageLink" href="MethPage.html">
+                    <button class="Nav-btn"> <!-- Method look-up-->
+                        <img src="assets/paper.svg" class="Icon-paper"/>
+                        <span class="Btn-Text">Method</span>
+                    </button>
+                </a>
+            </div>
+            <div class="center-flex-container"> <!--Notifications section-->
+                <div class="Srch-Name"> <!--Search Title-->
+                    <span class="Srch-Text">Quick Search</span>
+                </div>
+                <div> <!--Search bar -->
+                    <div class="search-container">
+                      <form action="/search" method="get">
+                        <input class="search" id="searchleft" type="search" name="q" placeholder="Search">
+                        <label class="button searchbutton" for="searchleft"><span class="mglass">&#9906;</span></label>
+                      </form>
+                    </div>
+                </div> <!--REMINDER to add dynamic list-->
+                <div> <!--Reminders + Past Due-->
+                    <div> <!--Reminders-->
+
+                    </div>
+                    <div> <!--Past Due-->
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="right-flex-container"> <!--Preferences-->
+               <button class="Settings-btn"> <!--Settings-->
+                   <img src="assets/settings.svg" class="Settings-img"/>
+                   <span class="Btn-Text">Settings</span>
+               </button>
+            </div>
+        </div>
+
+
+    </body>
+</html>
