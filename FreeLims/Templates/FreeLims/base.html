@@ -3,16 +3,16 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
-        <meta name="description" content="FREELIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
-        <meta name="author" content="Kyle Martin" />
-        <title>FreeLIMS</title>
-        <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
-        <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="css/Style.css" rel="stylesheet" />
+        <meta name="description" content="GlobaLIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
+        <meta name="author" content="Kyle Martin, kylesmartin98@gmail.com" />
+        <title>GlobaLIMS</title>
+        <!-- Core theme CSS -->
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
         <!--second css page-->
         <!--link href="css/styles2.css" rel="stylesheet" /-->
     </head>
-    <body>
+    <body class="Background">
         <div class="Top"> <!--Topline Div/-->
             <div class="Top-display-left"> <!--Clock Div left justified-->
                 <div id="clock">
@@ -28,6 +28,21 @@
                     <span> Sign Out </span>
                 </button>
             </div>
+            <div class="sign-out-modal">
+                <div class="sign-out-modal-content">
+                    <span class="sign-out-prompt">Do you Want to Sign Out? Please Confirm all of Your Work has Been Saved.</span>
+                    <button class="sign-out-modal-btn-yes">
+                        <a href="#">Yes</a>
+                    </button>
+                    <button class="sign-out-modal-btn-no">
+                        <span>No</span>
+                    </button>
+                </div>
+            </div>
         </div>
+        {% block content %}
+        {% endblock %}
+        {% load static %}
+        <script src="{% static 'FreeLims/app.js' %}"></script>
     </body>
 </html>

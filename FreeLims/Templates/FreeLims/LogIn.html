@@ -3,47 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
-    <link href="css/Style.css" rel="stylesheet" />
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
     <title>FreeLIMS Log In</title>
 </head>
 <body class="Background">
     <div class="Log-in-main-div"> <!--Center Container for log-in-->
-        <form>
+        {% for message in messages %}
+            <p>{{message}}</p>
+        {% endfor %}
+        <form method="POST">
+            {% csrf_token %}
             <span class="Log-in-header">Username</span>
-            <input type="text" placeholder="Username" class="Log-in-input" required>
+            <input type="text" name="username1" placeholder="Username" class="Log-in-input" required>
             <span class="Log-in-header">Password</span>
-            <input type="password" placeholder="Password" class="Log-in-input" id="pass" required>
+            <input type="password" name="password1" placeholder="Password" class="Log-in-input" id="pass" required>
             <span class="Log-in-header">Organization</span>
-            <input type="text" placeholder="Organization" class="Log-in-input" required>
-            <input type="submit" Value="Log-In" class="Log-in-btn">
+            <input type="text" placeholder="Organization" class="Log-in-input">
+            <input type="submit" Value="Sign In" name="login" class="Log-in-btn">
         </form>
         <button class="register-btn"> <!--register-->
             <span>Register</span>
         </button>
         <div class="modal">
             <div class="modal-content">
-                <form>
+                <form method="POST" action="" id="signup-form">
+                    {% csrf_token %}
                     <span class="close-button">&times;</span>
                     <span class="registration-header">Create Account</span>
                     <span class="registration-desc">Username</span>
-                    <input type="text" placeholder="Username" class="registration-input" required>
-                    <span class="registration-desc">Organizational</span>
-                    <input type="text" placeholder="Organization" class="registration-input" required>
+                    {{form.username}}
+                    <span class="registration-desc">Organization</span>
+                    {{form.organization}}
+                    <span class="registration-desc">Email</span>
+                    {{form.email}}
                     <span class="registration-desc">Password</span>
-                    <input type="password" placeholder="password" class="registration-input" required>
-                    <span class="registration-desc">Verify Password</span>
-                    <input type="password" placeholder="password" class="registration-input" required>
-                    <input type="submit" Value="submit" class="registration-submit">
+                    {{form.password1}}
+                    {{form.password2}}
+                    {{form.errors}}
+                    <input type="submit" Value="Sign Up" class="registration-submit" name="register">
                 </form>
             </div>
         </div>
-        <a class="a-PageLink" href="Homepage.html">
+        <a class="a-PageLink" href="{% url 'home' %}">
             <button class="register-btn">
                 <span> Try Without Registering</span>
             </button> <!--Proceed without Logging-In-->
         </a>
     </div>
-    <script src="js/app.js"></script>
+    {% load static %}
+    <script src="{% static 'FreeLims/app.js' %}"></script>
 </body>
 
 </html>
