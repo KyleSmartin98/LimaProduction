@@ -1,6 +1,6 @@
 from django.shortcuts import redirect
 from .forms import SignUpForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
 
@@ -8,7 +8,10 @@ from django.contrib import messages
 
 def home(request):
     return render(request, 'FreeLims/home.html')
-
+def logout_request(request):
+    logout(request)
+    messages.info(request, "You have successfully logged out.")
+    return redirect('login')
 def LogIn(request):
     form = SignUpForm()
     if request.method == 'POST':

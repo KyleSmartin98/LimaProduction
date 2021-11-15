@@ -1,39 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
-        <meta name="description" content="GlobaLIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
-        <meta name="author" content="Kyle Martin, kylesmartin98@gmail.com" />
-        <title>GlobaLIMS</title>
-        <!-- Core theme CSS -->
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
-        <!--second css page-->
-        <!--link href="css/styles2.css" rel="stylesheet" /-->
-    </head>
-    <body class="Background">
-        <div class="Top"> <!--Topline Div/-->
-            <div class="Top-display-left"> <!--Clock Div left justified-->
-                <div id="clock">
-                </div>
-            </div>
-            <div class="Top-display-center"> <!--Freelims header Center-->
-                <header>
-                    FreeLIMS
-                </header>
-            </div>
-            <div class="Top-display-right"> <!--Sign out button-->
-                <button class="SignOut-btn">
-                    <span> Sign Out </span>
-                </button>
-            </div>
-        </div>
+{% extends 'FreeLims/homebase.html' %}
+{% block content %}
         <div class="Main-Div"> <!--Main Div-->
             <div class="left-flex-container"> <!-- Left Navigation flexbox-->
                 <a class="a-PageLink" href="{% url 'Sample' %}">
                     <button class="Nav-btn"> <!--Sample log-in-->
-                        <img src="assets/tube.svg" class="Icon-paper"/>
+                        <img src="#" class="Icon-paper"/>
                         <span class="Btn-Text">Sample Log-In</span>
                     </button>
                 </a>
@@ -65,7 +36,7 @@
                 </a>
                 <a class="a-PageLink" href="{% url 'Method' %}">
                     <button class="Nav-btn"> <!-- Method look-up-->
-                        <img src="assets/paper.svg" class="Icon-paper"/>
+                        <img src="{% static 'FreeLims/paper.svg' %}" class="Icon-paper"/>
                         <span class="Btn-Text">Method</span>
                     </button>
                 </a>
@@ -94,7 +65,7 @@
             </div>
             <div class="right-flex-container"> <!--Preferences-->
                <button class="Settings-btn"> <!--Settings-->
-                   <img src="assets/settings.svg" class="Settings-img"/>
+                   <img src="{% static 'FreeLims/settings.svg' %}" class="Settings-img"/>
                    <span class="Btn-Text">Settings</span>
                </button>
             </div>
@@ -102,5 +73,4 @@
 
         {% load static %}
         <script src="{% static 'FreeLims/app.js' %}"></script>
-    </body>
-</html>
+{% endblock %}

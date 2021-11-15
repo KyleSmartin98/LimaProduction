@@ -1,10 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
+        <meta name="description" content="GlobaLIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
+        <meta name="author" content="Kyle Martin, kylesmartin98@gmail.com" />
+        <title>GlobaLIMS</title>
+        <!-- Core theme CSS -->
+        {% load static %}
+        <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
+        <!--second css page-->
+        <!--link href="css/styles2.css" rel="stylesheet" /-->
+    </head>
+    <body class="Background">
+        <div class="Top"> <!--Topline Div/-->
+            <div class="Top-display-left"> <!--Clock Div left justified-->
+                <div id="clock">
+                </div>
+            </div>
+            <div class="Top-display-center"> <!--Freelims header Center-->
+                <header>
+                    FreeLIMS
+                </header>
+            </div>
+            <div class="Top-display-right"> <!--Sign out button-->
+                {% if user.is_authenticated %}
+                <a class="a-PageLink" href="{% url 'logout' %}">
+                    <button class="SignOut-btn">
+                        <span> Sign Out </span>
+                    </button>
+                </a>
+                {% else %}
+                <a class="a-PageLink" href="{% url 'login' %}">
+                    <button class="SignIn-btn">
+                        <span> Sign In </span>
+                    </button>
+                </a>
+                {% endif %}
+            </div>
+            <!--<div class="sign-out-modal">
+                <div class="sign-out-modal-content">
+                    <span class="sign-out-prompt">Do you Want to Sign Out? Please Confirm all of Your Work has Been Saved.</span>
+                    <button class="sign-out-modal-btn-yes">
+                        <a href="#">Yes</a>
+                    </button>
+                    <button class="sign-out-modal-btn-no">
+                        <span>No</span>
+                    </button>
+                </div>
+            </div>-->
+        </div>
+        {% block content %}
+        {% endblock %}
+        {% load static %}
+        <script src="{% static 'FreeLims/app.js' %}"></script>
+    </body>
 </html>

@@ -23,12 +23,27 @@
                     FreeLIMS
                 </header>
             </div>
-            <div class="Top-display-right"> <!--Sign out button-->
-                <button class="SignOut-btn">
-                    <span> Sign Out </span>
-                </button>
+            <div class="Top-display-right-View"> <!--Sign out button-->
+                <a class="a-PageLink" href="{% url 'home' %}">
+                    <button class="SignInView-btn">
+                        <span>Home</span>
+                    </button>
+                </a>
+                {% if user.is_authenticated %}
+                <a class="a-PageLink" href="{% url 'logout' %}">
+                    <button class="SignOutView-btn">
+                        <span> Sign Out </span>
+                    </button>
+                </a>
+                {% else %}
+                <a class="a-PageLink" href="{% url 'login' %}">
+                    <button class="SignInView-btn">
+                        <span> Sign In </span>
+                    </button>
+                </a>
+                {% endif %}
             </div>
-            <div class="sign-out-modal">
+            <!--<div class="sign-out-modal">
                 <div class="sign-out-modal-content">
                     <span class="sign-out-prompt">Do you Want to Sign Out? Please Confirm all of Your Work has Been Saved.</span>
                     <button class="sign-out-modal-btn-yes">
@@ -38,7 +53,7 @@
                         <span>No</span>
                     </button>
                 </div>
-            </div>
+            </div>-->
         </div>
         {% block content %}
         {% endblock %}
