@@ -1,6 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
+from datetime import datetime
 
-class sample(models.Model):
+
+class Sample(models.Model):
     SAMPLE_TYPE = (
         ('Solid', 'Solid'),
         ('Liquid', 'Liquid'),
@@ -11,9 +14,15 @@ class sample(models.Model):
     sample_description = models.CharField(max_length=200)
     tracking_number = models.CharField(max_length=100)
     sample_volume = models.CharField(max_length=100)
-    sample_quantity = models.CharField(max_length=100)
-    sample_type = models.CharField(max_length=100, choices = SAMPLE_TYPE)
+    sample_quantity = models.IntegerField()
+    sample_type = models.CharField(max_length=100, choices=SAMPLE_TYPE)
     expiration_date = models.CharField(max_length=100)
-    logged_date = models.CharField(max_length=100)
-    logged_by = models.CharField(max_length=100)
+    logged_date = models.DateTimeField(default=datetime.now)
+    logged_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+
+
+
+
+
 

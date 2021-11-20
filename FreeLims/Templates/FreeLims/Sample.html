@@ -1,4 +1,48 @@
 {% extends 'FreeLims/base.html' %}
 {% block content %}
-    henlo goombye
+<div class = "Table-attributes"> <!--Table attributes -->
+    <ul class="Table-attributes-ul">
+        <li class = "Table-attributes-Nav-bar-Search">
+            <div class="Search-span">
+                <span class="Table-attributes-Nav-bar-text">Search</span>
+            </div>
+        </li> <!--Search bar float left-->
+        <li class = "Table-attributes-Nav-bar">
+                <a href ="#samplesubmit" class="sample-submit-text">Add Sample</a>
+        </li> <!--Add Sample -->
+        <li class = "Table-attributes-Nav-bar">
+            <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
+        </li> <!--Delete Sample -->
+        <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
+            <div> <!--Dropdown class-->
+                <button></button> <!--Button to Activate dropdown-->
+                <div> <!--DropDown Content-->
+                    <a href="#">Testing Initiation</a>
+                    <a href="#">Result Reporting</a>
+                    <a href="#">Result Trending</a>
+                    <a href="#">Chemical Inventory</a>
+                    <a href="#">Method</a>
+                </div>
+            </div>
+        </li>
+    </ul>
+        <div class="sample-submit-modal" id="samplesubmit">
+            <div class="sample-submit-modal-content">
+            <a href="#" class="modal__close">&times;</a>
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form}}
+                <input type="submit" Value="Add Sample">
+            </form>
+        </div>
+    </div>
+</div>
+<div>
+    {% csrf_token %}
+    {% for sample in samples %}
+        {{ sample.sample_name}}
+    {% endfor %}
+</div>
+{% load static %}
+<script src="{% static 'FreeLims/app.js' %}"></script>
 {% endblock %}

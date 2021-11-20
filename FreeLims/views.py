@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm
+from .forms import SignUpForm, SampleForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-
+from .models import Sample
 
 
 def home(request):
@@ -44,8 +44,19 @@ def Method(request):
 def Results(request):
     return render(request, 'FreeLims/Results.html')
 
-def Sample(request):
-    return render(request, 'FreeLims/Sample.html')
+def Sample_page(request):
+    samples = Sample.objects.all()
+    form = SampleForm()
+
+    if request.method == 'POST':
+        form = SampleForm(request.POST)
+        if form.is_valid():
+            form.save()
+
+    context = {
+        'form': form, 'samples': samples
+               }
+    return render(request, 'FreeLims/Sample.html', context)
 
 def Testing(request):
     return render(request, 'FreeLims/Testing.html')

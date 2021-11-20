@@ -1,3 +1,5 @@
+
+
 @font-face {
     font-family: 'karrikregular';
     src: url('Karrik-Regular.eot');
@@ -141,10 +143,8 @@
     display: flex;
     text-align: center;
     width: 1200px;
-
-
 }
-/* Left flex box */
+/* Homepage Left flex box */
 .left-flex-container{
     float: left;
     display: block;
@@ -163,7 +163,7 @@
     -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
     -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
 }
-/*center flex box */
+/*Homepage center flex box */
 .center-flex-container{
     display: inline-flex;
     background-color: #2b6777;
@@ -590,4 +590,130 @@
 /* Styles for Sample, Trending, Testing, Results, Inventory */
 .Nav-bar{
 
+}
+
+/* Table Attributes */
+
+.Table-attributes{
+    position: absolute;
+    display: flex;
+    text-align: center;
+    align: center;
+    width: 95%;
+    margin-left: 25px;
+    margin-top: 15px;
+    height: 85px;
+    background-color: #2b6777;
+    box-shadow: 1px 1px 5px #555 inset;
+    border-radius: 40px;
+    border: 5px #2b6777;
+    -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
+}
+.Table-attributes-wrapper{
+
+}
+.Table-attributes-Nav-bar-Search{
+    display: inline;
+    position: relative;
+    float: left;
+    margin-left: 15px;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+}
+.Table-attributes-Nav-bar{
+    height: 100%;
+    display: inline-flex;
+    margin-left: 60px;
+    position: relative;
+    align-items: center
+    text-align: center;
+    justify-content: center
+    list-style: none;
+
+}
+.Table-attributes-Nav-bar:hover{
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0 0);
+}
+
+.Table-attributes-Nav-bar-text{
+    font-family: "karrikregular";
+    font-size: 25px;
+    color: white;
+}
+.sample-submit-text{
+    position: relative;
+    text-decoration: none;
+    color: white;
+    font-family: "karrikregular";
+    font-size: 22.5px;
+    color: white;
+}
+
+.sample-submit-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-Top: 3px;
+    width: 400px;
+    height: 500px;
+    background-color: Transparent;
+    opacity: 0;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+    backdrop-filter: blur(5px);
+}
+.sample-submit-modal:target {
+  visibility: visible;
+  opacity: 1;
+}
+.sample-submit-modal-content {
+    position: relative;
+    margin-top: 2.5rem ;
+    width: 350px;
+    height: 500px;
+    margin-left: 6.5%;
+    background-color: #c8d8e4;
+    padding: 1rem 1.5rem;
+    border-radius: 35px;
+    -webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+}
+.sample-submit{
+    position: relative;
+    display: flex;
+    width: 200px;
+    height: 35px;
+    background: #2b6777;
+    border-radius: 35px;
+    margin-top: 20px;
+    left: 19%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #c8d8e4;
+    box-shadow: 0 5px #999;
+}
+.sample-submit:active{
+    background-color: #4dbfa6;
+    box-shadow: 0 1px #666;
+    transform: translateY(4px);
+    color: #c8d8e4;
+}
+.modal__close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #585858;
+  text-decoration: none;
 }
