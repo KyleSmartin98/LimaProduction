@@ -1,0 +1,109 @@
+#python3 manage.py runserver
+
+Get Email Address from user models
+https://stackoverflow.com/questions/20400767/how-to-get-the-email-address-from-auth-user-table-of-requested-user-id-in-django
+
+Growing textbox
+https://css-tricks.com/auto-growing-inputs-textareas/
+
+DropDown Navbar
+https://www.w3schools.com/howto/howto_css_dropdown.asp
+
+Django SearchBar
+https://stackoverflow.com/questions/66914241/how-do-i-get-user-input-from-search-bar-to-display-in-a-page-django
+
+
+class sample_initiated(Sample):
+    SAMPLE_TEST = (
+        ('Reverse Phase HPLC', 'Reverse Phase HPLC'),
+        ('SEC HPLC', 'SEC HPLC'),
+        ('UV-VIS', 'UV-VIS'),
+        ('Karl-Fischer', 'Karl-Fischer'),
+        ('pH', 'pH'),
+        ('Dissolution', 'Dissolution'),
+        ('Wet Chemistry', 'Wet Chemistry'),
+        ('Raw Material', 'Raw Material'),
+        ('CTL Testing', 'CTL Testing'),
+    )
+    initiated = models.BooleanField(default=True)
+    sample_test = models.CharField(max_length=200, choices = SAMPLE_TEST)
+    initiated_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    initiated_date = models.DateTimeField(default=datetime.now, blank=True)
+
+class sample_result(models.Model):
+    sample = models.OneToOneField(
+        Sample,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        default=None,
+        null=False,
+    )
+    completed_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    result = models.CharField(max_length=200)
+    result_date = models.DateTimeField(default=datetime.now, blank=True)
+
+
+<div>
+    <table> <!-- Table that will hold sample model values -->
+        {% csrf_token %}
+        {% for sample in samples %}
+        <tr>
+            <th>
+                Sample Name
+                <img src="#"/>
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Tracking Number
+                <img src="#"/>
+            </th>
+            <th>
+                Volume/Size
+            </th>
+            <th>
+                Type
+                <img src="#"/>
+            </th>
+            <th>
+                Expiration
+                <img src="#"/>
+            </th>
+            <th>
+                Logged Date
+                <img src="#"/>
+            </th>
+            <th>
+                Logged By
+                <img src="#"/>
+            </th>
+        </tr>
+        <tr>
+            <td>{{samples.sample_name}}</td>
+            <td>{{samples.sample_description}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
+var modal = document.querySelector(".modal");
+var trigger = document.querySelector(".register-btn");
+var closeButton = document.querySelector(".close-button");
+var submitbutton = document.querySelector(".registration-submit")
+
+
+function toggleModal() {
+    modal.classList.toggle("show-modal");
+}
+
+function windowOnClick(event) {
+    if (event.target === modal) {
+        toggleModal();
+    }
+}
+trigger.addEventListener("click", toggleModal);
+closeButton.addEventListener("click", toggleModal);
+window.addEventListener("click", windowOnClick);
+//submitbutton.addEventListener("click", toggleModal);//
