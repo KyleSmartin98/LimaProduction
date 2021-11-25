@@ -572,7 +572,7 @@
     max-height: 125px;
     left: 19%;
     background: white;
-    border-radius: 35px;
+    border-radius: 20px;
     margin-top: 10px;
     text-align: center;
     align-items: center;
@@ -677,11 +677,18 @@
     font-size: 22.5px;
     color: white;
 }
-
+.sample-modal-btn{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+}
 .sample-submit-modal {
-    position: fixed;
-    left: 0;
-    top: 0;
+    position: absolute;
+    margin-left: 30%;
+    top: 5%;
     margin-Top: 3px;
     width: 400px;
     height: 500px;
@@ -692,7 +699,6 @@
     visibility: hidden;
     transform: scale(1.1);
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-    backdrop-filter: blur(5px);
 }
 .sample-submit-modal:target {
   visibility: visible;
@@ -702,7 +708,7 @@
     position: relative;
     margin-top: 2.5rem ;
     width: 350px;
-    height: 500px;
+    height: 550px;
     margin-left: 6.5%;
     background-color: #c8d8e4;
     padding: 1rem 1.5rem;

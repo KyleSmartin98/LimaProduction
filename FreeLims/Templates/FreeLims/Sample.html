@@ -8,7 +8,7 @@
             </div>
         </li> <!--Search bar float left-->
         <li class = "Table-attributes-Nav-bar">
-            <button>
+            <button class="sample-modal-btn">
                 <a href ="#samplesubmit" class="sample-submit-text">Add Sample</a>
             </button>
         </li> <!--Add Sample -->
@@ -99,13 +99,14 @@
 
 <div class="sample-submit-modal" id="samplesubmit">
     <div class="sample-submit-modal-content">
-    <a href="" class="modal__close">Close</a>
-    <form action="" method="POST">
-        {% csrf_token %}
-        {{form}}
-        <input type="submit" Value="Add Sample" class="registration-submit">
-        <input type="reset" value="Clear Input Fields" class="registration-submit">
-    </form>
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header">Sample Log-In Form</span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" Value="Add Sample" class="registration-submit">
+            <input type="reset" value="Clear Input Fields" class="registration-submit">
+        </form>
     </div>
 </div>
 {% load static %}
