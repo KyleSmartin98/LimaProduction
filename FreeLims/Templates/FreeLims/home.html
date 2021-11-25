@@ -4,7 +4,8 @@
             <div class="left-flex-container"> <!-- Left Navigation flexbox-->
                 <a class="a-PageLink" href="{% url 'Sample' %}">
                     <button class="Nav-btn"> <!--Sample log-in-->
-                        <img src="#" class="Icon-paper"/>
+                        {% load static %}
+                        <img src="{% static 'FreeLims/tube1.svg' %}" class="Icon-paper"/>
                         <span class="Btn-Text">Sample Log-In</span>
                     </button>
                 </a>

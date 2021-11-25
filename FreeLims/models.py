@@ -20,7 +20,7 @@ class Sample(models.Model):
     logged_date = models.DateTimeField(default=datetime.now)
     logged_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
-
+#class SampleAuthorization(models.Model):
 
 
 

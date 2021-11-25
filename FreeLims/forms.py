@@ -12,29 +12,34 @@ class SignUpForm(UserCreationForm):
             'placeholder' : 'Username',
             'class' : 'registration-input',
             'required' : '',
+            'autocomplete': 'off',
         })
         self.fields["password1"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Password',
             'class': 'registration-input',
             'required': '',
+            'autocomplete': 'off',
         })
         self.fields["password2"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Verify Password',
             'class': 'registration-input',
             'required': '',
+            'autocomplete': 'off',
         })
         self.fields["organization"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Organization',
             'class': 'registration-input',
             'required': '',
+            'autocomplete': 'off',
         })
         self.fields["email"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Email',
             'class': 'registration-input',
+            'autocomplete': 'off',
         })
 
     organization = forms.CharField(max_length=30, required=True)
@@ -43,49 +48,76 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ['username', 'password1', 'password2', 'organization', 'email']
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class SampleForm(ModelForm):
+    sample_description = forms.CharField(widget=forms.Textarea(attrs={
+        'class':'registration-input-lg',
+        'placeholder': 'Sample Description',
+
+    }))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        sampletitles = ['sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity',
+                        'sample_type', 'expiration_date', 'logged_by']
         self.fields["sample_name"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Name',
             'class': 'registration-input',
+            'autocomplete': 'off',
         })
-        self.fields["sample_name"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Sample Name',
-            'class': 'registration-input',
-        })
-        self.fields["sample_name"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Sample Name',
-            'class': 'registration-input',
-        })
+        """
         self.fields["sample_description"].widget.attrs.update({
             'type': 'text',
-            'placeholder': 'Sample Name',
-            'class': 'registration-input',
+            'placeholder': 'Sample Description',
+            'class': 'registration-input-lg',
+            'autocomplete': 'off',
         })
+        """
         self.fields["tracking_number"].widget.attrs.update({
             'type': 'text',
-            'placeholder': 'Sample Name',
+            'placeholder': 'Tracking Number',
             'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+        self.fields["sample_volume"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Sample Volume / Mass',
+            'class': 'registration-input',
+            'autocomplete': 'off',
         })
         self.fields["sample_quantity"].widget.attrs.update({
             'type': 'text',
-            'placeholder': 'Sample Name',
+            'placeholder': 'Quantity',
             'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+        self.fields["sample_type"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Sample Type',
+            'class': 'registration-input',
+            'autocomplete': 'off',
         })
         self.fields["expiration_date"].widget.attrs.update({
             'type': 'date',
             'placeholder': 'Sample Expiration Date',
             'class': 'registration-input',
+            'autocomplete': 'off',
         })
         self.fields["logged_by"].widget.attrs.update({
             'type': 'text',
-            'placeholder': 'Sample Name',
+            'placeholder': 'Logged By',
             'class': 'registration-input',
+            'autocomplete': 'off',
         })
+
+        for i in sampletitles:
+            self.fields[i].label = ""
+
+
+
+    expiration_date = forms.DateField(widget=DateInput)
     class Meta:
         model=Sample
         fields=['sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date', 'logged_by']

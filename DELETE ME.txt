@@ -1,5 +1,8 @@
 #python3 manage.py runserver
 
+Token 11/24/21
+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
+
 Get Email Address from user models
 https://stackoverflow.com/questions/20400767/how-to-get-the-email-address-from-auth-user-table-of-requested-user-id-in-django
 
@@ -12,6 +15,20 @@ https://www.w3schools.com/howto/howto_css_dropdown.asp
 Django SearchBar
 https://stackoverflow.com/questions/66914241/how-do-i-get-user-input-from-search-bar-to-display-in-a-page-django
 
+
+https://simpleisbetterthancomplex.com/tutorial/2016/08/15/how-to-create-a-password-confirmation-view.html
+
+https://simpleisbetterthancomplex.com/tutorial/2018/01/18/how-to-implement-multiple-user-types-with-django.html
+
+https://codepen.io/nikhil8krishnan/pen/WvYPvv
+
+https://stackoverflow.com/questions/2539109/logging-users-out-of-a-django-site-after-n-minutes-of-inactivity
+
+https://www.sliderrevolution.com/resources/css-modal/
+
+https://www.joshwcomeau.com/animation/css-transitions/
+
+https://stackoverflow.com/questions/25386119/whats-the-difference-between-a-onetoone-manytomany-and-a-foreignkey-field-in-d
 
 class sample_initiated(Sample):
     SAMPLE_TEST = (

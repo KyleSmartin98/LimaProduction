@@ -8,40 +8,105 @@
             </div>
         </li> <!--Search bar float left-->
         <li class = "Table-attributes-Nav-bar">
+            <button>
                 <a href ="#samplesubmit" class="sample-submit-text">Add Sample</a>
+            </button>
         </li> <!--Add Sample -->
         <li class = "Table-attributes-Nav-bar">
             <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
         </li> <!--Delete Sample -->
         <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
-            <div> <!--Dropdown class-->
-                <button></button> <!--Button to Activate dropdown-->
-                <div> <!--DropDown Content-->
-                    <a href="#">Testing Initiation</a>
-                    <a href="#">Result Reporting</a>
-                    <a href="#">Result Trending</a>
-                    <a href="#">Chemical Inventory</a>
-                    <a href="#">Method</a>
+            <div class="nav-dropdown"> <!--Dropdown class-->
+                <button class="nav-dropbtn">Page Navigation</button> <!--Button to Activate dropdown-->
+                <div class="nav-dropdown-content"> <!--DropDown Content-->
+                    <a href="{% url 'Testing' %}">Testing Initiation</a>
+                    <a href="{% url 'Results' %}">Result Reporting</a>
+                    <a href="{% url 'Trending' %}">Result Trending</a>
+                    <a href="{% url 'Inventory' %}">Chemical Inventory</a>
+                    <a href="{% url 'Method' %}">Method</a>
                 </div>
             </div>
         </li>
     </ul>
-        <div class="sample-submit-modal" id="samplesubmit">
-            <div class="sample-submit-modal-content">
-            <a href="#" class="modal__close">&times;</a>
-            <form action="" method="POST">
-                {% csrf_token %}
-                {{form}}
-                <input type="submit" Value="Add Sample">
-            </form>
-        </div>
-    </div>
 </div>
-<div>
+
+
+
+<div class="table-container">
+    <div class=“sample-tbl-header">
+        <table class=“sample-table”>
+            <thead>
+            <tr>
+              <th>
+                  Sample Name
+                  <a href="#" class="mglass-filter">
+                      &#9906;
+                  </a>
+              </th>
+              <th>Description</th>
+              <th>
+                  Tracking Number
+                  <a href="#" >
+                      {% load static %}
+                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
+                  </a>
+              </th>
+                <th>Volume / Size</th>
+              <th>
+                  Type
+                  <a href="#" class="mglass-filter">
+                      &#9906;
+                  </a>
+              </th>
+              <th>
+                  Expiry
+                  <a href="#" class="mglass-filter">
+                      &#9906;
+                  </a>
+              </th>
+                <th>logged Date</th>
+                <th>
+              Logged By
+              <a href="#" class="mglass-filter">
+                      &#9906;
+                  </a>
+                </th>
+            </tr>
+          </thead>
+        </table>
+  </div>
+  <div class=“sample-tbl-content">
+    <table>
     {% csrf_token %}
     {% for sample in samples %}
-        {{ sample.sample_name}}
+      <tbody>
+        <tr>
+            <td>{{ sample.sample_name}}</td>
+            <td>{{sample.sample_description}}</td>
+            <td>{{sample.tracking_number}}</td>
+            <td>{{sample.sample_volume}}</td>
+            <td>{{sample.sample_type}}</td>
+            <td>{{sample.expiration_date}}</td>
+            <td>{{sample.logged_date}}</td>
+            <td>{{sample.logged_by}}</td>
+
+        </tr>
+      </tbody>
     {% endfor %}
+    </table>
+  </div>
+</div>
+
+<div class="sample-submit-modal" id="samplesubmit">
+    <div class="sample-submit-modal-content">
+    <a href="" class="modal__close">Close</a>
+    <form action="" method="POST">
+        {% csrf_token %}
+        {{form}}
+        <input type="submit" Value="Add Sample" class="registration-submit">
+        <input type="reset" value="Clear Input Fields" class="registration-submit">
+    </form>
+    </div>
 </div>
 {% load static %}
 <script src="{% static 'FreeLims/app.js' %}"></script>
