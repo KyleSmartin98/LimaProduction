@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from .models import Sample
 from django.forms import ModelForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 class SignUpForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
@@ -60,7 +62,7 @@ class SampleForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         sampletitles = ['sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity',
-                        'sample_type', 'expiration_date', 'logged_by']
+                        'sample_type', 'expiration_date']
         self.fields["sample_name"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Name',
@@ -105,12 +107,6 @@ class SampleForm(ModelForm):
             'class': 'registration-input',
             'autocomplete': 'off',
         })
-        self.fields["logged_by"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Logged By',
-            'class': 'registration-input',
-            'autocomplete': 'off',
-        })
 
         for i in sampletitles:
             self.fields[i].label = ""
@@ -120,6 +116,6 @@ class SampleForm(ModelForm):
     expiration_date = forms.DateField(widget=DateInput)
     class Meta:
         model=Sample
-        fields=['sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date', 'logged_by']
+        fields=['sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date']
 
 

@@ -30,6 +30,9 @@ https://www.joshwcomeau.com/animation/css-transitions/
 
 https://stackoverflow.com/questions/25386119/whats-the-difference-between-a-onetoone-manytomany-and-a-foreignkey-field-in-d
 
+https://devpyjp.com/how-to-export-csv-files-in-django-django-tutorials/
+
+https://codepen.io/nw/pen/udkIB
 class sample_initiated(Sample):
     SAMPLE_TEST = (
         ('Reverse Phase HPLC', 'Reverse Phase HPLC'),
@@ -104,23 +107,19 @@ class sample_result(models.Model):
     </table>
 </div>
 
+        self.fields["logged_by"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Logged By',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
 
-var modal = document.querySelector(".modal");
-var trigger = document.querySelector(".register-btn");
-var closeButton = document.querySelector(".close-button");
-var submitbutton = document.querySelector(".registration-submit")
 
 
-function toggleModal() {
-    modal.classList.toggle("show-modal");
-}
-
-function windowOnClick(event) {
-    if (event.target === modal) {
-        toggleModal();
-    }
-}
-trigger.addEventListener("click", toggleModal);
-closeButton.addEventListener("click", toggleModal);
-window.addEventListener("click", windowOnClick);
-//submitbutton.addEventListener("click", toggleModal);//
+class SampleCreate(LoginRequiredMixin, CreateView):
+    template_name = 'sample'
+    model= Sample
+    form_class = SampleForm
+    def form_valid(self, form):
+        form.instance.logged_by = self.request.user
+        return super().form_valid(form)
