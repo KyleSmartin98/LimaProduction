@@ -15,6 +15,12 @@
         <li class = "Table-attributes-Nav-bar">
             <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
         </li> <!--Delete Sample -->
+        <li class = "Table-attributes-Nav-bar">
+            <form action="{% url 'downloadsamplecsv' %}" method="post">
+            {% csrf_token %}
+             <button type="submit" class="sample-modal-btn">Download results in Excel</button>
+             </form>
+        </li>
         <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
             <div class="nav-dropdown"> <!--Dropdown class-->
                 <button class="nav-dropbtn">Page Navigation</button> <!--Button to Activate dropdown-->

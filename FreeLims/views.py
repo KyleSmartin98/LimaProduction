@@ -3,10 +3,10 @@ from .forms import SignUpForm, SampleForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-from .models import Sample
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView
-
+from .models import Sample, User
+from django.http import HttpResponse
+import csv
+from datetime import datetime
 
 def home(request):
     return render(request, 'FreeLims/home.html')
@@ -57,9 +57,13 @@ def Sample_page(request):
     if request.method == 'POST':
         form = SampleForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('sample')
+            obj = form.save(commit=False)
+            obj.logged_by = User.objects.get(pk=request.user.id)
+            obj.save()
 
+        else:
+            print("ERROR : Form is invalid")
+            print(form.errors)
     context = {
         'form': form, 'samples': samples
                }
@@ -71,3 +75,14 @@ def Testing(request):
 def Trending(request):
     return render(request, 'FreeLims/Trending.html')
 
+def sample_export(request):
+    now = datetime.now()
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date'])
+    for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
+        writer.writerow(sample)
+    response['Content-Disposition'] = 'attachment; filename= "Sample{date_time}"'
+
+    return response
