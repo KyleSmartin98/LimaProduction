@@ -625,11 +625,14 @@
 /* Table Attributes */
 
 .Table-attributes{
+    overflow-x: auto;
+    overflow: visible;
     position: absolute;
-    display: flex;
+    display: inline;
     text-align: center;
     align: center;
     width: 95%;
+    min-width: 75%;
     margin-left: 25px;
     margin-top: 15px;
     height: 85px;
@@ -640,34 +643,83 @@
     -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
     -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
 }
-.Table-attributes-Nav-bar-Search{
+
+
+.Search-span{
     display: inline;
+    margin-top: 2%;
+    margin-left: 0;
     position: relative;
     float: left;
-    margin-left: 15px;
-    margin-top: 10px;
+}
+.clear-btn{
+    margin-top: -1px;
+    margin-left: 5px;
+    position: absolute;
+    text-decoration: none;
+    font-size: 30px;
+    color: white;
+}
+.clear-btn:hover{
+    color: red;
+}
+
+.Table-attributes-Nav-list{
+    display: inline;
+    position: relative;
+    float: right;
+    margin-right: 45px;
     align-items: center;
     justify-content: center;
 }
 .Table-attributes-Nav-bar{
     height: 100%;
+    width: auto;
     display: inline-flex;
-    margin-left: 60px;
+    margin-top: 10px;
+    margin-left: 25px;
     position: relative;
     align-items: center
     text-align: center;
     justify-content: center
     list-style: none;
-
 }
 .Table-attributes-Nav-bar:hover{
+    border-radius: 20px;
     background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0 0);
 }
 
 .Table-attributes-Nav-bar-text{
+    display: inline;
+    position: relative;
     font-family: "karrikregular";
     font-size: 25px;
     color: white;
+}
+.sample-searchbar{
+    position: relative;
+    display: inline;
+    height: 25px;
+    width: 200px;
+    background: white;
+    border-radius: 35px;
+    margin-left: 0px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: black;
+    font-size: 15px;
+}
+.search-form{
+    display: inline;
+    position: relative;
+    width: 100%;
 }
 .sample-submit-text{
     position: relative;
@@ -684,6 +736,17 @@
     cursor: pointer;
     overflow: hidden;
     outline: none;
+}
+.sample-modal-btn-text{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-family: "karrikregular";
+    font-size: 22.5px;
+    color: white;
 }
 .sample-submit-modal {
     position: absolute;
@@ -860,7 +923,8 @@ td{
     display: none;
     position: absolute;
     background-color: #f1f1f1;
-    min-width: 160px;
+    min-width: 171px;
+    border-radius: 20px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
@@ -872,8 +936,57 @@ td{
     display: block;
 }
 
-.nav-dropdown-content a:hover {background-color: #ddd;}
+.nav-dropdown-content a:hover {
+    background-color: #ddd;
+    border-radius: 20px;
+}
 
 .nav-dropdown:hover .nav-dropdown-content {display: block;}
 
 .nav-dropdown:hover .nav-dropbtn {background-color: #3e8e41;}
+
+    /* Search Bar */
+
+.Search-span{
+    display: inline;
+    float: left;
+    width: 400px;
+}
+
+
+.search-form-btn{
+    position: relative;
+    display: inline;
+    width: 80px;
+    height: 35px;
+    background: blue;
+    border-radius: 35px;
+    margin-top: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #c8d8e4;
+    box-shadow: 0 5px #999;
+}
+.sample-modal-btn-text-lg{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    font-family: "karrikregular";
+    font-size: 25px;
+    color: white;
+}
+
+.sample-modal-btn-text-lg:hover{
+    border-radius: 20px;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4) 0 0);
+}

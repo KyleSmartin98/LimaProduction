@@ -1,39 +1,45 @@
 {% extends 'FreeLims/base.html' %}
 {% block content %}
 <div class = "Table-attributes"> <!--Table attributes -->
-    <ul class="Table-attributes-ul">
-        <li class = "Table-attributes-Nav-bar-Search">
-            <div class="Search-span">
-                <span class="Table-attributes-Nav-bar-text">Search</span>
-            </div>
-        </li> <!--Search bar float left-->
-        <li class = "Table-attributes-Nav-bar">
-            <button class="sample-modal-btn">
-                <a href ="#samplesubmit" class="sample-submit-text">Add Sample</a>
-            </button>
-        </li> <!--Add Sample -->
-        <li class = "Table-attributes-Nav-bar">
-            <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
-        </li> <!--Delete Sample -->
-        <li class = "Table-attributes-Nav-bar">
-            <form action="{% url 'downloadsamplecsv' %}" method="post">
+    <div class="Search-span">
+        <form method="get">
+            <input type="submit" value="Search" class="sample-modal-btn-text-lg">
             {% csrf_token %}
-             <button type="submit" class="sample-modal-btn">Download results in Excel</button>
-             </form>
-        </li>
-        <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
-            <div class="nav-dropdown"> <!--Dropdown class-->
-                <button class="nav-dropbtn">Page Navigation</button> <!--Button to Activate dropdown-->
-                <div class="nav-dropdown-content"> <!--DropDown Content-->
-                    <a href="{% url 'Testing' %}">Testing Initiation</a>
-                    <a href="{% url 'Results' %}">Result Reporting</a>
-                    <a href="{% url 'Trending' %}">Result Trending</a>
-                    <a href="{% url 'Inventory' %}">Chemical Inventory</a>
-                    <a href="{% url 'Method' %}">Method</a>
+            {{myfilter.form.tracking}}
+            <a class="clear-btn" href="{% url 'Sample' %}">&#8855</a>
+        </form>
+
+    </div>
+    <div class="Table-attributes-Nav-list">
+        <ul class="Table-attributes-ul">
+            <li class = "Table-attributes-Nav-bar">
+                <button class="sample-modal-btn">
+                    <a href ="#samplesubmit" class="sample-submit-text">Add Sample</a>
+                </button>
+            </li> <!--Add Sample -->
+            <li class = "Table-attributes-Nav-bar">
+                <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
+            </li> <!--Delete Sample -->
+            <li class = "Table-attributes-Nav-bar">
+                <form action="{% url 'downloadsamplecsv' %}" method="post">
+                {% csrf_token %}
+                 <button type="submit" class="sample-modal-btn-text">Sample CSV</button>
+                 </form>
+            </li>
+            <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
+                <div class="nav-dropdown"> <!--Dropdown class-->
+                    <button class="sample-modal-btn-text">Page Navigation</button> <!--Button to Activate dropdown-->
+                    <div class="nav-dropdown-content"> <!--DropDown Content-->
+                        <a href="{% url 'Testing' %}">Testing Initiation</a>
+                        <a href="{% url 'Results' %}">Result Reporting</a>
+                        <a href="{% url 'Trending' %}">Result Trending</a>
+                        <a href="{% url 'Inventory' %}">Chemical Inventory</a>
+                        <a href="{% url 'Method' %}">Method</a>
+                    </div>
                 </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
+    </div>
 </div>
 
 
@@ -104,6 +110,18 @@
 </div>
 
 <div class="sample-submit-modal" id="samplesubmit">
+    <div class="sample-submit-modal-content">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header">Sample Log-In Form</span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" Value="Add Sample" class="registration-submit">
+            <input type="reset" value="Clear Input Fields" class="registration-submit">
+        </form>
+    </div>
+</div>
+<div class="sample-submit-modal" id="expiryfilter">
     <div class="sample-submit-modal-content">
         <a href="" class="modal__close">Close</a>
         <span class="registration-header">Sample Log-In Form</span>

@@ -7,6 +7,7 @@ from .models import Sample, User
 from django.http import HttpResponse
 import csv
 from datetime import datetime
+from .filters import SampleFilter
 
 def home(request):
     return render(request, 'FreeLims/home.html')
@@ -60,12 +61,19 @@ def Sample_page(request):
             obj = form.save(commit=False)
             obj.logged_by = User.objects.get(pk=request.user.id)
             obj.save()
-
         else:
             print("ERROR : Form is invalid")
             print(form.errors)
+
+    myfilter = SampleFilter(request.GET, queryset = samples)
+    samples = myfilter.qs
+    has_filters = any(field in request.GET for field in
+                      set(myfilter.get_fields()))
+
     context = {
-        'form': form, 'samples': samples
+        'form': form, 'samples': samples,
+        'myfilter': myfilter,
+        'has_filters': has_filters,
                }
     return render(request, 'FreeLims/Sample.html', context)
 
@@ -83,6 +91,6 @@ def sample_export(request):
     writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date'])
     for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
         writer.writerow(sample)
-    response['Content-Disposition'] = 'attachment; filename= "Sample{date_time}"'
+    response['Content-Disposition'] = f'attachment; filename= "Sample_{date_time}.csv"'
 
     return response
