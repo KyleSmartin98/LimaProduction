@@ -2,6 +2,9 @@ import django_filters
 from django_filters import DateFilter, CharFilter
 from .models import *
 
+class DateInput(django_filters.FilterSet):
+    input_type = 'date'
+
 class SampleFilter(django_filters.FilterSet):
     logged_start_date = DateFilter(field_name="logged_date", lookup_expr='gte')
     logged_end_date = DateFilter(field_name="logged_date", lookup_expr='lte')
@@ -25,6 +28,7 @@ class SampleFilter(django_filters.FilterSet):
                 'class': 'registration-input',
             })
             self.filters[i].label = ''
+
 
 
     class Meta:

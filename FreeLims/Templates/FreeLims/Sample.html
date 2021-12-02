@@ -17,13 +17,18 @@
                     <a href ="#samplesubmit" class="sample-submit-text">Add Sample</a>
                 </button>
             </li> <!--Add Sample -->
-            <li class = "Table-attributes-Nav-bar">
+            <!--<li class = "Table-attributes-Nav-bar">
                 <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
-            </li> <!--Delete Sample -->
+            </li> -->
+            <li class = "Table-attributes-Nav-bar">
+                <button class="sample-modal-btn">
+                    <a href ="{% url 'Sample' %}" class="sample-submit-text">Clear Table Filter</a>
+                </button>
+            </li>
             <li class = "Table-attributes-Nav-bar">
                 <form action="{% url 'downloadsamplecsv' %}" method="post">
                 {% csrf_token %}
-                 <button type="submit" class="sample-modal-btn-text">Sample CSV</button>
+                 <button type="submit" class="sample-modal-btn-text">Download CSV</button>
                  </form>
             </li>
             <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
@@ -49,38 +54,20 @@
         <table class=“sample-table”>
             <thead>
             <tr>
-              <th>
-                  Sample Name
-                  <a href="#" class="mglass-filter">
-                      &#9906;
-                  </a>
-              </th>
+              <th>Sample Name</th>
               <th>Description</th>
-              <th>
-                  Tracking Number
-                  <a href="#" >
+              <th>Tracking Number</th>
+                <th>Volume / Size</th>
+              <th>Type</th>
+              <th>Expiry</th>
+                <th>
+                    <div class="date-spacing-head">logged Date</div>
+                </th>
+                <th>
+                    Logged By
+                    <a href="#expiryfilter" >
                       {% load static %}
                       <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
-                <th>Volume / Size</th>
-              <th>
-                  Type
-                  <a href="#" class="mglass-filter">
-                      &#9906;
-                  </a>
-              </th>
-              <th>
-                  Expiry
-                  <a href="#" class="mglass-filter">
-                      &#9906;
-                  </a>
-              </th>
-                <th>logged Date</th>
-                <th>
-              Logged By
-              <a href="#" class="mglass-filter">
-                      &#9906;
                   </a>
                 </th>
             </tr>
@@ -93,11 +80,21 @@
     {% for sample in samples %}
       <tbody>
         <tr>
-            <td>{{ sample.sample_name}}</td>
-            <td>{{sample.sample_description}}</td>
-            <td>{{sample.tracking_number}}</td>
-            <td>{{sample.sample_volume}}</td>
-            <td>{{sample.sample_type}}</td>
+            <td>
+                <div class="name-spacing">{{ sample.sample_name}}</div>
+            </td>
+            <td>
+                <div class="des-spacing">{{sample.sample_description}}</div>
+            </td>
+            <td>
+                <div class="track-spacing">{{sample.tracking_number}}</div>
+            </td>
+            <td>
+                <div class="vol-spacing">{{sample.sample_volume}}</div>
+            </td>
+            <td>
+                <div class="type-spacing">{{sample.sample_type}}</div>
+            </td>
             <td>{{sample.expiration_date}}</td>
             <td>{{sample.logged_date}}</td>
             <td>{{sample.logged_by}}</td>
@@ -121,13 +118,13 @@
         </form>
     </div>
 </div>
-<div class="sample-submit-modal" id="expiryfilter">
-    <div class="sample-submit-modal-content">
+<div class="sample-submit-modal-sm" id="expiryfilter">
+    <div class="sample-submit-modal-content-sm">
         <a href="" class="modal__close">Close</a>
-        <span class="registration-header">Sample Log-In Form</span>
-        <form action="" method="POST">
+        <span class="registration-header">Filter Logged By</span>
+        <form action="" method="get">
             {% csrf_token %}
-            {{form}}
+            {{myfilter.form.logged_by}}
             <input type="submit" Value="Add Sample" class="registration-submit">
             <input type="reset" value="Clear Input Fields" class="registration-submit">
         </form>

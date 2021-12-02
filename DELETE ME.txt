@@ -32,6 +32,10 @@ https://stackoverflow.com/questions/25386119/whats-the-difference-between-a-onet
 
 https://devpyjp.com/how-to-export-csv-files-in-django-django-tutorials/
 
+https://stackoverflow.com/questions/21168521/table-fixed-header-and-scrollable-body
+
+www.imaputz.com/cssStuff/bigFourVersion.html
+
 https://codepen.io/nw/pen/udkIB
 class sample_initiated(Sample):
     SAMPLE_TEST = (
