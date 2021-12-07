@@ -9,6 +9,7 @@ urlpatterns = [
     path('Method/', views.Method, name='Method'),
     path('Sample/', views.Sample_page, name='Sample'),
     path('Testing/', views.Testing, name='Testing'),
+    path('Initiate_sample/<str:pk>/', views.Initiatesample, name='Initiate_sample'),
     path('Trending/', views.Trending, name='Trending'),
     path('Results/', views.Results, name='Results'),
     path('samplecsv/', views.sample_export, name='downloadsamplecsv')

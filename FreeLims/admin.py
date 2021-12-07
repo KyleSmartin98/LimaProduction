@@ -5,6 +5,6 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Sample)
-"""admin.site.register(sample_initiated)
-admin.site.register(sample_result)"""
+admin.site.register(Result)
+
 

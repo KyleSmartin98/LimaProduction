@@ -6,6 +6,7 @@ class DateInput(django_filters.FilterSet):
     input_type = 'date'
 
 class SampleFilter(django_filters.FilterSet):
+    name = CharFilter(field_name='sample_name', lookup_expr='icontains')
     logged_start_date = DateFilter(field_name="logged_date", lookup_expr='gte')
     logged_end_date = DateFilter(field_name="logged_date", lookup_expr='lte')
     expiration_start_date = DateFilter(field_name="expiration_date", lookup_expr='gte')
@@ -16,7 +17,7 @@ class SampleFilter(django_filters.FilterSet):
 
     def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
         super(SampleFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
-        sampletitles = ['logged_start_date', 'logged_end_date', 'expiration_start_date',
+        sampletitles = ['name', 'logged_start_date', 'logged_end_date', 'expiration_start_date',
                         'expiration_end_date', 'logged_by', 'description']
         self.filters['tracking'].field.widget.attrs.update({
             'class': 'sample-searchbar',
@@ -33,6 +34,6 @@ class SampleFilter(django_filters.FilterSet):
 
     class Meta:
         model = Sample
-        fields = ['tracking_number', 'expiration_date', 'logged_date', 'logged_by', 'sample_description']
+        fields = ['sample_name', 'tracking_number', 'expiration_date', 'logged_date', 'logged_by', 'sample_description']
 
 

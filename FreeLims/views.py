@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm, SampleForm
+from .forms import SignUpForm, SampleForm, InitiateForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-from .models import Sample, User
+from .models import Sample, User, Result
 from django.http import HttpResponse
 import csv
 from datetime import datetime
@@ -11,10 +11,12 @@ from .filters import SampleFilter
 
 def home(request):
     return render(request, 'FreeLims/home.html')
+
 def logout_request(request):
     logout(request)
     messages.info(request, "You have successfully logged out.")
     return redirect('login')
+
 def LogIn(request):
     form = SignUpForm()
     if request.user.is_authenticated:
@@ -47,10 +49,6 @@ def Inventory(request):
 def Method(request):
     return render(request, 'FreeLims/Method.html')
 
-def Results(request):
-    return render(request, 'FreeLims/Results.html')
-
-
 def Sample_page(request):
     samples = Sample.objects.all()
     form = SampleForm()
@@ -71,14 +69,45 @@ def Sample_page(request):
                       set(myfilter.get_fields()))
 
     context = {
-        'form': form, 'samples': samples,
+        'form': form,
+        'samples': samples,
         'myfilter': myfilter,
         'has_filters': has_filters,
                }
     return render(request, 'FreeLims/Sample.html', context)
 
 def Testing(request):
-    return render(request, 'FreeLims/Testing.html')
+    samples = Sample.objects.all()
+    myfilter = SampleFilter(request.GET, queryset=samples)
+    samples = myfilter.qs
+    context = {
+        'samples': samples,
+        'myfilter': myfilter,
+    }
+    return render(request, 'FreeLims/Testing.html', context)
+
+def Initiatesample(request, pk):
+    samplepk = Sample.objects.get(id=pk)
+    samples = Sample.objects.all()
+    form = InitiateForm(instance=samplepk)
+    if request.method == 'POST':
+        form = InitiateForm(request.POST, instance=samplepk)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.logged_by = User.objects.get(pk=request.user.id)
+            obj.save()
+            return redirect('Testing')
+        else:
+            print("ERROR : Form is invalid")
+            print(form.errors)
+    context = {
+        'samples': samples,
+        'form': form,
+    }
+    return render(request, 'FreeLims/Testing.html', context)
+
+def Results(request):
+    return render(request, 'FreeLims/Results.html')
 
 def Trending(request):
     return render(request, 'FreeLims/Trending.html')

@@ -118,4 +118,28 @@ class SampleForm(ModelForm):
         model=Sample
         fields=['sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date']
 
+class InitiateForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        initiatetitles = ['initiated','sample_test']
+        self.fields["initiated"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Initiate?',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+        self.fields["sample_test"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Test',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+
+        for i in initiatetitles:
+            self.fields[i].label = ""
+
+    class Meta:
+        model=Sample
+        fields=['initiated','sample_test']
+
 

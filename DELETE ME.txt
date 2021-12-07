@@ -36,6 +36,16 @@ https://stackoverflow.com/questions/21168521/table-fixed-header-and-scrollable-b
 
 www.imaputz.com/cssStuff/bigFourVersion.html
 
+https://stackoverflow.com/questions/46391330/relation-does-not-exist-error-in-django
+
+https://stackoverflow.com/questions/68144832/how-to-get-the-selected-rows-record-from-a-table-in-django
+
+https://stackoverflow.com/questions/25836626/django-show-object-from-parent-table
+
+https://stackoverflow.com/questions/68940721/how-to-show-data-from-django-models-whose-boolean-field-is-true
+
+https://stackoverflow.com/questions/55650390/change-django-boolean-value-from-default-value-false-to-something-like-no
+
 https://codepen.io/nw/pen/udkIB
 class sample_initiated(Sample):
     SAMPLE_TEST = (
@@ -127,3 +137,9 @@ class SampleCreate(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.logged_by = self.request.user
         return super().form_valid(form)
+
+FreeLims_sample
+
+<button>
+                    <a href="{% url 'Initiate' pk=samples.pk %}"></a>
+                </button>
