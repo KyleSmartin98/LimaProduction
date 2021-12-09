@@ -12,5 +12,6 @@ urlpatterns = [
     path('Initiate_sample/<str:pk>/', views.Initiatesample, name='Initiate_sample'),
     path('Trending/', views.Trending, name='Trending'),
     path('Results/', views.Results, name='Results'),
+    path('Results_submit/<str:pk>/', views.Resultssubmit, name='Results_submit'),
     path('samplecsv/', views.sample_export, name='downloadsamplecsv')
 ]

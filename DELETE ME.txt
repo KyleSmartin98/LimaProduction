@@ -46,6 +46,10 @@ https://stackoverflow.com/questions/68940721/how-to-show-data-from-django-models
 
 https://stackoverflow.com/questions/55650390/change-django-boolean-value-from-default-value-false-to-something-like-no
 
+http://www.dennisbottaro.com/django-models-parent-child-template-rendering/
+
+https://code.djangoproject.com/ticket/7623
+
 https://codepen.io/nw/pen/udkIB
 class sample_initiated(Sample):
     SAMPLE_TEST = (
@@ -143,3 +147,11 @@ FreeLims_sample
 <button>
                     <a href="{% url 'Initiate' pk=samples.pk %}"></a>
                 </button>
+
+                'Comment, if None: Write (N/A)'
+
+                    def save(self, *args, **kwargs):
+        is_new = not self.pk
+        super().save(*args, **kwargs)
+        if is_new:
+            Result.objects.create(parent=self)

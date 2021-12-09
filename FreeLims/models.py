@@ -45,8 +45,8 @@ class Result(models.Model):
     reported_by = models.ForeignKey(User, on_delete=models.CASCADE)
     report_date = models.DateTimeField(default=datetime.now, null=True)
     result_pf = models.BooleanField(choices=PF, max_length=4, blank=True, default=None, null=True)
-    sample_result = models.CharField(max_length=100)
-    comments = models.CharField(max_length=200,  null=True)
+    sample_result = models.CharField(max_length=100, default=None, null=True)
+    comments = models.CharField(max_length=200,  null=True, default=None)
 
 
 

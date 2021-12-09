@@ -1,10 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-Respage
-</body>
-</html>
+{% extends 'FreeLims/base.html' %}
+{% block content %}
+<div class = "Table-attributes"> <!--Table attributes -->
+    <div class="Search-span">
+        <form method="get">
+            <input type="submit" value="Search" class="sample-modal-btn-text-lg">
+            {% csrf_token %}
+            {{myfilter.form.tracking}}
+            <a class="clear-btn" href="{% url 'Sample' %}">&#8855</a>
+        </form>
+
+    </div>
+    <div class="Table-attributes-Nav-list">
+        <ul class="Table-attributes-ul">
+            <!--<li class = "Table-attributes-Nav-bar">
+                <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
+            </li> -->
+            <li class = "Table-attributes-Nav-bar">
+                <button class="sample-modal-btn">
+                    <a href ="{% url 'Sample' %}" class="sample-submit-text">Clear Table Filter</a>
+                </button>
+            </li>
+            <li class = "Table-attributes-Nav-bar">
+                <form action="{% url 'downloadsamplecsv' %}" method="post">
+                {% csrf_token %}
+                 <button type="submit" class="sample-modal-btn-text">Download CSV</button>
+                 </form>
+            </li>
+            <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
+                <div class="nav-dropdown"> <!--Dropdown class-->
+                    <button class="sample-modal-btn-text">Page Navigation</button> <!--Button to Activate dropdown-->
+                    <div class="nav-dropdown-content"> <!--DropDown Content-->
+                        <a href="{% url 'Sample' %}">Sample Log-In</a>
+                        <a href="{% url 'Testing' %}">Testing Initiation</a>
+                        <a href="{% url 'Trending' %}">Result Trending</a>
+                        <a href="{% url 'Inventory' %}">Chemical Inventory</a>
+                        <a href="{% url 'Method' %}">Method</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="table-container">
+    <div class=“sample-tbl-header">
+        <table class=“sample-table”>
+            <thead>
+            <tr>
+              <th>
+                  Sample Name
+                  <a href="#namefilter" class="filter-icon-link" >
+                      {% load static %}
+                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
+                  </a>
+              </th>
+              <th>
+                  Description
+                  <a href="#descfilter" class="filter-icon-link" >
+                      {% load static %}
+                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
+                  </a>
+              </th>
+              <th>Tracking Number</th>
+              <th>Volume / Size</th>
+              <th>Expiry</th>
+                <th>Test</th>
+                <th>Results</th>
+                <th>Criteria</th>
+            </tr>
+          </thead>
+        </table>
+  </div>
+  <div class=“sample-tbl-content">
+    <table>
+    {% csrf_token %}
+    {% for sample in samples %}
+        {% if sample.initiated == True %}
+      <tbody>
+        <tr>
+            <td>
+                <div class="name-spacing">{{ sample.sample_name}}</div>
+            </td>
+            <td>
+                <div class="des-spacing">{{sample.sample_description}}</div>
+            </td>
+            <td>
+                <div class="track-spacing">{{sample.tracking_number}}</div>
+            </td>
+            <td>
+                <div class="vol-spacing">{{sample.sample_quantity}}x{{sample.sample_volume}}</div>
+            </td>
+            <td>
+                <div class="type-spacing">{{sample.expiration_date}}</div>
+            </td>
+            <td>{{sample.sample_test}}</td>
+            <td>
+                <button>
+                    <a href="{% url 'Results_submit' sample.id %}#resultsubmit" >Report Results</a>
+                </button>
+            </td>
+            <td>#</td>
+            <td>#</td>
+        </tr>
+      </tbody>
+        {% endif %}
+        {% endfor %}
+    </table>
+  </div>
+</div>
+<div class="sample-submit-modal" id="resultsubmit">
+    <div class="sample-submit-modal-content">
+        <a href="{% url 'Results' %}" class="modal__close">Close</a>
+        <span class="registration-header">Results</span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" Value="Submit" class="registration-submit">
+            <input type="reset" value="Clear Input Fields" class="registration-submit">
+        </form>
+    </div>
+</div>
+{% endblock %}

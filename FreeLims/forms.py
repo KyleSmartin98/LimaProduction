@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Sample
+from .models import Sample, Result
 from django.forms import ModelForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -143,3 +143,31 @@ class InitiateForm(ModelForm):
         fields=['initiated','sample_test']
 
 
+class ResultForm(ModelForm):
+    comments = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'registration-input-lg',
+        'placeholder': 'Comment, if None: Write (N/A)',
+
+    }))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        resulttetitles = ['result_pf','sample_result','comments']
+        self.fields["result_pf"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Passed?',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+        self.fields["sample_result"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Result',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+
+        for i in resulttetitles:
+            self.fields[i].label = ""
+
+    class Meta:
+        model = Result
+        fields = ['result_pf','sample_result','comments']

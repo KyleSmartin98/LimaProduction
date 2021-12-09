@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm, SampleForm, InitiateForm
+from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
@@ -43,12 +43,6 @@ def LogIn(request):
     context = {'form': form}
     return render(request, 'FreeLims/LogIn.html', context)
 
-def Inventory(request):
-    return render(request, 'FreeLims/Inventory.html')
-
-def Method(request):
-    return render(request, 'FreeLims/Method.html')
-
 def Sample_page(request):
     samples = Sample.objects.all()
     form = SampleForm()
@@ -75,6 +69,18 @@ def Sample_page(request):
         'has_filters': has_filters,
                }
     return render(request, 'FreeLims/Sample.html', context)
+
+def sample_export(request):
+    now = datetime.now()
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date'])
+    for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
+        writer.writerow(sample)
+    response['Content-Disposition'] = f'attachment; filename= "Sample_{date_time}.csv"'
+
+    return response
 
 def Testing(request):
     samples = Sample.objects.all()
@@ -107,19 +113,47 @@ def Initiatesample(request, pk):
     return render(request, 'FreeLims/Testing.html', context)
 
 def Results(request):
-    return render(request, 'FreeLims/Results.html')
+    samples = Sample.objects.all()
+    results = samples.result_set.all()
+    print(results)
+    context = {
+        'samples': samples,
+        'results': results,
+    }
+    return render(request, 'FreeLims/Results.html', context)
+
+def Resultssubmit(request, pk):
+    samplepk = Sample.objects.get(id=pk)
+    samples = Sample.objects.all()
+    form = ResultForm()
+    if request.method == 'POST':
+        form = ResultForm(request.POST)
+        if form.is_valid():
+            results = Result(**{
+                'sample': samplepk,
+                'reported_by': User.objects.get(pk=request.user.id)
+            })
+            results.save()
+            obj = form.save(commit=False)
+            obj.save()
+            return redirect('Results')
+        else:
+            print("ERROR : Form is invalid")
+            print(form.errors)
+
+    context = {
+        'form': form,
+        'samples': samples,
+    }
+
+    return render(request, 'FreeLims/Results.html', context)
 
 def Trending(request):
     return render(request, 'FreeLims/Trending.html')
 
-def sample_export(request):
-    now = datetime.now()
-    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
-    response = HttpResponse(content_type='text/csv')
-    writer = csv.writer(response)
-    writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date'])
-    for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
-        writer.writerow(sample)
-    response['Content-Disposition'] = f'attachment; filename= "Sample_{date_time}.csv"'
+def Inventory(request):
+    return render(request, 'FreeLims/Inventory.html')
 
-    return response
+def Method(request):
+    return render(request, 'FreeLims/Method.html')
+
