@@ -3,7 +3,7 @@ from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-from .models import Sample, User, Result
+from .models import Sample, User
 from django.http import HttpResponse
 import csv
 from datetime import datetime
@@ -100,7 +100,8 @@ def Initiatesample(request, pk):
         form = InitiateForm(request.POST, instance=samplepk)
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.logged_by = User.objects.get(pk=request.user.id)
+            obj.initiated_by = User.objects.get(pk=request.user.id)
+            obj.initiated_date = str(datetime.now())
             obj.save()
             return redirect('Testing')
         else:
@@ -114,27 +115,21 @@ def Initiatesample(request, pk):
 
 def Results(request):
     samples = Sample.objects.all()
-    results = samples.result_set.all()
-    print(results)
     context = {
         'samples': samples,
-        'results': results,
     }
     return render(request, 'FreeLims/Results.html', context)
 
 def Resultssubmit(request, pk):
     samplepk = Sample.objects.get(id=pk)
     samples = Sample.objects.all()
-    form = ResultForm()
+    form = ResultForm(instance=samplepk)
     if request.method == 'POST':
-        form = ResultForm(request.POST)
+        form = ResultForm(request.POST, instance=samplepk)
         if form.is_valid():
-            results = Result(**{
-                'sample': samplepk,
-                'reported_by': User.objects.get(pk=request.user.id)
-            })
-            results.save()
             obj = form.save(commit=False)
+            obj.reported_by = User.objects.get(pk=request.user.id)
+            obj.report_date = str(datetime.now())
             obj.save()
             return redirect('Results')
         else:
@@ -147,6 +142,18 @@ def Resultssubmit(request, pk):
     }
 
     return render(request, 'FreeLims/Results.html', context)
+
+def result_export(request):
+    now = datetime.now()
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date', 'sample_test', 'sample_result', 'report_date'])
+    for sample in Sample.objects.all().values_list('sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date', 'sample_test', 'sample_result', 'report_date'):
+        writer.writerow(sample)
+    response['Content-Disposition'] = f'attachment; filename= "Result_{date_time}.csv"'
+
+    return response
 
 def Trending(request):
     return render(request, 'FreeLims/Trending.html')

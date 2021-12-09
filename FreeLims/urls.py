@@ -13,5 +13,6 @@ urlpatterns = [
     path('Trending/', views.Trending, name='Trending'),
     path('Results/', views.Results, name='Results'),
     path('Results_submit/<str:pk>/', views.Resultssubmit, name='Results_submit'),
-    path('samplecsv/', views.sample_export, name='downloadsamplecsv')
+    path('samplecsv/', views.sample_export, name='downloadsamplecsv'),
+    path('resultcsv', views.result_export, name='downloadresultcsv'),
 ]

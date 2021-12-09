@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Sample, Result
+from .models import Sample
 from django.forms import ModelForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -169,5 +169,5 @@ class ResultForm(ModelForm):
             self.fields[i].label = ""
 
     class Meta:
-        model = Result
+        model = Sample
         fields = ['result_pf','sample_result','comments']

@@ -20,6 +20,10 @@ class Sample(models.Model):
         ('Raw Material', 'Raw Material'),
         ('CTL Testing', 'CTL Testing'),
     )
+    PF = (
+        (True, 'Pass'),
+        (False, 'Fail')
+    )
     organization = models.CharField(max_length=200)
     sample_name = models.CharField(max_length=100)
     sample_description = models.CharField(max_length=200)
@@ -33,20 +37,17 @@ class Sample(models.Model):
 
     initiated = models.BooleanField(default=False) #Will determine if value is shown in initiated view
     sample_test = models.CharField(max_length=200, choices=SAMPLE_TEST, null=True)
-    initiated_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='logged_by', null=True)
+    initiated_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='initiatedUser')
     initiated_date = models.DateTimeField(default=datetime.now, null=True)
 
-class Result(models.Model):
-    PF = (
-        (True, 'Pass'),
-        (False, 'Fail')
-    )
-    sample = models.ForeignKey(Sample, on_delete=models.CASCADE)
-    reported_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    reported_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='reportedUser')
     report_date = models.DateTimeField(default=datetime.now, null=True)
     result_pf = models.BooleanField(choices=PF, max_length=4, blank=True, default=None, null=True)
     sample_result = models.CharField(max_length=100, default=None, null=True)
     comments = models.CharField(max_length=200,  null=True, default=None)
+
+
+
 
 
 

@@ -93,13 +93,16 @@
                 <div class="type-spacing">{{sample.expiration_date}}</div>
             </td>
             <td>{{sample.sample_test}}</td>
+            {% if sample.sample_result|length > 0 %}
+            <td>{{sample.sample_result}}</td>
+            <td>{{sample.sample_pf|yesno:"Fail,Pass"}}</td>
+            {% else %}
             <td>
                 <button>
                     <a href="{% url 'Results_submit' sample.id %}#resultsubmit" >Report Results</a>
                 </button>
             </td>
-            <td>#</td>
-            <td>#</td>
+            {% endif %}
         </tr>
       </tbody>
         {% endif %}
