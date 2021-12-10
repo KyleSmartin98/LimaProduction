@@ -1,9 +1,9 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm
+from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-from .models import Sample, User
+from .models import Sample, User, Cheminventory
 from django.http import HttpResponse
 import csv
 from datetime import datetime
@@ -115,8 +115,11 @@ def Initiatesample(request, pk):
 
 def Results(request):
     samples = Sample.objects.all()
+    myfilter = SampleFilter(request.GET, queryset=samples)
+    samples = myfilter.qs
     context = {
         'samples': samples,
+        'myfilter': myfilter,
     }
     return render(request, 'FreeLims/Results.html', context)
 
@@ -148,8 +151,8 @@ def result_export(request):
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
-    writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date', 'sample_test', 'sample_result', 'report_date'])
-    for sample in Sample.objects.all().values_list('sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date', 'sample_test', 'sample_result', 'report_date'):
+    writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date', 'sample test', 'sample result', 'report date'])
+    for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date', 'sample_test', 'sample_result', 'report_date'):
         writer.writerow(sample)
     response['Content-Disposition'] = f'attachment; filename= "Result_{date_time}.csv"'
 
@@ -159,7 +162,25 @@ def Trending(request):
     return render(request, 'FreeLims/Trending.html')
 
 def Inventory(request):
-    return render(request, 'FreeLims/Inventory.html')
+    inventories = Cheminventory.objects.all()
+    form = InventoryForm()
+    if request.method == 'POST':
+        form = InventoryForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.logged_by = User.objects.get(pk=request.user.id)
+            obj.logged_date = str(datetime.now())
+            obj.save()
+        else:
+            print("ERROR : Form is invalid")
+            print(form.errors)
+
+    context = {
+        'inventories': inventories,
+        'form': form,
+    }
+
+    return render(request, 'FreeLims/Inventory.html', context)
 
 def Method(request):
     return render(request, 'FreeLims/Method.html')

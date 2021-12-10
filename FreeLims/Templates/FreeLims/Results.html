@@ -6,7 +6,7 @@
             <input type="submit" value="Search" class="sample-modal-btn-text-lg">
             {% csrf_token %}
             {{myfilter.form.tracking}}
-            <a class="clear-btn" href="{% url 'Sample' %}">&#8855</a>
+            <a class="clear-btn" href="{% url 'Results' %}">&#8855</a>
         </form>
 
     </div>
@@ -21,7 +21,7 @@
                 </button>
             </li>
             <li class = "Table-attributes-Nav-bar">
-                <form action="{% url 'downloadsamplecsv' %}" method="post">
+                <form action="{% url 'downloadresultcsv' %}" method="post">
                 {% csrf_token %}
                  <button type="submit" class="sample-modal-btn-text">Download CSV</button>
                  </form>
@@ -95,7 +95,7 @@
             <td>{{sample.sample_test}}</td>
             {% if sample.sample_result|length > 0 %}
             <td>{{sample.sample_result}}</td>
-            <td>{{sample.sample_pf|yesno:"Fail,Pass"}}</td>
+            <td>{{sample.sample_pf|yesno}}</td>
             {% else %}
             <td>
                 <button>

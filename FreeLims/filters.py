@@ -24,6 +24,7 @@ class SampleFilter(django_filters.FilterSet):
             'placeholder': 'Tracking Number',
         })
         self.filters['tracking'].label = ''
+
         for i in sampletitles:
             self.filters[i].field.widget.attrs.update({
                 'class': 'registration-input',

@@ -1,10 +1,166 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-ChemInv
-</body>
-</html>
+{% extends 'FreeLims/base.html' %}
+{% block content %}
+<div class = "Table-attributes"> <!--Table attributes -->
+    <div class="Search-span">
+        <form method="get">
+            <input type="submit" value="Search" class="sample-modal-btn-text-lg">
+            {% csrf_token %}
+            <!-- Add search form here -->
+            <a class="clear-btn" href="{% url 'Inventory' %}">&#8855</a>
+        </form>
+
+    </div>
+    <div class="Table-attributes-Nav-list">
+        <ul class="Table-attributes-ul">
+            <li class = "Table-attributes-Nav-bar">
+                <button class="sample-modal-btn">
+                    <a href ="#addreagent" class="sample-submit-text">Add Reagent</a>
+                </button>
+            </li> <!--Add Sample -->
+            <!--<li class = "Table-attributes-Nav-bar">
+                <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
+            </li> -->
+            <li class = "Table-attributes-Nav-bar">
+                <button class="sample-modal-btn">
+                    <a href ="{% url 'Sample' %}" class="sample-submit-text">Clear Table Filter</a>
+                </button>
+            </li>
+            <li class = "Table-attributes-Nav-bar">
+                <form action="#" method="post">
+                {% csrf_token %}
+                 <button type="submit" class="sample-modal-btn-text">Download CSV</button>
+                 </form>
+            </li>
+            <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
+                <div class="nav-dropdown"> <!--Dropdown class-->
+                    <button class="sample-modal-btn-text">Page Navigation</button> <!--Button to Activate dropdown-->
+                    <div class="nav-dropdown-content"> <!--DropDown Content-->
+                        <a href="{% url 'Sample' %}">Sample Log-In</a>
+                        <a href="{% url 'Testing' %}">Testing Initiation</a>
+                        <a href="{% url 'Results' %}">Result Reporting</a>
+                        <a href="{% url 'Trending' %}">Result Trending</a>
+                        <a href="{% url 'Method' %}">Method</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="table-container">
+    <div class=“sample-tbl-header">
+        <table class=“sample-table”>
+            <thead>
+            <tr>
+              <th>
+                  Sample Name
+                  <a href="#namefilter" class="filter-icon-link" >
+                      {% load static %}
+                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
+                  </a>
+              </th>
+              <th>
+                  Description
+                  <a href="#descfilter" class="filter-icon-link" >
+                      {% load static %}
+                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
+                  </a>
+              </th>
+              <th>Tracking Number</th>
+                <th>Volume / Size</th>
+              <th>Type</th>
+              <th>Expiry</th>
+                <th>
+                    <div class="date-spacing-head">logged Date</div>
+                </th>
+                <th>Logged By</th>
+            </tr>
+          </thead>
+        </table>
+  </div>
+  <div class=“sample-tbl-content">
+    <table>
+    {% csrf_token %}
+    {% for sample in samples %}
+      <tbody>
+        <tr>
+            <td>
+                <div class="name-spacing">{{ sample.sample_name}}</div>
+            </td>
+            <td>
+                <div class="des-spacing">{{sample.sample_description}}</div>
+            </td>
+            <td>
+                <div class="track-spacing">{{sample.tracking_number}}</div>
+            </td>
+            <td>
+                <div class="vol-spacing">{{sample.sample_volume}}</div>
+            </td>
+            <td>
+                <div class="type-spacing">{{sample.sample_type}}</div>
+            </td>
+            <td>{{sample.expiration_date}}</td>
+            <td>{{sample.logged_date}}</td>
+            <td>{{sample.logged_by}}</td>
+
+        </tr>
+      </tbody>
+    {% endfor %}
+    </table>
+  </div>
+</div>
+
+<div class="sample-submit-modal" id="samplesubmit">
+    <div class="sample-submit-modal-content">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header">Sample Log-In Form</span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit" Value="Add Sample" class="registration-submit">
+            <input type="reset" value="Clear Input Fields" class="registration-submit">
+        </form>
+    </div>
+</div>
+<div class="sample-submit-modal-sm" id="namefilter">
+    <div class="filter-content-modal-xs">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Filter by Sample Name </span>
+        <form action="" method="get">
+            {% csrf_token %}
+            {{myfilter.form.name}}
+            <input type="submit" Value="Filter" class="registration-submit">
+            <input type="reset" value="Clear Input Field" class="registration-submit">
+        </form>
+    </div>
+</div>
+<div class="reagent-submit-modal" id="addreagent">
+    <div class="reagent-submit-modal-content">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Reagent Submission Form </span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="reagent-submit-left">
+                {{form.name}}
+                {{form.manufacturer}}
+                {{form.manufacturer_lot}}
+                <span class="reagent-span">Reagent Expiry</span>
+                {{form.expiry}}
+                {{form.quantity}}
+                <input type="reset" value="Clear Input Field" class="reagent-submit">
+            </div>
+            <div class="reagent-submit-right">
+                {{form.volume_size}}
+                {{form.location}}
+                <span class="reagent-quarantine-span">Quarantine Reagent?</span>
+                {{form.quarantine}}
+                {{form.comments}}
+                <input type="submit" Value="Submit" class="reagent-submit">
+            </div>
+        </form>
+    </div>
+</div>
+{% load static %}
+<script src="{% static 'FreeLims/app.js' %}"></script>
+
+
+{% endblock %}

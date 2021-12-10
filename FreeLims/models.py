@@ -46,8 +46,43 @@ class Sample(models.Model):
     sample_result = models.CharField(max_length=100, default=None, null=True)
     comments = models.CharField(max_length=200,  null=True, default=None)
 
-
-
+class Cheminventory(models.Model):
+    MANUFACTURERS = (
+        ('Fisher Scientific', 'Fisher Scientific'),
+        ('ThermoFisher Scientific', 'ThermoFisher Scientific'),
+        ('Acros Organic', 'Acros Organic'),
+        ('Sigma-Aldrich', 'Sigma-Aldrich'),
+        ('Agilent', 'Agilent'),
+        ('MilliporeSigma', 'MilliporeSigma'),
+        ('Mettler Toledo', 'Mettler Toledo'),
+    )
+    LOCATIONS = (
+        ('General Lab Storage', 'General Lab Storage (25°C)'),
+        ('Refrigerator', 'Refrigerator (2-8°C)'),
+        ('Freezer', 'Freezer')
+    )
+    OPENCLOSE = (
+        (True, 'Open'),
+        (False, 'Close')
+    )
+    DISPOSAL = (
+        (True, 'Disposed'),
+        (False, 'Active')
+    )
+    logged_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    logged_date = models.DateTimeField(default=datetime.now, null=True)
+    name = models.CharField(max_length=200)
+    manufacturer = models.CharField(choices=MANUFACTURERS, max_length=100)
+    manufacturer_lot = models.CharField(max_length=100)
+    expiry = models.DateTimeField(default=datetime.now, null=True)
+    Lab_lot = models.CharField(max_length=100)
+    quantity = models.IntegerField()
+    volume_size = models.CharField(max_length=100)
+    location = models.CharField(choices=LOCATIONS, max_length=100)
+    comments = models.CharField(max_length=250)
+    quarantine = models.BooleanField(default=False)
+    open_container = models.BooleanField(choices=OPENCLOSE, blank=True, default=None, null=True)
+    inv_disposal = models.BooleanField(choices=DISPOSAL, blank=True, default=False, null=True)
 
 
 

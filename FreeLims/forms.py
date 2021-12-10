@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Sample
+from .models import Sample, Cheminventory
 from django.forms import ModelForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -171,3 +171,73 @@ class ResultForm(ModelForm):
     class Meta:
         model = Sample
         fields = ['result_pf','sample_result','comments']
+
+class InventoryForm(ModelForm):
+    comments = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'reagent-input-lg',
+        'placeholder': 'Comment, if None: Write (N/A)',
+    }))
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        inventorytitles = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'quantity', 'volume_size', 'location',
+                           'comments']
+        self.fields["name"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Reagent Name',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["manufacturer"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Vendor',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["manufacturer"].choices = [("", "Vendor"), ] + list(
+            self.fields["manufacturer"].choices)[1:]
+        self.fields["manufacturer_lot"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Vendor Lot Number',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["quantity"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Quantity',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["volume_size"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Volume | Mass',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["location"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Passed?',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["location"].choices = [("", "Storage Location"), ] + list(
+            self.fields["location"].choices)[1:]
+        self.fields["quarantine"].widget.attrs.update({
+            'class': 'reagent-input',
+            'style': 'margin-left:100px'
+        })
+
+        for i in inventorytitles:
+            self.fields[i].label = ""
+
+    expiry = forms.DateField(widget=DateInput(
+        attrs={
+            'class': 'reagent-input',
+            'placeholder': 'Reagent Expiry',
+            'style': 'margin-top:5px; '
+                     'font-family: Arial, sans-serif;'
+        }
+    ))
+
+    class Meta:
+        model = Cheminventory
+        fields = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'quantity', 'volume_size', 'location', 'comments', 'quarantine']

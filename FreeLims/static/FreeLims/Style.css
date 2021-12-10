@@ -1066,3 +1066,161 @@ td{
   margin-top: 15px;
   margin-bottom: 15px;
 }
+
+/* reagent submit modal */
+
+.reagent-submit-modal{
+    position: absolute;
+    margin-left: 25%;
+    top: 5%;
+    margin-Top: 3px;
+    width: 300px;
+    height: 350px;
+    background-color: Transparent;
+    opacity: 0;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+.reagent-submit-modal:target {
+  visibility: visible;
+  opacity: 1;
+}
+.reagent-submit-modal-content{
+    position: relative;
+    margin-top: 6.5rem ;
+    width: 600px;
+    height: 400px;
+    margin-left: 0;
+    background-color: #c8d8e4;
+    padding: 1rem 1.5rem;
+    border-radius: 35px;
+    -webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+}
+
+.reagent-submit-left{
+    margin-top: 15px;
+    width: 47.5%;
+    height: 325px;
+    float: left;
+    display: flex;
+    position: relative;
+    box-shadow: 1px 1px 5px #555 inset;
+    border-radius: 35px;
+    flex-direction: column;
+    display-content: center;
+}
+.reagent-submit-right{
+    margin-top: 15px;
+    width: 47.5%;
+    height: 325px;
+    float: right;
+    display: flex;
+    position: relative;
+    box-shadow: 1px 1px 5px #555 inset;
+    border-radius: 35px;
+    flex-direction: column;
+    display-content: center;
+}
+.reagent-input{
+    width: 250px;
+    height: 25px;
+    left: 19%;
+    background: white;
+    border-radius: 35px;
+    margin-top: 20px;
+    text-align: center;
+    align-items: center;
+    margin-left: 15px;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #808080;
+}
+.reagent-span{
+    margin-top: 10px;
+    margin-left: 20px;
+    position: relative;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    color: black;
+    font-family: "karrikregular";
+    font-size: 15px;
+}
+.reagent-quarantine-span{
+    margin-top: 115px;
+    margin-left: 20px;
+    position: absolute;
+    display: inline;
+    align-items: left;
+    justify-content: left;
+    color: black;
+    font-family: "karrikregular";
+    font-size: 15px;
+}
+.reagent-input-lg{
+    position: relative;
+    display: flex;
+    width: 250px;
+    height: 25px;
+    left: 5%;
+    resize: vertical;
+    min-height:25px;
+    max-height: 90px;
+    background: white;
+    border-radius: 20px;
+    margin-top: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    font-family: Times, sans-serif;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    border: none;
+    cursor:pointer;
+    outline:none;
+    color: #2b6777;
+    font-family: Arial, sans-serif;
+}
+.reagent-submit{
+    position: relative;
+    display: flex;
+    width: 200px;
+    height: 35px;
+    background: #2b6777;
+    border-radius: 35px;
+    margin-top: 20px;
+    left: 15%;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: #c8d8e4;
+    box-shadow: 0 5px #999;
+}
+.reagent-submit:active{
+    background-color: #4dbfa6;
+    box-shadow: 0 1px #666;
+    transform: translateY(4px);
+    color: #c8d8e4;
+}
+.reagent-submit:hover{
+    background-color: #4dbfa6;
+    color: #2b6777;
+}
