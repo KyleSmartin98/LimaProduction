@@ -179,7 +179,7 @@ class InventoryForm(ModelForm):
     }))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        inventorytitles = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'quantity', 'volume_size', 'location',
+        inventorytitles = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'volume_size', 'location',
                            'comments']
         self.fields["name"].widget.attrs.update({
             'type': 'text',
@@ -201,12 +201,13 @@ class InventoryForm(ModelForm):
             'class': 'reagent-input',
             'autocomplete': 'off',
         })
+        '''
         self.fields["quantity"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Quantity',
             'class': 'reagent-input',
             'autocomplete': 'off',
-        })
+        }) '''
         self.fields["volume_size"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Volume | Mass',
@@ -240,4 +241,16 @@ class InventoryForm(ModelForm):
 
     class Meta:
         model = Cheminventory
-        fields = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'quantity', 'volume_size', 'location', 'comments', 'quarantine']
+        fields = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'volume_size', 'location', 'comments', 'quarantine']
+
+class Qtyform(forms.Form):
+    quantity = forms.IntegerField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["quantity"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Quantity',
+            'class': 'reagent-input',
+            'autocomplete': 'off',
+        })
+        self.fields["quantity"].label = ""

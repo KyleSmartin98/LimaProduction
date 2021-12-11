@@ -54,6 +54,8 @@ https://codepen.io/nw/pen/udkIB
 
 https://algotronics.wordpress.com/2015/10/23/dj2exe/
 
+https://pypi.org/project/shortuuid/
+
 class sample_initiated(Sample):
     SAMPLE_TEST = (
         ('Reverse Phase HPLC', 'Reverse Phase HPLC'),

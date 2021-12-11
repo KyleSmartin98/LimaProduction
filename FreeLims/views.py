@@ -1,13 +1,14 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm
+from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
 from .models import Sample, User, Cheminventory
 from django.http import HttpResponse
-import csv
+import csv, shortuuid
 from datetime import datetime
 from .filters import SampleFilter
+
 
 def home(request):
     return render(request, 'FreeLims/home.html')
@@ -164,13 +165,23 @@ def Trending(request):
 def Inventory(request):
     inventories = Cheminventory.objects.all()
     form = InventoryForm()
+    qtyform = Qtyform()
+    id = shortuuid.ShortUUID(alphabet="0123456789")
+    lot_id = id.random(length = 7)
     if request.method == 'POST':
+        qty = request.POST.get('quantity')
         form = InventoryForm(request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
+            if obj.quarantine is True:
+                obj.open_container = False
             obj.logged_by = User.objects.get(pk=request.user.id)
             obj.logged_date = str(datetime.now())
-            obj.save()
+            obj.quantity = str(1)
+            obj.Lab_lot = f'GL{str(lot_id)}'
+            for i in range(int(qty)):
+                obj.pk = None
+                obj.save()
         else:
             print("ERROR : Form is invalid")
             print(form.errors)
@@ -178,6 +189,7 @@ def Inventory(request):
     context = {
         'inventories': inventories,
         'form': form,
+        'qtyform': qtyform,
     }
 
     return render(request, 'FreeLims/Inventory.html', context)
