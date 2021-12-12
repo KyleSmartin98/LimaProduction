@@ -66,46 +66,42 @@ class SampleForm(ModelForm):
         self.fields["sample_name"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Name',
-            'class': 'registration-input',
+            'class': 'sample-input',
             'autocomplete': 'off',
         })
-        """
-        self.fields["sample_description"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Sample Description',
-            'class': 'registration-input-lg',
-            'autocomplete': 'off',
-        })
-        """
         self.fields["tracking_number"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Tracking Number',
-            'class': 'registration-input',
+            'class': 'sample-input',
             'autocomplete': 'off',
         })
         self.fields["sample_volume"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Volume / Mass',
-            'class': 'registration-input',
+            'class': 'sample-input',
             'autocomplete': 'off',
         })
         self.fields["sample_quantity"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Quantity',
-            'class': 'registration-input',
+            'class': 'sample-input',
             'autocomplete': 'off',
         })
         self.fields["sample_type"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Type',
-            'class': 'registration-input',
+            'class': 'sample-input',
             'autocomplete': 'off',
+
         })
+        self.fields["sample_type"].choices = [("", "Sample Type"), ] + list(
+            self.fields["sample_type"].choices)[1:]
         self.fields["expiration_date"].widget.attrs.update({
             'type': 'date',
             'placeholder': 'Sample Expiration Date',
-            'class': 'registration-input',
+            'class': 'sample-input',
             'autocomplete': 'off',
+            'style': 'font-family: Arial, sans-serif;'
         })
 
         for i in sampletitles:
@@ -127,6 +123,7 @@ class InitiateForm(ModelForm):
             'placeholder': 'Initiate?',
             'class': 'registration-input',
             'autocomplete': 'off',
+            'style': 'margin-left: 70px'
         })
         self.fields["sample_test"].widget.attrs.update({
             'type': 'text',
@@ -134,6 +131,8 @@ class InitiateForm(ModelForm):
             'class': 'registration-input',
             'autocomplete': 'off',
         })
+        self.fields["sample_test"].choices = [("", "Sample Test"), ] + list(
+            self.fields["sample_test"].choices)[1:]
 
         for i in initiatetitles:
             self.fields[i].label = ""
@@ -201,13 +200,6 @@ class InventoryForm(ModelForm):
             'class': 'reagent-input',
             'autocomplete': 'off',
         })
-        '''
-        self.fields["quantity"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Quantity',
-            'class': 'reagent-input',
-            'autocomplete': 'off',
-        }) '''
         self.fields["volume_size"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Volume | Mass',
@@ -244,7 +236,7 @@ class InventoryForm(ModelForm):
         fields = ['name', 'manufacturer', 'manufacturer_lot', 'expiry', 'volume_size', 'location', 'comments', 'quarantine']
 
 class Qtyform(forms.Form):
-    quantity = forms.IntegerField()
+    quantity = forms.IntegerField(min_value=1, max_value=20)
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["quantity"].widget.attrs.update({
@@ -254,3 +246,23 @@ class Qtyform(forms.Form):
             'autocomplete': 'off',
         })
         self.fields["quantity"].label = ""
+
+class DisposeForm(forms.Form):
+
+    dispose = forms.BooleanField(required=False)
+class OpenForm(ModelForm):
+    open_container = forms.BooleanField()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["open_container"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': '',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+        self.fields["open_container"].label = ""
+
+    class Meta:
+        model = Cheminventory
+        fields = ['open_container']
+

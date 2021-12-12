@@ -56,6 +56,25 @@ https://algotronics.wordpress.com/2015/10/23/dj2exe/
 
 https://pypi.org/project/shortuuid/
 
+https://stackoverflow.com/questions/60546349/django-generate-bar-code-and-save-into-image-field
+
+https://github.com/ReconCubed/django-profanity-filter
+
+https://www.youtube.com/watch?v=HR0YAGkBW58&ab_channel=GoDjango
+
+https://www.w3.org/Style/Examples/007/folding.en.html#view10
+
+https://stackoverflow.com/questions/29714763/django-check-if-checkbox-is-selected
+
+https://python.plainenglish.io/generate-and-serve-pdf-files-with-django-e3efd9fde7bc
+
+https://greenphire.com/careers/
+
+https://www.cockroachlabs.com/pricing/
+
+https://supabase.com/pricing
+
+https://pubs.acs.org/doi/pdf/10.1021/acs.jchemed.9b01131
 class sample_initiated(Sample):
     SAMPLE_TEST = (
         ('Reverse Phase HPLC', 'Reverse Phase HPLC'),
@@ -160,3 +179,15 @@ FreeLims_sample
         super().save(*args, **kwargs)
         if is_new:
             Result.objects.create(parent=self)
+
+
+class DisposeForm(forms.Form):
+
+    dispose = forms.ModelMultipleChoiceField(queryset=Cheminventory.objects.all())
+
+    def __init__(self, *args, dispose_pk=None, **kwargs):
+        super(forms.Form, self).__init__(*args, **kwargs)
+        if dispose_pk is not None:
+            self.fields['Lab_lot'].queryset = Cheminventory.objects.filter(
+                dispose=dispose_pk
+            )

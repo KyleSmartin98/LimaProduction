@@ -1,5 +1,6 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform
+from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, DisposeForm, \
+    OpenForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
@@ -7,7 +8,10 @@ from .models import Sample, User, Cheminventory
 from django.http import HttpResponse
 import csv, shortuuid
 from datetime import datetime
-from .filters import SampleFilter
+from .filters import SampleFilter, InventoryFilter
+import barcode
+from PIL import Image
+from barcode.writer import ImageWriter
 
 
 def home(request):
@@ -168,6 +172,9 @@ def Inventory(request):
     qtyform = Qtyform()
     id = shortuuid.ShortUUID(alphabet="0123456789")
     lot_id = id.random(length = 7)
+    myfilter = InventoryFilter(request.GET, queryset=inventories)
+    inventories = myfilter.qs
+    disposalform = DisposeForm()
     if request.method == 'POST':
         qty = request.POST.get('quantity')
         form = InventoryForm(request.POST)
@@ -185,14 +192,70 @@ def Inventory(request):
         else:
             print("ERROR : Form is invalid")
             print(form.errors)
-
     context = {
         'inventories': inventories,
         'form': form,
         'qtyform': qtyform,
+        'myfilter': myfilter,
+        'disposalform': disposalform,
     }
 
     return render(request, 'FreeLims/Inventory.html', context)
+
+def InventoryOpen(request, pk):
+    inventorypk = Cheminventory.objects.get(id=pk)
+    inventories = Cheminventory.objects.filter(id=pk)
+    form = OpenForm(instance=inventorypk)
+    if request.method == 'POST':
+        form = OpenForm(request.POST, instance=inventorypk)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.quarantine = False
+            obj.open_container = True
+            obj.save()
+            return redirect('Inventory')
+        else:
+            print("ERROR : Form is invalid")
+            print(form.errors)
+
+    context = {
+        'form': form,
+        'inventories': inventories,
+    }
+
+    return render(request, 'FreeLims/Inventory.html', context)
+
+def InventoryDispose(request):
+    disposalform = DisposeForm()
+    check_values = request.POST.getlist('tag')
+    for i in check_values:
+        inventories = Cheminventory.objects.get(id=i)
+
+def BarcodeDownload(request, pk):
+    now = datetime.now()
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    inventory = Cheminventory.objects.get(id=pk)
+    gl_lot = str(inventory.Lab_lot)
+    gl_name = str(inventory.name)
+    gl_expiry = str(inventory.expiry)
+    ean = barcode.get('Code128', f'{gl_lot}', writer=ImageWriter())
+    ean.save(f'{gl_lot}_Barcode')
+    image = ean.render()
+    response = HttpResponse(content_type="image/png")
+    image.save(response, "PNG")
+    return response
+
+def inventory_export(request):
+    now = datetime.now()
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    response = HttpResponse(content_type='text/csv')
+    writer = csv.writer(response)
+    writer.writerow(['Reagent name', 'Reagent manufacturer', 'Reagent Lot', 'GlobaLIMS Lot', 'Expiry', 'Volume', 'Location', 'Logged Date'])
+    for inventory in Cheminventory.objects.all().values_list('name', 'manufacturer', 'manufacturer_lot', 'Lab_lot', 'expiry', 'volume_size', 'location', 'logged_date'):
+        writer.writerow(inventory)
+    response['Content-Disposition'] = f'attachment; filename= "Inventory_{date_time}.csv"'
+
+    return response
 
 def Method(request):
     return render(request, 'FreeLims/Method.html')

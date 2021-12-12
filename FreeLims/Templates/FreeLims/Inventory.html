@@ -5,7 +5,7 @@
         <form method="get">
             <input type="submit" value="Search" class="sample-modal-btn-text-lg">
             {% csrf_token %}
-            <!-- Add search form here -->
+            {{myfilter.form.lab_lot}}
             <a class="clear-btn" href="{% url 'Inventory' %}">&#8855</a>
         </form>
 
@@ -17,23 +17,27 @@
                     <a href ="#addreagent" class="sample-submit-text">Add Reagent</a>
                 </button>
             </li> <!--Add Sample -->
+            <li class = "Table-attributes-Nav-bar">
+                <button class="sample-modal-btn">
+                    <a href ="#disposereagent" class="sample-submit-text">Dispose</a>
+                </button>
+            </li>
             <!--<li class = "Table-attributes-Nav-bar">
                 <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
             </li> -->
             <li class = "Table-attributes-Nav-bar">
                 <button class="sample-modal-btn">
-                    <a href ="{% url 'Sample' %}" class="sample-submit-text">Clear Table Filter</a>
+                    <a href ="{% url 'Inventory' %}" class="sample-submit-text">&#8855 Table Filter</a>
                 </button>
             </li>
             <li class = "Table-attributes-Nav-bar">
-                <form action="#" method="post">
-                {% csrf_token %}
-                 <button type="submit" class="sample-modal-btn-text">Download CSV</button>
-                 </form>
+                <button class="sample-modal-btn">
+                    <a href ="{% url 'inventorycsv' %}" class="sample-submit-text">Download CSV</a>
+                </button>
             </li>
             <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
                 <div class="nav-dropdown"> <!--Dropdown class-->
-                    <button class="sample-modal-btn-text">Page Navigation</button> <!--Button to Activate dropdown-->
+                    <button class="sample-modal-btn-text">Navigation</button> <!--Button to Activate dropdown-->
                     <div class="nav-dropdown-content"> <!--DropDown Content-->
                         <a href="{% url 'Sample' %}">Sample Log-In</a>
                         <a href="{% url 'Testing' %}">Testing Initiation</a>
@@ -47,64 +51,83 @@
     </div>
 </div>
 <div class="table-container">
-    <div class=“sample-tbl-header">
+    <div class=“sample-tbl-container">
         <table class=“sample-table”>
             <thead>
-            <tr>
+            <tr bgcolor="#BACDDE">
               <th>
-                  Sample Name
+                  Name
                   <a href="#namefilter" class="filter-icon-link" >
                       {% load static %}
                       <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
                   </a>
               </th>
               <th>
-                  Description
+                  Vendor
                   <a href="#descfilter" class="filter-icon-link" >
                       {% load static %}
                       <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
                   </a>
               </th>
-              <th>Tracking Number</th>
-                <th>Volume / Size</th>
-              <th>Type</th>
+              <th>Vendor Lot</th>
+                <th>GlobaLIMS Lot</th>
               <th>Expiry</th>
-                <th>
-                    <div class="date-spacing-head">logged Date</div>
-                </th>
+              <th>Volume / Size</th>
+                <th>Location</th>
+                <th>quarantine?</th>
                 <th>Logged By</th>
+                <th>Logged Date</th>
+                <th>Status</th>
+                <th>Download Barcode</th>
+                <th>Dispose</th>
             </tr>
           </thead>
-        </table>
-  </div>
-  <div class=“sample-tbl-content">
-    <table>
-    {% csrf_token %}
-    {% for sample in samples %}
-      <tbody>
-        <tr>
-            <td>
-                <div class="name-spacing">{{ sample.sample_name}}</div>
-            </td>
-            <td>
-                <div class="des-spacing">{{sample.sample_description}}</div>
-            </td>
-            <td>
-                <div class="track-spacing">{{sample.tracking_number}}</div>
-            </td>
-            <td>
-                <div class="vol-spacing">{{sample.sample_volume}}</div>
-            </td>
-            <td>
-                <div class="type-spacing">{{sample.sample_type}}</div>
-            </td>
-            <td>{{sample.expiration_date}}</td>
-            <td>{{sample.logged_date}}</td>
-            <td>{{sample.logged_by}}</td>
-
-        </tr>
-      </tbody>
-    {% endfor %}
+        {% csrf_token %}
+        {% for inventory in inventories %}
+          <tbody>
+            <tr>
+                {% if inventory.inv_disposal == False %}
+                <td>{{inventory.name}}</td>
+                <td>{{inventory.manufacturer}}</td>
+                <td>{{inventory.manufacturer_lot}}</td>
+                <td>{{inventory.Lab_lot}}</td>
+                <td>{{inventory.expiry|date:"y-m-d"}}</td>
+                <td>{{inventory.volume_size}}</td>
+                <td>{{inventory.location}}</td>
+                <td>{{inventory.quarantine|yesno:"Yes,No"}}</td>
+                <td>{{inventory.logged_by}}</td>
+                <td>{{inventory.logged_date|date:"y-m-d"}}</td>
+                {% if inventory.quarantine == True %}
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="{% url 'Inventory_open' inventory.id %}#openreagent">Open</a>
+                    </button>
+                </td>
+                {% else %}
+                <td>{{inventory.open_container|yesno:"Open,Close"}}</td>
+                {% endif %}
+                {% if inventory.quarantine == False %}
+                <td>
+                    <button class="buttonDownload">
+                        <a class="inventory-barcode-link" target="_blank" href="{% url 'Barcode_download' inventory.id %}" >Download</a>
+                    </button>
+                </td>
+                {% else %}
+                <td>
+                    Unopened
+                </td>
+                {% endif %}
+                <td>
+                    <input type="checkbox" name="tag[]" value="{{inventory.id}}" {% if inventory.inv_disposal %}checked{% endif %}>
+                    <!--{{disposalform.dispose}}-->
+                   <!-- <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="#" >Dispose</a>
+                    </button> -->
+                </td>
+                {% endif %}
+            </tr>
+          </tbody>
+        {% endfor %}
     </table>
   </div>
 </div>
@@ -156,6 +179,30 @@
                 {{form.comments}}
                 <input type="submit" Value="Submit" class="reagent-submit">
             </div>
+        </form>
+    </div>
+</div>
+<div class="reagent-submit-modal" id="disposereagent">
+    <div class="reagent-submit-modal-content">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Reagent Submission Form </span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{disposalform}}
+            <input type="reset" value="Clear Input Field" class="reagent-submit">
+            <input type="submit" Value="Submit" class="reagent-submit">
+        </form>
+    </div>
+</div>
+<div class="sample-submit-modal-sm" id="openreagent">
+    <div class="filter-content-modal-xs" style="margin-top:18rem">
+        <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Reagent Open </span>
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form.open_container}}
+            <input type="reset" value="Clear Input Field" class="reagent-submit">
+            <input type="submit" Value="Submit" class="reagent-submit">
         </form>
     </div>
 </div>

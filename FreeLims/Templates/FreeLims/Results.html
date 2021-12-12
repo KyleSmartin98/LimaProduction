@@ -17,7 +17,7 @@
             </li> -->
             <li class = "Table-attributes-Nav-bar">
                 <button class="sample-modal-btn">
-                    <a href ="{% url 'Sample' %}" class="sample-submit-text">Clear Table Filter</a>
+                    <a href ="{% url 'Results' %}" class="sample-submit-text">&#8855 Table Filter</a>
                 </button>
             </li>
             <li class = "Table-attributes-Nav-bar">
@@ -42,10 +42,10 @@
     </div>
 </div>
 <div class="table-container">
-    <div class=“sample-tbl-header">
+    <div class="sample-tbl-container">
         <table class=“sample-table”>
             <thead>
-            <tr>
+            <tr bgcolor="#BACDDE">
               <th>
                   Sample Name
                   <a href="#namefilter" class="filter-icon-link" >
@@ -68,52 +68,41 @@
                 <th>Criteria</th>
             </tr>
           </thead>
-        </table>
-  </div>
-  <div class=“sample-tbl-content">
-    <table>
-    {% csrf_token %}
-    {% for sample in samples %}
-        {% if sample.initiated == True %}
-      <tbody>
-        <tr>
-            <td>
-                <div class="name-spacing">{{ sample.sample_name}}</div>
-            </td>
-            <td>
-                <div class="des-spacing">{{sample.sample_description}}</div>
-            </td>
-            <td>
-                <div class="track-spacing">{{sample.tracking_number}}</div>
-            </td>
-            <td>
-                <div class="vol-spacing">{{sample.sample_quantity}}x{{sample.sample_volume}}</div>
-            </td>
-            <td>
-                <div class="type-spacing">{{sample.expiration_date}}</div>
-            </td>
-            <td>{{sample.sample_test}}</td>
-            {% if sample.sample_result|length > 0 %}
-            <td>{{sample.sample_result}}</td>
-            <td>{{sample.sample_pf|yesno}}</td>
-            {% else %}
-            <td>
-                <button>
-                    <a href="{% url 'Results_submit' sample.id %}#resultsubmit" >Report Results</a>
-                </button>
-            </td>
+        {% csrf_token %}
+        {% for sample in samples %}
+            {% if sample.initiated == True %}
+          <tbody>
+            <tr>
+                <td>{{ sample.sample_name}}</td>
+                <td>{{sample.sample_description}}</td>
+                <td>{{sample.tracking_number}}</td>
+                <td>{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                <td>{{sample.expiration_date}}</td>
+                <td>{{sample.sample_test}}</td>
+                {% if sample.sample_result|length > 0 %}
+                <td>{{sample.sample_result}}</td>
+                <td>{{sample.sample_pf|yesno}}</td>
+                {% else %}
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="{% url 'Results_submit' sample.id %}#resultsubmit" >Report Results</a>
+                    </button>
+                </td>
+                <td>
+                    Awaiting Result
+                </td>
+                {% endif %}
+            </tr>
+          </tbody>
             {% endif %}
-        </tr>
-      </tbody>
-        {% endif %}
-        {% endfor %}
-    </table>
-  </div>
+            {% endfor %}
+        </table>
+    </div>
 </div>
-<div class="sample-submit-modal" id="resultsubmit">
-    <div class="sample-submit-modal-content">
+<div class="result-submit-modal" id="resultsubmit">
+    <div class="result-submit-modal-content">
         <a href="{% url 'Results' %}" class="modal__close">Close</a>
-        <span class="registration-header">Results</span>
+        <span class="registration-header">Result Submission</span>
         <form action="" method="POST">
             {% csrf_token %}
             {{form}}

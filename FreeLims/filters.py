@@ -38,3 +38,33 @@ class SampleFilter(django_filters.FilterSet):
         fields = ['sample_name', 'tracking_number', 'expiration_date', 'logged_date', 'logged_by', 'sample_description']
 
 
+class InventoryFilter(django_filters.FilterSet):
+    name = CharFilter(field_name='name', lookup_expr='icontains')
+    manufacturer = CharFilter(field_name='manufacturer', lookup_expr='icontains')
+    manufacturer_lot = CharFilter(field_name='manufacturer_lot', lookup_expr='icontains')
+    lab_lot = CharFilter(field_name='Lab_lot', lookup_expr='icontains')
+
+    def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
+        super(InventoryFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
+        inventorytitles = ['name', 'manufacturer', 'manufacturer_lot', 'lab_lot']
+        self.filters['name'].field.widget.attrs.update({
+            'class': 'sample-searchbar',
+            'placeholder': 'Reagent Name',
+        })
+        self.filters['manufacturer'].field.widget.attrs.update({
+            'class': 'sample-searchbar',
+            'placeholder': 'Vendor',
+        })
+        self.filters['manufacturer_lot'].field.widget.attrs.update({
+            'class': 'sample-searchbar',
+            'placeholder': 'Vendor Lot',
+        })
+        self.filters['lab_lot'].field.widget.attrs.update({
+            'class': 'sample-searchbar',
+            'placeholder': 'GlobaLIMS Lot',
+        })
+        for i in inventorytitles:
+            self.filters[i].label = ''
+    class Meta:
+        model= Cheminventory
+        fields = ['name', 'manufacturer', 'manufacturer_lot', 'Lab_lot']

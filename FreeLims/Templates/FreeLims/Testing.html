@@ -36,10 +36,10 @@
     </div>
 </div>
 <div class="table-container">
-    <div class=“sample-tbl-header">
+    <div class=“sample-tbl-container">
         <table class=“sample-table”>
             <thead>
-            <tr>
+            <tr bgcolor="#BACDDE">
               <th>
                   Sample Name
                   <a href="#" class="filter-icon-link" >
@@ -57,61 +57,46 @@
               <th>Tracking Number</th>
               <th>Volume & Size</th>
               <th>Expiry</th>
-                <th>
-                    <div class="date-spacing-head">logged Date</div>
-                </th>
+                <th>logged Date</th>
                 <th>Logged By</th>
                 <th>Initiate Sample</th>
             </tr>
           </thead>
-        </table>
-  </div>
-  <div class=“sample-tbl-content">
-    <table>
-    {% csrf_token %}
-    {% for sample in samples %}
-        {% if sample.initiated == False %}
-      <tbody>
-        <tr>
-            <td>
-                <div class="name-spacing">{{ sample.sample_name}}</div>
-            </td>
-            <td>
-                <div class="des-spacing">{{sample.sample_description}}</div>
-            </td>
-            <td>
-                <div class="track-spacing">{{sample.tracking_number}}</div>
-            </td>
-            <td>
-                <div class="vol-spacing">{{sample.sample_quantity}}x{{sample.sample_volume}}</div>
-            </td>
-            <td>
-                <div class="type-spacing">{{sample.expiration_date}}</div>
-            </td>
-            <td>{{sample.logged_date}}</td>
-            <td>{{sample.logged_by}}</td>
-            <td>
-                <button>
-                    <a href="{% url 'Initiate_sample' sample.id %}#initiatesample" >Initiate Sample</a>
-                </button>
-            </td>
+        {% csrf_token %}
+        {% for sample in samples %}
+            {% if sample.initiated == False %}
+          <tbody>
+            <tr>
+                <td>{{ sample.sample_name}}</td>
+                <td>{{sample.sample_description}}</td>
+                <td>{{sample.tracking_number}}</td>
+                <td>{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                <td>{{sample.expiration_date}}</td>
+                <td >{{sample.logged_date|date:"Y-m-d"}}</td>
+                <td>{{sample.logged_by}}</td>
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="{% url 'Initiate_sample' sample.id %}#initiatesample" >Initiate Sample</a>
+                    </button>
+                </td>
 
-        </tr>
-      </tbody>
-        {% endif %}
-    {% endfor %}
+            </tr>
+          </tbody>
+            {% endif %}
+        {% endfor %}
     </table>
   </div>
 </div>
-<div class="sample-submit-modal" id="initiatesample">
-    <div class="sample-submit-modal-content">
+<div class="initiation-submit-modal" id="initiatesample">
+    <div class="initiation-submit-modal-content">
         <a href="" class="modal__close">Close</a>
         <span class="registration-header">Sample Initiation Form</span>
         <form action="" method="POST">
             {% csrf_token %}
+            <span class="initiate-span">Initiate Sample</span>
             {{form.initiated}}
             {{form.sample_test}}
-            <input type="submit" Value="Initiate Sample" class="registration-submit">
+            <input type="submit" Value="Submit" class="registration-submit">
             <input type="reset" value="Clear Input Fields" class="registration-submit">
         </form>
     </div>
