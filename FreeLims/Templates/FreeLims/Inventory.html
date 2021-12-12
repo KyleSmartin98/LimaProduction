@@ -47,64 +47,69 @@
     </div>
 </div>
 <div class="table-container">
-    <div class=“sample-tbl-header">
+    <div class=“sample-tbl-container">
         <table class=“sample-table”>
             <thead>
-            <tr>
+            <tr bgcolor="#BACDDE">
               <th>
-                  Sample Name
+                  Name
                   <a href="#namefilter" class="filter-icon-link" >
                       {% load static %}
                       <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
                   </a>
               </th>
               <th>
-                  Description
+                  Manufacturer
                   <a href="#descfilter" class="filter-icon-link" >
                       {% load static %}
                       <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
                   </a>
               </th>
-              <th>Tracking Number</th>
-                <th>Volume / Size</th>
-              <th>Type</th>
+              <th>Manufacturer Lot</th>
+                <th>GlobaLims Lot</th>
               <th>Expiry</th>
-                <th>
-                    <div class="date-spacing-head">logged Date</div>
-                </th>
+              <th>Volume / Size</th>
+                <th>Location</th>
+                <th>quarantine?</th>
                 <th>Logged By</th>
+                <th>Logged Date</th>
+                <th>open</th>
+                <th>Dispose</th>
             </tr>
           </thead>
-        </table>
-  </div>
-  <div class=“sample-tbl-content">
-    <table>
-    {% csrf_token %}
-    {% for sample in samples %}
-      <tbody>
-        <tr>
-            <td>
-                <div class="name-spacing">{{ sample.sample_name}}</div>
-            </td>
-            <td>
-                <div class="des-spacing">{{sample.sample_description}}</div>
-            </td>
-            <td>
-                <div class="track-spacing">{{sample.tracking_number}}</div>
-            </td>
-            <td>
-                <div class="vol-spacing">{{sample.sample_volume}}</div>
-            </td>
-            <td>
-                <div class="type-spacing">{{sample.sample_type}}</div>
-            </td>
-            <td>{{sample.expiration_date}}</td>
-            <td>{{sample.logged_date}}</td>
-            <td>{{sample.logged_by}}</td>
-
-        </tr>
-      </tbody>
-    {% endfor %}
+        {% csrf_token %}
+        {% for inventory in inventories %}
+          <tbody>
+            <tr>
+                {% if inventory.inv_disposal == False %}
+                <td>{{inventory.name}}</td>
+                <td>{{inventory.manufacturer}}</td>
+                <td>{{inventory.manufacturer_lot}}</td>
+                <td>{{inventory.Lab_lot}}</td>
+                <td>{{inventory.expiry|date:"y-m-d"}}</td>
+                <td>{{inventory.volume_size}}</td>
+                <td>{{inventory.location}}</td>
+                <td>{{inventory.quarantine|yesno:"Yes,No"}}</td>
+                <td>{{inventory.logged_by}}</td>
+                <td>{{inventory.logged_date|date:"y-m-d"}}</td>
+                {% if inventory.quarantine == True %}
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="#" >Open</a>
+                    </button>
+                </td>
+                {% else %}
+                <td>{{inventory.open_container|yesno:"Open,Close"}}</td>
+                {% endif %}
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="#" >Dispose</a>
+                    </button>
+                </td>
+                {% endif %}
+            </tr>
+          </tbody>
+        {% endfor %}
     </table>
   </div>
 </div>

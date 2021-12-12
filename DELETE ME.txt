@@ -56,6 +56,11 @@ https://algotronics.wordpress.com/2015/10/23/dj2exe/
 
 https://pypi.org/project/shortuuid/
 
+https://stackoverflow.com/questions/60546349/django-generate-bar-code-and-save-into-image-field
+
+https://github.com/ReconCubed/django-profanity-filter
+
+
 class sample_initiated(Sample):
     SAMPLE_TEST = (
         ('Reverse Phase HPLC', 'Reverse Phase HPLC'),

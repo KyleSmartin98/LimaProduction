@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 
 class Sample(models.Model):
@@ -29,7 +30,7 @@ class Sample(models.Model):
     sample_description = models.CharField(max_length=200)
     tracking_number = models.CharField(max_length=100)
     sample_volume = models.CharField(max_length=100)
-    sample_quantity = models.IntegerField()
+    sample_quantity = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(20)])
     sample_type = models.CharField(max_length=100, choices=SAMPLE_TYPE)
     expiration_date = models.CharField(max_length=100)
     logged_date = models.DateTimeField(default=datetime.now)
@@ -76,12 +77,12 @@ class Cheminventory(models.Model):
     manufacturer_lot = models.CharField(max_length=100)
     expiry = models.DateTimeField(default=datetime.now, null=True)
     Lab_lot = models.CharField(max_length=100)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(20)])
     volume_size = models.CharField(max_length=100)
     location = models.CharField(choices=LOCATIONS, max_length=100)
     comments = models.CharField(max_length=250)
     quarantine = models.BooleanField(default=False)
-    open_container = models.BooleanField(choices=OPENCLOSE, blank=True, default=None, null=True)
+    open_container = models.BooleanField(choices=OPENCLOSE, blank=True, default=True, null=True)
     inv_disposal = models.BooleanField(choices=DISPOSAL, blank=True, default=False, null=True)
 
 
