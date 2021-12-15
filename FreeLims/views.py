@@ -168,13 +168,29 @@ def Trending(request):
 
 def Inventory(request):
     inventories = Cheminventory.objects.all()
+    myfilter = InventoryFilter(request.GET, queryset=inventories)
+    inventories = myfilter.qs
+    if request.method == 'POST':
+        list_of_input_ids = request.POST.getlist('inputs')
+        for i in list_of_input_ids:
+            Cheminventory.objects.filter(id=i).update(inv_disposal=True)
+            return redirect('Inventory')
+
+    context = {
+        'inventories': inventories,
+        'myfilter': myfilter,
+    }
+
+    return render(request, 'FreeLims/Inventory.html', context)
+
+def Inventorycreate(request):
+    inventories = Cheminventory.objects.all()
     form = InventoryForm()
     qtyform = Qtyform()
     id = shortuuid.ShortUUID(alphabet="0123456789")
-    lot_id = id.random(length = 7)
+    lot_id = id.random(length=7)
     myfilter = InventoryFilter(request.GET, queryset=inventories)
     inventories = myfilter.qs
-    disposalform = DisposeForm()
     if request.method == 'POST':
         qty = request.POST.get('quantity')
         form = InventoryForm(request.POST)
@@ -198,7 +214,6 @@ def Inventory(request):
         'form': form,
         'qtyform': qtyform,
         'myfilter': myfilter,
-        'disposalform': disposalform,
     }
 
     return render(request, 'FreeLims/Inventory.html', context)
@@ -228,17 +243,6 @@ def InventoryOpen(request, pk):
         'inventories': inventories,
     }
 
-    return render(request, 'FreeLims/Inventory.html', context)
-
-def InventoryDispose(request):
-    inventories = Cheminventory.objects.all()
-    list_of_input_ids = request.GET.getlist('inputs')
-    for i in list_of_input_ids:
-        print(i)
-
-    context = {
-        'inventories': inventories,
-    }
     return render(request, 'FreeLims/Inventory.html', context)
 
 def BarcodeDownload(request, pk):

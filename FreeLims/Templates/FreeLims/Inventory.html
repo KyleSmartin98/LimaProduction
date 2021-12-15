@@ -14,11 +14,11 @@
         <ul class="Table-attributes-ul">
             <li class = "Table-attributes-Nav-bar">
                 <button class="sample-modal-btn">
-                    <a href ="#addreagent" class="sample-submit-text">Add Reagent</a>
+                    <a href ="{% url 'Inventory_create' %}#addreagent" class="sample-submit-text">Add Reagent</a>
                 </button>
             </li> <!--Add Sample -->
             <li class = "Table-attributes-Nav-bar">
-                <button type="submit" form="frmFoo" name="btn_dispose" value="dispose" onclick="!this.form && document.getElementById('disposeform').submit()">
+                <button class="sample-modal-btn-text" type="submit" form="frmFoo" name="btn_dispose" value="dispose" onclick="!this.form && document.getElementById('disposeform').submit()">
                 Dispose
                 </button>
                 <!--<button class="sample-modal-btn">
@@ -121,7 +121,7 @@
                 </td>
                 {% endif %}
                 <td>
-                    <form id="disposeform" method="post" action="">
+                    <form id="disposeform" method="POST" action="">
                         {% csrf_token %}
                         <input type="checkbox" name="inputs" value="{{inventory.id}}">
                     </form>

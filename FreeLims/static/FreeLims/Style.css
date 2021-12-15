@@ -1050,7 +1050,13 @@
 }
 .sample-tbl-container{
     margin-top: 25px;
-    margin-left:35px;
+    margin-left:0.5%;
+    max-height: 500px;
+
+ }
+ .sample-tbl-results-container{
+    margin-top: 25px;
+    margin-left:2.5%;
     max-height: 500px;
 
  }
@@ -1067,6 +1073,7 @@ tr th{
 th{
     font-weight: bold;
     top: 0;
+    z-index: 1;
     position: sticky;
     margin-left: 20px;
     padding: 20px 30px;
