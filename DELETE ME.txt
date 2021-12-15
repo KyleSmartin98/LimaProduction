@@ -191,3 +191,16 @@ class DisposeForm(forms.Form):
             self.fields['Lab_lot'].queryset = Cheminventory.objects.filter(
                 dispose=dispose_pk
             )
+
+def InventoryDispose(request):
+    inventories = Cheminventory.objects.all()
+    list_of_input_ids = request.GET.getlist('inputs')
+    for i in list_of_input_ids:
+        print(i)
+
+
+
+    context = {
+        'inventories': inventories,
+    }
+    return render(request, 'FreeLims/Inventory.html', context)

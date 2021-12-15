@@ -248,8 +248,9 @@ class Qtyform(forms.Form):
         self.fields["quantity"].label = ""
 
 class DisposeForm(forms.Form):
-
-    dispose = forms.BooleanField(required=False)
+    class Meta:
+        model = Sample
+        fields = ['inv_disposal']
 class OpenForm(ModelForm):
     open_container = forms.BooleanField()
     def __init__(self, *args, **kwargs):

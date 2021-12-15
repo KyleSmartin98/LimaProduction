@@ -1046,10 +1046,12 @@
     display: block;
     border-collapse: collapse;
     border-spacing: 15px 5px;
+    position: relative;
 }
 .sample-tbl-container{
     margin-top: 25px;
     margin-left:35px;
+    max-height: 500px;
 
  }
 .sample-tbl-content{
@@ -1058,8 +1060,14 @@
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
 }
+tr th{
+    background: #c8d8e4;
+    border: 2px solid #8cc2ff !important;
+}
 th{
     font-weight: bold;
+    top: 0;
+    position: sticky;
     margin-left: 20px;
     padding: 20px 30px;
     margin-left: 200px

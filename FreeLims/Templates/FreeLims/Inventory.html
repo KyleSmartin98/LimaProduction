@@ -18,9 +18,12 @@
                 </button>
             </li> <!--Add Sample -->
             <li class = "Table-attributes-Nav-bar">
-                <button class="sample-modal-btn">
-                    <a href ="#disposereagent" class="sample-submit-text">Dispose</a>
+                <button type="submit" form="frmFoo" name="btn_dispose" value="dispose" onclick="!this.form && document.getElementById('disposeform').submit()">
+                Dispose
                 </button>
+                <!--<button class="sample-modal-btn">
+                    <a href ="#" class="sample-submit-text">Dispose</a>
+                </button>-->
             </li>
             <!--<li class = "Table-attributes-Nav-bar">
                 <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
@@ -118,11 +121,10 @@
                 </td>
                 {% endif %}
                 <td>
-                    <input type="checkbox" name="tag[]" value="{{inventory.id}}" {% if inventory.inv_disposal %}checked{% endif %}>
-                    <!--{{disposalform.dispose}}-->
-                   <!-- <button class="sample-initiation-btn">
-                        <a class="sample-initiation-link" href="#" >Dispose</a>
-                    </button> -->
+                    <form id="disposeform" method="post" action="">
+                        {% csrf_token %}
+                        <input type="checkbox" name="inputs" value="{{inventory.id}}">
+                    </form>
                 </td>
                 {% endif %}
             </tr>
@@ -184,14 +186,8 @@
 </div>
 <div class="reagent-submit-modal" id="disposereagent">
     <div class="reagent-submit-modal-content">
-        <a href="" class="modal__close">Close</a>
-        <span class="registration-header" style="margin-left:25px">Reagent Submission Form </span>
-        <form action="" method="POST">
-            {% csrf_token %}
-            {{disposalform}}
-            <input type="reset" value="Clear Input Field" class="reagent-submit">
-            <input type="submit" Value="Submit" class="reagent-submit">
-        </form>
+        <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Dispose Reagent</span>
     </div>
 </div>
 <div class="sample-submit-modal-sm" id="openreagent">
@@ -199,8 +195,15 @@
         <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
         <span class="registration-header" style="margin-left:25px">Reagent Open </span>
         <form action="" method="POST">
-            {% csrf_token %}
-            {{form.open_container}}
+            {% for inventory in inventories %}
+                {% if inventory.quarantine == True %}
+                {% csrf_token %}
+                {{form.open_container}}
+                {% endif %}
+            {% endfor %}
+            {% for message in messages %}
+            <p>{{message}}</p>
+            {% endfor %}
             <input type="reset" value="Clear Input Field" class="reagent-submit">
             <input type="submit" Value="Submit" class="reagent-submit">
         </form>

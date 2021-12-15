@@ -192,6 +192,7 @@ def Inventory(request):
         else:
             print("ERROR : Form is invalid")
             print(form.errors)
+
     context = {
         'inventories': inventories,
         'form': form,
@@ -206,17 +207,21 @@ def InventoryOpen(request, pk):
     inventorypk = Cheminventory.objects.get(id=pk)
     inventories = Cheminventory.objects.filter(id=pk)
     form = OpenForm(instance=inventorypk)
-    if request.method == 'POST':
-        form = OpenForm(request.POST, instance=inventorypk)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.quarantine = False
-            obj.open_container = True
-            obj.save()
-            return redirect('Inventory')
-        else:
-            print("ERROR : Form is invalid")
-            print(form.errors)
+    if inventorypk.quarantine is False:
+        messages.error(request, 'This Reagent is Open')
+        return redirect('Inventory')
+    else:
+        if request.method == 'POST':
+            form = OpenForm(request.POST, instance=inventorypk)
+            if form.is_valid():
+                obj = form.save(commit=False)
+                obj.quarantine = False
+                obj.open_container = True
+                obj.save()
+                return redirect('Inventory')
+            else:
+                print("ERROR : Form is invalid")
+                print(form.errors)
 
     context = {
         'form': form,
@@ -226,10 +231,15 @@ def InventoryOpen(request, pk):
     return render(request, 'FreeLims/Inventory.html', context)
 
 def InventoryDispose(request):
-    disposalform = DisposeForm()
-    check_values = request.POST.getlist('tag')
-    for i in check_values:
-        inventories = Cheminventory.objects.get(id=i)
+    inventories = Cheminventory.objects.all()
+    list_of_input_ids = request.GET.getlist('inputs')
+    for i in list_of_input_ids:
+        print(i)
+
+    context = {
+        'inventories': inventories,
+    }
+    return render(request, 'FreeLims/Inventory.html', context)
 
 def BarcodeDownload(request, pk):
     now = datetime.now()
@@ -254,8 +264,9 @@ def inventory_export(request):
     for inventory in Cheminventory.objects.all().values_list('name', 'manufacturer', 'manufacturer_lot', 'Lab_lot', 'expiry', 'volume_size', 'location', 'logged_date'):
         writer.writerow(inventory)
     response['Content-Disposition'] = f'attachment; filename= "Inventory_{date_time}.csv"'
-
     return response
+
+
 
 def Method(request):
     return render(request, 'FreeLims/Method.html')
