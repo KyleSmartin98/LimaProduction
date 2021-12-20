@@ -95,7 +95,7 @@
                                     <td class="quick-table-data">{{sample.sample_description}}</td>
                                     <td class="quick-table-data">{{sample.tracking_number}}</td>
                                     <td class="quick-table-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
-                                    <td class="quick-table-data">{{sample.expiration_date}}</td>
+                                    <td class="quick-table-data">{{sample.expiration_date|date:"Y-m-d"}}</td>
                                     <td class="quick-table-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
                                     {% if sample.result_pf > 0 %}
                                     <td class="quick-table-data">Yes</td>
@@ -118,7 +118,7 @@
         </div>
         <div class="home-notification-div">
             <div class="home-notification-tbl-container"><!-- Sample Notifications-->
-                <span> Sample Notification</span>
+                <span class="Srch-Text" style="color:black;"> Sample Notification</span>
                 <table>
                     <thead>
                     <tr>
@@ -141,7 +141,7 @@
                             <td class="high-priority-tr-data">{{sample.sample_description}}</td>
                             <td class="high-priority-tr-data">{{sample.tracking_number}}</td>
                             <td class="high-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
-                            <td class="high-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="high-priority-tr-data">{{sample.expiration_date|date:"Y-m-d"}}</td>
                             <td class="high-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
                             {% if sample.result_pf > 0 %}
                             <td class="high-priority-tr-data">Yes</td>
@@ -153,27 +153,11 @@
                         {% endif %}
                         {% if sample.expiration_date|less_Than_Fifteen_Days %}
                         <tr> <!-- less than 15 days -->
-                            <td class="low-priority-tr-data">{{sample.sample_name}}</td>
-                            <td class="low-priority-tr-data">{{sample.sample_description}}</td>
-                            <td class="low-priority-tr-data">{{sample.tracking_number}}</td>
-                            <td class="low-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
-                            <td class="low-priority-tr-data">{{sample.expiration_date}}</td>
-                            <td class="low-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
-                            {% if sample.result_pf > 0 %}
-                            <td class="low-priority-tr-data">Yes</td>
-                            {% else %}
-                            <td class="low-priority-tr-data">No</td>
-                            {% endif %}
-                            <td class="low-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
-                        </tr>
-                        {% endif %}
-                       {% if sample.expiration_date|less_Than_Thirty_Days %}
-                        <tr> <!-- less than 15 days -->
                             <td class="medium-priority-tr-data">{{sample.sample_name}}</td>
                             <td class="medium-priority-tr-data">{{sample.sample_description}}</td>
                             <td class="medium-priority-tr-data">{{sample.tracking_number}}</td>
                             <td class="medium-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
-                            <td class="medium-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="medium-priority-tr-data">{{sample.expiration_date|date:"Y-m-d"}}</td>
                             <td class="medium-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
                             {% if sample.result_pf > 0 %}
                             <td class="medium-priority-tr-data">Yes</td>
@@ -183,13 +167,87 @@
                             <td class="medium-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
                         </tr>
                         {% endif %}
+                       {% if sample.expiration_date|less_Than_Thirty_Days %}
+                        <tr> <!-- less than 15 days -->
+                            <td class="low-priority-tr-data">{{sample.sample_name}}</td>
+                            <td class="low-priority-tr-data">{{sample.sample_description}}</td>
+                            <td class="low-priority-tr-data">{{sample.tracking_number}}</td>
+                            <td class="low-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                            <td class="low-priority-tr-data">{{sample.expiration_date|date:"Y-m-d"}}</td>
+                            <td class="low-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                            {% if sample.result_pf > 0 %}
+                            <td class="low-priority-tr-data">Yes</td>
+                            {% else %}
+                            <td class="low-priority-tr-data">No</td>
+                            {% endif %}
+                            <td class="low-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
                     </tbody>
                     {% endfor %}
                 </table>
             </div>
-            <div><!--Reagent Notifications-->
-
+            <div class="home-notification-tbl-container-2">
+                <span class="Srch-Text" style="color:black;">Reagent Notification</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Reagent Name</th>
+                        <th>Manufacturer</th>
+                        <th>Globalims Lot</th>
+                        <th>Volume</th>
+                        <th>Expiry</th>
+                        <th>Location</th>
+                        <th>Quarantine</th>
+                        <th>Days to Expiry</th>
+                    </tr>
+                    </thead>
+                    {% csrf_token %}
+                    {% for inventory in inventories %}
+                    {% if inventory.inv_disposal == False %}
+                    <tbody>
+                        {% if inventory.expiry|less_Than_Three_Day %}
+                        <tr>
+                            <td class="high-priority-tr-data">{{inventory.name}}</td>
+                            <td class="high-priority-tr-data">{{inventory.manufacturer}}</td>
+                            <td class="high-priority-tr-data">{{inventory.Lab_lot}}</td>
+                            <td class="high-priority-tr-data">{{inventory.volume_size}}</td>
+                            <td class="high-priority-tr-data">{{inventory.expiry|date:"Y-m-d"}}</td>
+                            <td class="high-priority-tr-data">{{inventory.location}}</td>
+                            <td class="high-priority-tr-data">{{inventory.quarantine}}</td>
+                            <td class="high-priority-tr-data">{{inventory.expiry|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if inventory.expiry|less_Than_Fifteen_Days %}
+                        <tr>
+                            <td class="medium-priority-tr-data">{{inventory.name}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.manufacturer}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.Lab_lot}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.volume_size}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.expiry|date:"Y-m-d"}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.location}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.quarantine}}</td>
+                            <td class="medium-priority-tr-data">{{inventory.expiry|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if inventory.expiry|less_Than_Thirty_Days %}
+                        <tr>
+                            <td class="low-priority-tr-data">{{inventory.name}}</td>
+                            <td class="low-priority-tr-data">{{inventory.manufacturer}}</td>
+                            <td class="low-priority-tr-data">{{inventory.Lab_lot}}</td>
+                            <td class="low-priority-tr-data">{{inventory.volume_size}}</td>
+                            <td class="low-priority-tr-data">{{inventory.expiry|date:"Y-m-d"}}</td>
+                            <td class="low-priority-tr-data">{{inventory.location}}</td>
+                            <td class="low-priority-tr-data">{{inventory.quarantine}}</td>
+                            <td class="low-priority-tr-data">{{inventory.expiry|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                    {% endif %}
+                    {% endfor %}
+                </table>
             </div>
+
         </div>
         {% load static %}
         <script src="{% static 'FreeLims/app.js' %}"></script>

@@ -28,7 +28,7 @@
             </li>
             <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
                 <div class="nav-dropdown"> <!--Dropdown class-->
-                    <button class="sample-modal-btn-text">Page Navigation</button> <!--Button to Activate dropdown-->
+                    <button class="sample-modal-btn-text">Navigation</button> <!--Button to Activate dropdown-->
                     <div class="nav-dropdown-content"> <!--DropDown Content-->
                         <a href="{% url 'Sample' %}">Sample Log-In</a>
                         <a href="{% url 'Testing' %}">Testing Initiation</a>
@@ -77,7 +77,7 @@
                 <td>{{sample.sample_description}}</td>
                 <td>{{sample.tracking_number}}</td>
                 <td>{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
-                <td>{{sample.expiration_date}}</td>
+                <td>{{sample.expiration_date|date:"Y-m-d"}}</td>
                 <td>{{sample.sample_test}}</td>
                 {% if sample.sample_result|length > 0 %}
                 <td>{{sample.sample_result}}</td>

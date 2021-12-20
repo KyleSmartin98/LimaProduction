@@ -443,11 +443,12 @@
 
  }
  .home-notification-tbl-container-2{
+    overflow: auto;
     display: inline-block;
     position: relative;
-    margin-top: 325px;
+    margin-top: 350px;
     margin-left:0%;
-    max-height: 325px;
+    max-height: 300px;
 
  }
  .notification-table{
@@ -737,7 +738,6 @@
 /* Table Attributes */
 
 .Table-attributes{
-    overflow-x: auto;
     overflow: visible;
     position: absolute;
     display: inline;

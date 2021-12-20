@@ -197,7 +197,11 @@ def Inventory(request):
         for i in list_of_input_ids:
             inventory = Cheminventory.objects.get(id=i)
             if inventory.open_container is True:
-                Cheminventory.objects.filter(id=i).update(inv_disposal=True)
+                Cheminventory.objects.filter(id=i).update(
+                    inv_disposal = True,
+                    disposal_by = User.objects.get(pk=request.user.id),
+                    disposal_date = str(datetime.now())
+                )
                 return redirect('Inventory')
 
 

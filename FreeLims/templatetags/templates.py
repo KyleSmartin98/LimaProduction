@@ -5,7 +5,7 @@ register = template.Library()
 
 @register.filter(expects_localtime=True)
 def less_Than_Thirty_Days(value):
-    value = datetime.datetime.strptime(value, '%Y-%m-%d')
+    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
@@ -13,7 +13,7 @@ def less_Than_Thirty_Days(value):
 
 @register.filter(expects_localtime=True)
 def less_Than_Fifteen_Days(value):
-    value = datetime.datetime.strptime(value, '%Y-%m-%d')
+    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
@@ -21,7 +21,7 @@ def less_Than_Fifteen_Days(value):
 
 @register.filter(expects_localtime=True)
 def less_Than_Three_Day(value):
-    value = datetime.datetime.strptime(value, '%Y-%m-%d')
+    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
@@ -29,7 +29,7 @@ def less_Than_Three_Day(value):
 
 @register.filter(expects_localtime=True)
 def days_Remaining(value):
-    value = datetime.datetime.strptime(value, '%Y-%m-%d')
+    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()

@@ -32,7 +32,7 @@ class Sample(models.Model):
     sample_volume = models.CharField(max_length=100)
     sample_quantity = models.PositiveIntegerField(validators=[MinValueValidator(1), MaxValueValidator(20)])
     sample_type = models.CharField(max_length=100, choices=SAMPLE_TYPE)
-    expiration_date = models.CharField(max_length=100)
+    expiration_date = models.DateTimeField(default=None, max_length=100,  null=True)
     logged_date = models.DateTimeField(default=datetime.now)
     logged_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -85,11 +85,18 @@ class Cheminventory(models.Model):
     volume_size = models.CharField(max_length=100)
     location = models.CharField(choices=LOCATIONS, max_length=100)
     comments = models.CharField(max_length=250)
+
     quarantine = models.BooleanField(default=False)
     open_container = models.BooleanField(choices=OPENCLOSE, blank=True, default=True, null=True)
+
     inv_disposal = models.BooleanField(choices=DISPOSAL, blank=True, default=False, null=True)
+    disposal_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='disposalUser')
+    disposal_date = models.DateTimeField(default=datetime.now, null=True)
 
-
+    class Meta:
+        # sort by "the date" in descending order unless
+        # overridden in the query with order_by()
+        ordering = ['expiry']
 
 
 
