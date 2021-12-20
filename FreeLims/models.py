@@ -47,6 +47,10 @@ class Sample(models.Model):
     sample_result = models.CharField(max_length=100, default=None, null=True)
     comments = models.CharField(max_length=200,  null=True, default=None)
 
+    class Meta:
+        # sort by "the date" in descending order unless
+        # overridden in the query with order_by()
+        ordering = ['expiration_date']
 class Cheminventory(models.Model):
     MANUFACTURERS = (
         ('Fisher Scientific', 'Fisher Scientific'),

@@ -15,6 +15,7 @@ urlpatterns = [
     path('Results_submit/<str:pk>/', views.Resultssubmit, name='Results_submit'),
     path('Inventory_open/<str:pk>/', views.InventoryOpen, name='Inventory_open'),
     path('Barcode_download/<str:pk>/', views.BarcodeDownload, name='Barcode_download'),
+    path('sampleBarcode_download/<str:pk>/', views.sampleBarcodeDownload, name='sampleBarcode_download'),
     path('Inventory_create', views.Inventorycreate, name='Inventory_create'),
     path('samplecsv/', views.sample_export, name='downloadsamplecsv'),
     path('resultcsv', views.result_export, name='downloadresultcsv'),

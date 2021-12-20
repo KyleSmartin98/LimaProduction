@@ -8,14 +8,24 @@ from .models import Sample, User, Cheminventory
 from django.http import HttpResponse
 import csv, shortuuid
 from datetime import datetime
-from .filters import SampleFilter, InventoryFilter
+from .filters import SampleFilter, InventoryFilter, quickSampleFilter
 import barcode
 from PIL import Image
 from barcode.writer import ImageWriter
 
 
 def home(request):
-    return render(request, 'FreeLims/home.html')
+    inventories = Cheminventory.objects.all()
+    samples = Sample.objects.all()
+    mySampleFilter = quickSampleFilter(request.GET, queryset=samples)
+    samples = mySampleFilter.qs
+
+    context = {
+        'samples': samples,
+        'mySampleFilter': mySampleFilter,
+        'inventories': inventories,
+    }
+    return render(request, 'FreeLims/home.html', context)
 
 def logout_request(request):
     logout(request)
@@ -74,6 +84,18 @@ def Sample_page(request):
         'has_filters': has_filters,
                }
     return render(request, 'FreeLims/Sample.html', context)
+
+def sampleBarcodeDownload(request, pk):
+    now = datetime.now()
+    date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
+    sample = Sample.objects.get(id=pk)
+    lot = str(sample.tracking_number)
+    ean = barcode.get('Code128', f'{lot}', writer=ImageWriter())
+    ean.save(f'{lot}_Barcode')
+    image = ean.render()
+    response = HttpResponse(content_type="image/png")
+    image.save(response, "PNG")
+    return response
 
 def sample_export(request):
     now = datetime.now()
@@ -173,8 +195,11 @@ def Inventory(request):
     if request.method == 'POST':
         list_of_input_ids = request.POST.getlist('inputs')
         for i in list_of_input_ids:
-            Cheminventory.objects.filter(id=i).update(inv_disposal=True)
-            return redirect('Inventory')
+            inventory = Cheminventory.objects.get(id=i)
+            if inventory.open_container is True:
+                Cheminventory.objects.filter(id=i).update(inv_disposal=True)
+                return redirect('Inventory')
+
 
     context = {
         'inventories': inventories,

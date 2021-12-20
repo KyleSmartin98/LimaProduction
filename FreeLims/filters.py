@@ -68,3 +68,19 @@ class InventoryFilter(django_filters.FilterSet):
     class Meta:
         model= Cheminventory
         fields = ['name', 'manufacturer', 'manufacturer_lot', 'Lab_lot']
+
+class quickSampleFilter(django_filters.FilterSet):
+    tracking = CharFilter(field_name='tracking_number', lookup_expr='icontains')
+
+    def __init__(self, data=None, queryset=None, *, request=None, prefix=None):
+        super(quickSampleFilter, self).__init__(data=data, queryset=queryset, request=request, prefix=prefix)
+        self.filters['tracking'].field.widget.attrs.update({
+            'class': 'search',
+            'placeholder': 'Tracking Number',
+            'name': 'q',
+            'id': 'searchleft',
+        })
+
+    class Meta:
+        model = Sample
+        fields = ['tracking_number']

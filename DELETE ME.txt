@@ -74,6 +74,8 @@ https://www.cockroachlabs.com/pricing/
 
 https://supabase.com/pricing
 
+https://stackoverflow.com/questions/54330831/django-display-specific-text-if-date-is-older-than-10-days/54331220#54331220
+
 https://pubs.acs.org/doi/pdf/10.1021/acs.jchemed.9b01131
 class sample_initiated(Sample):
     SAMPLE_TEST = (
@@ -204,3 +206,73 @@ def InventoryDispose(request):
         'inventories': inventories,
     }
     return render(request, 'FreeLims/Inventory.html', context)
+
+
+ <!--<div class="home-notification-tbl-container-2">
+                <span> Reagent Notification</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Reagent Name</th>
+                        <th>Manufacturer</th>
+                        <th>Globalims Lot</th>
+                        <th>Volume</th>
+                        <th>Expiry</th>
+                        <th>Location</th>
+                        <th>Quarantine</th>
+                        <th>Days to Expiry</th>
+                    </tr>
+                    </thead>
+                    {% csrf_token %}
+                    {% for inventory in inventories %}
+                    {% if inventory.inv_disposal == False %}
+                    <tbody>
+                        {% if inventory.expiry|less_Than_Three_Day %}
+                        <tr>
+                            <td class="high-priority-tr-data">{{inventory.name}}</td>
+                            <td class="high-priority-tr-data">{{inventory.manufacturer}}</td>
+                            <td class="high-priority-tr-data">{{inventory.Lab_lot}}</td>
+                            <td class="high-priority-tr-data">{{inventory.volume_size}}</td>
+                            <td class="high-priority-tr-data">{{inventory.expiry}}</td>
+                            <td class="high-priority-tr-data">{{inventory.location}}</td>
+                            <td class="high-priority-tr-data">{{inventory.quarantine|yesno:"Yes, No"}}</td>
+                            <td class="high-priority-tr-data">{{inventory.expiry|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if inventory.expiry|less_Than_Fifteen_Days %}
+                        <tr>
+                            <td class="low-priority-tr-data">{{sample.sample_name}}</td>
+                            <td class="low-priority-tr-data">{{sample.sample_description}}</td>
+                            <td class="low-priority-tr-data">{{sample.tracking_number}}</td>
+                            <td class="low-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                            <td class="low-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="low-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                            {% if sample.result_pf > 0 %}
+                            <td class="low-priority-tr-data">Yes</td>
+                            {% else %}
+                            <td class="low-priority-tr-data">No</td>
+                            {% endif %}
+                            <td class="low-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                       {% if inventory.expiry_date|less_Than_Thirty_Days %}
+                        <tr>
+                            <td class="medium-priority-tr-data">{{sample.sample_name}}</td>
+                            <td class="medium-priority-tr-data">{{sample.sample_description}}</td>
+                            <td class="medium-priority-tr-data">{{sample.tracking_number}}</td>
+                            <td class="medium-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                            <td class="medium-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="medium-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                            {% if sample.result_pf > 0 %}
+                            <td class="medium-priority-tr-data">Yes</td>
+                            {% else %}
+                            <td class="medium-priority-tr-data">No</td>
+                            {% endif %}
+                            <td class="medium-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                    {% endif %}
+                    {% endfor %}
+                </table>
+            </div>-->

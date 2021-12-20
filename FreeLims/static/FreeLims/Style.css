@@ -24,6 +24,8 @@
     display: block;
     position: relative;
     width: 100%;
+    z-index: 1;
+    #c8d8e4;
 
 }
 .Top-display-left {
@@ -32,6 +34,7 @@
     margin: 5px;
     position: relative;
     float: left;
+
 }
 .Top-display-center {
     display: inline-block;
@@ -40,12 +43,13 @@
     position: fixed;
     text-align: center;
     content: center;
+    z-index: 1;
 }
 .Top-display-right {
     display: inline-flex;
     position: relative;
     padding: 0px;
-    margin-top: 70px;
+    margin-top: 60px;
     margin-bottom: 20px;
     margin-left: 0;
     margin-right: 35px;
@@ -142,7 +146,7 @@
 }
 /* Main Div for homepage */
 .Main-Div{
-    position: absolute;
+    position: relative;
     display: flex;
     text-align: center;
     width: 1200px;
@@ -332,7 +336,57 @@
 .expandright:focus {
 	padding: 0 0 0 16px;
 }
+.quick-table-container {
+    overflow: auto;
+    position: flex;
+    display: block;
+    text-align: center;
+    align: center;
+    width: 92%;
+    margin-left: -70px;
+    margin-top: 135px;
+    height: 70%;
+    background-color: #c8d8e4;
+    box-shadow: 1px 1px 5px #555 inset;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 0px 0px 5px rgba(0,0,0,0.4);
+}
+.quick-table-formatting{
+    margin-top: 0px;
+    margin-left:0;
+    max-height: 500px;
+}
+.quick-table-tr-header{
+    background: #c8d8e4;
+    border: 1px solid #8cc2ff !important;
+}
+.quick-table-header{
+    font-weight: bold;
+    top: 0;
+    z-index: 1;
+    position: sticky;
+    margin-left: 0px;
+    padding: 0px 10px;
+    margin-left: 200px
+    text-align: left;
+    font-weight: 500;
+    font-size: 12px;
+    color: #1a0600;
+    text-transform: uppercase;
 
+}
+.quick-table-data{
+    text-align: center;
+    padding: 0px 0px 0px 0px;
+    font-weight: 300;
+    font-size: 14px;
+    color: black;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+.quick-table-tr-data{
+    background: #8cc2ff;
+}
 .Settings-btn{
     display: flex;
     width: 125px;
@@ -364,7 +418,63 @@
     filter: invert(100%);
 
 }
+.home-notification-div{
+    position: relative;
+    display: flex;
+    text-align: center;
+    align: center;
+    margin-top: 50px;
+    margin-left: 7.5%;
+    height: 700px;
+    width: 1200px;
+    border-radius: 35px;
+    background-color: #c8d8e4;
+    box-shadow: 1px 1px 5px #555 inset;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 0px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 0px 0px 5px rgba(0,0,0,0.4);
+}
+.home-notification-tbl-container{
+    display: inline-block;
+    position: absolute;
+    margin-top: 25px;
+    margin-left:0%;
+    max-height: 325px;
 
+ }
+ .home-notification-tbl-container-2{
+    display: inline-block;
+    position: relative;
+    margin-top: 325px;
+    margin-left:0%;
+    max-height: 325px;
+
+ }
+ .notification-table{
+    width:100%;
+    display: block;
+    border-collapse: collapse;
+    padding: 5px;
+    border-spacing: 15px 5px;
+    position: relative;
+}
+.quick-table-data{
+    text-align: center;
+    padding: 0px 0px 0px 0px;
+    font-weight: 300;
+    font-size: 14px;
+    color: black;
+    border-bottom: solid 1px rgba(255,255,255,0.1);
+}
+.high-priority-tr-data{
+    background:#ff5252;
+}
+.medium-priority-tr-data{
+    background: #ff7d41;
+}
+.low-priority-tr-data{
+    background: #FBD666;
+}
 /* Log In Page */
 .Log-in-main-div{
     position: fixed;
@@ -669,6 +779,7 @@
 .Table-attributes-Nav-list{
     display: inline;
     position: relative;
+    overflow: visible;
     float: right;
     margin-right: 45px;
     align-items: center;
@@ -676,6 +787,7 @@
 }
 .Table-attributes-Nav-bar{
     height: 100%;
+    overflow: visible;
     width: auto;
     display: inline-flex;
     margin-top: 10px;
@@ -837,7 +949,7 @@
   margin-right: 10px;
   color: black;
   text-decoration: none;
-  border-radius: 15px;
+  border-radius: 50%;
   background: transparent;
 }
 .modal__close:hover{
@@ -1068,7 +1180,7 @@
 }
 tr th{
     background: #c8d8e4;
-    border: 2px solid #8cc2ff !important;
+    border: 5px solid #8cc2ff !important;
 }
 th{
     font-weight: bold;
@@ -1095,9 +1207,6 @@ td{
 }
 tr td{
     background: #8cc2ff;
-}
-tr:nth-child(even) td{
-    background: black;
 }
 
 ::-webkit-scrollbar {

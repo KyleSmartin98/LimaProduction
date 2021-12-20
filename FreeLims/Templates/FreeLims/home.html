@@ -1,5 +1,6 @@
 {% extends 'FreeLims/homebase.html' %}
 {% block content %}
+{% load templates %}
         <div class="Main-Div"> <!--Main Div-->
             <div class="left-flex-container"> <!-- Left Navigation flexbox-->
                 <a class="a-PageLink" href="{% url 'Sample' %}">
@@ -45,23 +46,67 @@
             <div class="center-flex-container"> <!--Notifications section-->
                 <div class="Srch-Name"> <!--Search Title-->
                     <span class="Srch-Text">Quick Search</span>
+                    <a class="clear-btn" href="{% url 'home' %}" style="margin-top: -5px;">&#8855</a>
+
                 </div>
                 <div> <!--Search bar -->
                     <div class="search-container">
-                      <form action="/search" method="get">
-                        <input class="search" id="searchleft" type="search" name="q" placeholder="Search">
-                        <label class="button searchbutton" for="searchleft"><span class="mglass">&#9906;</span></label>
+                      <form action="" method="get">
+                          {% csrf_token %}
+                          {{mySampleFilter.form.tracking}}
+                        <!--<input class="search" id="searchleft" type="search" name="q" placeholder="Search"> -->
+                        <a class="button searchbutton" href="#searchleft"><span class="mglass">&#9906;</span></a>
                       </form>
                     </div>
                 </div> <!--REMINDER to add dynamic list-->
-                <div> <!--Reminders + Past Due-->
-                    <div> <!--Reminders-->
-
+                <div class="quick-table-container"> <!--Reminders + Past Due-->
+                    <div class="sample-tbl-container"> <!--Reminders-->
+                        <table>
+                            <thead>
+                                <tr class="quick-table-tr-header">
+                                    <th class="quick-table-header">
+                                      Sample Name
+                                    </th>
+                                    <th class="quick-table-header">
+                                      Description
+                                    </th>
+                                    <th class="quick-table-header">
+                                      Tracking Number
+                                    </th>
+                                    <th class="quick-table-header">
+                                      Quantity
+                                    </th>
+                                    <th class="quick-table-header">
+                                      Expiry
+                                    </th>
+                                    <th class="quick-table-header">
+                                      Status
+                                    </th>
+                                    <th class="quick-table-header">
+                                      Result Reported
+                                    </th>
+                                </tr>
+                            </thead>
+                            {% csrf_token %}
+                            {% for sample in samples %}
+                            <tbody>
+                                <tr class="quick-table-tr-data">
+                                    <td class="quick-table-data">{{sample.sample_name}}</td>
+                                    <td class="quick-table-data">{{sample.sample_description}}</td>
+                                    <td class="quick-table-data">{{sample.tracking_number}}</td>
+                                    <td class="quick-table-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                                    <td class="quick-table-data">{{sample.expiration_date}}</td>
+                                    <td class="quick-table-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                                    {% if sample.result_pf > 0 %}
+                                    <td class="quick-table-data">Yes</td>
+                                    {% else %}
+                                    <td class="quick-table-data">No</td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                            {% endfor %}
+                        </table>
                     </div>
-                    <div> <!--Past Due-->
-
-                    </div>
-
                 </div>
             </div>
             <div class="right-flex-container"> <!--Preferences-->
@@ -69,6 +114,81 @@
                    <img src="{% static 'FreeLims/settings.svg' %}" class="Settings-img"/>
                    <span class="Btn-Text">Settings</span>
                </button>
+            </div>
+        </div>
+        <div class="home-notification-div">
+            <div class="home-notification-tbl-container"><!-- Sample Notifications-->
+                <span> Sample Notification</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Sample Name</th>
+                        <th>Description</th>
+                        <th>Tracking Number</th>
+                        <th>Quantity</th>
+                        <th>Expiry</th>
+                        <th>Status</th>
+                        <th>Result Reported</th>
+                        <th>Days to Expiry</th>
+                    </tr>
+                    </thead>
+                    {% csrf_token %}
+                    {% for sample in samples %}
+                    <tbody>
+                        {% if sample.expiration_date|less_Than_Three_Day %}
+                        <tr> <!-- less than 1 day -->
+                            <td class="high-priority-tr-data">{{sample.sample_name}}</td>
+                            <td class="high-priority-tr-data">{{sample.sample_description}}</td>
+                            <td class="high-priority-tr-data">{{sample.tracking_number}}</td>
+                            <td class="high-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                            <td class="high-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="high-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                            {% if sample.result_pf > 0 %}
+                            <td class="high-priority-tr-data">Yes</td>
+                            {% else %}
+                            <td class="high-priority-tr-data">No</td>
+                            {% endif %}
+                            <td class="high-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                        {% if sample.expiration_date|less_Than_Fifteen_Days %}
+                        <tr> <!-- less than 15 days -->
+                            <td class="low-priority-tr-data">{{sample.sample_name}}</td>
+                            <td class="low-priority-tr-data">{{sample.sample_description}}</td>
+                            <td class="low-priority-tr-data">{{sample.tracking_number}}</td>
+                            <td class="low-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                            <td class="low-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="low-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                            {% if sample.result_pf > 0 %}
+                            <td class="low-priority-tr-data">Yes</td>
+                            {% else %}
+                            <td class="low-priority-tr-data">No</td>
+                            {% endif %}
+                            <td class="low-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                       {% if sample.expiration_date|less_Than_Thirty_Days %}
+                        <tr> <!-- less than 15 days -->
+                            <td class="medium-priority-tr-data">{{sample.sample_name}}</td>
+                            <td class="medium-priority-tr-data">{{sample.sample_description}}</td>
+                            <td class="medium-priority-tr-data">{{sample.tracking_number}}</td>
+                            <td class="medium-priority-tr-data">{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                            <td class="medium-priority-tr-data">{{sample.expiration_date}}</td>
+                            <td class="medium-priority-tr-data">{{sample.initiated|yesno:"Initiated, Pending"}}</td>
+                            {% if sample.result_pf > 0 %}
+                            <td class="medium-priority-tr-data">Yes</td>
+                            {% else %}
+                            <td class="medium-priority-tr-data">No</td>
+                            {% endif %}
+                            <td class="medium-priority-tr-data">{{sample.expiration_date|days_Remaining}}</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                    {% endfor %}
+                </table>
+            </div>
+            <div><!--Reagent Notifications-->
+
             </div>
         </div>
         {% load static %}
