@@ -11,6 +11,9 @@
     font-weight: normal;
     font-style: normal;
 }
+.noscroll{
+    overflow-y: visible;
+}
 .hidden{
    display: none;
 }
@@ -25,7 +28,6 @@
     position: relative;
     width: 100%;
     z-index: 1;
-    #c8d8e4;
 
 }
 .Top-display-left {
@@ -38,9 +40,10 @@
 }
 .Top-display-center {
     display: inline-block;
-    padding: 20px;
+    padding: 0px;
+    margin-left: 25%;
     margin-top: 50px;
-    position: fixed;
+    position: relative;
     text-align: center;
     content: center;
     z-index: 1;
@@ -137,7 +140,6 @@
     overflow: hidden;
     outline:none;
     color: #c8d8e4;
-
     text-align: center;
     content: center;
 }
@@ -439,16 +441,24 @@
     position: absolute;
     margin-top: 25px;
     margin-left:0%;
-    max-height: 325px;
+    max-height: 275px;
 
  }
  .home-notification-tbl-container-2{
     overflow: auto;
     display: inline-block;
     position: relative;
-    margin-top: 350px;
+    margin-top: 385px;
     margin-left:0%;
-    max-height: 300px;
+    max-height: 275px;
+
+ }
+ .home-notification-tbl-text-2{
+    display: inline;
+    position: absolute;
+    margin-top: 345px;
+    margin-left:40%;
+    border-bottom: 2px solid #8cc2ff;
 
  }
  .notification-table{

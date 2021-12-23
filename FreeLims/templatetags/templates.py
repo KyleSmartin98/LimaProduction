@@ -1,11 +1,11 @@
 from django import template
 import datetime
+from django.urls import get_resolver, resolve, Resolver404
 
 register = template.Library()
 
 @register.filter(expects_localtime=True)
 def less_Than_Thirty_Days(value):
-    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
@@ -13,7 +13,6 @@ def less_Than_Thirty_Days(value):
 
 @register.filter(expects_localtime=True)
 def less_Than_Fifteen_Days(value):
-    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
@@ -21,7 +20,6 @@ def less_Than_Fifteen_Days(value):
 
 @register.filter(expects_localtime=True)
 def less_Than_Three_Day(value):
-    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
@@ -29,8 +27,22 @@ def less_Than_Three_Day(value):
 
 @register.filter(expects_localtime=True)
 def days_Remaining(value):
-    #value = datetime.datetime.strptime(value, '%Y-%m-%d')
     if isinstance(value, datetime.datetime):
         value = value.date()
     delta = value - datetime.date.today()
     return str(delta.days) + " " +'day(s)'
+
+
+@register.filter(expects_localtime=True)
+def activeSample(value):
+    if isinstance(value, datetime.datetime):
+        value = value.date()
+    delta = value - datetime.date.today()
+    return 0 < delta.days
+
+@register.filter(expects_localtime=True)
+def expiredSample(value):
+    if isinstance(value, datetime.datetime):
+        value = value.date()
+    delta = value - datetime.date.today()
+    return delta.days <= 0

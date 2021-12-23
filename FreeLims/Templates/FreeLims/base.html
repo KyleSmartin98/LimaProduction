@@ -19,16 +19,24 @@
                 </div>
             </div>
             <div class="Top-display-center"> <!--Freelims header Center-->
-                <header>
+                <header style="overflow:hidden;">
                     FreeLIMS
                 </header>
             </div>
             <div class="Top-display-right-View"> <!--Sign out button-->
+                {% if 'home' in request.path %}
+                <a class="a-PageLink" href="">
+                    <button class="SignInView-btn">
+                        <span>Refresh</span>
+                    </button>
+                </a>
+                {% else %}
                 <a class="a-PageLink" href="{% url 'home' %}">
                     <button class="SignInView-btn">
                         <span>Home</span>
                     </button>
                 </a>
+                {% endif %}
                 {% if user.is_authenticated %}
                 <a class="a-PageLink" href="{% url 'logout' %}">
                     <button class="SignOutView-btn">

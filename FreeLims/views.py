@@ -1,5 +1,5 @@
 from django.shortcuts import redirect
-from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, DisposeForm, \
+from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, \
     OpenForm
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
@@ -10,9 +10,11 @@ import csv, shortuuid
 from datetime import datetime
 from .filters import SampleFilter, InventoryFilter, quickSampleFilter
 import barcode
-from PIL import Image
 from barcode.writer import ImageWriter
 
+def landingPage(request):
+
+    return render(request, 'FreeLims/landingpage.html')
 
 def home(request):
     inventories = Cheminventory.objects.all()
@@ -122,6 +124,8 @@ def Testing(request):
 def Initiatesample(request, pk):
     samplepk = Sample.objects.get(id=pk)
     samples = Sample.objects.all()
+    myfilter = SampleFilter(request.GET, queryset=samples)
+    samples = myfilter.qs
     form = InitiateForm(instance=samplepk)
     if request.method == 'POST':
         form = InitiateForm(request.POST, instance=samplepk)
@@ -137,6 +141,7 @@ def Initiatesample(request, pk):
     context = {
         'samples': samples,
         'form': form,
+        'myfilter': myfilter,
     }
     return render(request, 'FreeLims/Testing.html', context)
 
@@ -153,6 +158,8 @@ def Results(request):
 def Resultssubmit(request, pk):
     samplepk = Sample.objects.get(id=pk)
     samples = Sample.objects.all()
+    myfilter = SampleFilter(request.GET, queryset=samples)
+    samples = myfilter.qs
     form = ResultForm(instance=samplepk)
     if request.method == 'POST':
         form = ResultForm(request.POST, instance=samplepk)
@@ -169,6 +176,7 @@ def Resultssubmit(request, pk):
     context = {
         'form': form,
         'samples': samples,
+        'myfilter': myfilter,
     }
 
     return render(request, 'FreeLims/Results.html', context)

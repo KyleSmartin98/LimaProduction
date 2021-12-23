@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
+    <style>
+        html {
+    overflow: scroll;
+    overflow-x: hidden;
+    }
+    ::-webkit-scrollbar {
+        width: 0;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+    /* Optional: show position indicator in red */
+    ::-webkit-scrollbar-thumb {
+        background: #FF0000;
+    }
+        </style>
+</head>
+<body style="background: #c8d8e4;">
+    <!-- Add return to top Button -->
+    <div id="top">
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">GlobaLIMS</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li><a href="#features">Features</a></li>
+              <li><a href="#contact">Contact</a></li>
+              <li><a href="{% url 'home'%}">Try For Free</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'login' %}#registermodal"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+              <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+          </div>
+        </nav>
+    </div>
+    <div class="container" style="text-align: center">
+        <h1>GlobaLIMS </h1>
+        <h4> <i>Growth Without a Cost</i> </h4>
+    </div>
+    <div class="row" style="margin-top: 50px;">
+        <div class="col-sm-6 col-md-6 col-lg-6" style="margin-top: 15px">
+            <h3 style="margin-left:30%; width: 600px; adding: 0;border-bottom: 1px solid grey; width: 270px;">Managing a Lab is Hard,</h3>
+            <h3 style="margin-left:29%; width: 600px; padding: 0;border-bottom: 1px solid grey; width: 290px;"> Globalims is Here to Help</h3>
+            {% load static %}
+            <img src="{% static 'FreeLims/splashimg1.jpg' %}" style="width: 550px; margin-left: 60px; border-radius: 50px; margin-top: 20px;">
+        </div>
+        <div class="col-sm-6 col-md-6 col-lg-6" style="align: center;">
+            <div style="margin-left: 32.5%">
+                <h3 style="border-bottom: 1px solid grey; width: 200px;">Faster Workflows,</h3>
+                <h3 style="margin-top:2px; border-bottom: 1px solid grey; width: 190px;"> Less Paperwork,</h3>
+                <h3 style="margin-top:2px; border-bottom: 1px solid grey; width: 230px;">Greater Lab Control.</h3>
+            </div>
+            <div class="container" style="width: 625px; height: 440px; border-radius: 35px; background: transparent; margin-top: 15px; margin-left: 25px;-webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);">
+                <dl style="margin-left: 15px;">
+                    <dt style="padding: 20px 20px 0 0;">
+                        <h4><img src="{% static 'FreeLims/globe.svg' %}" style="margin-bottom: 5px; margin-right: 5px;">Universal Lab Integration</h4>
+                    </dt>
+                    <dd>Globalims is a flexible application allowing your lab to easily incorporate digital sample and reagent inventory management with no migration downtime.
+                        Permitting your analysts and technicians to continue testing while modernizing the laboratory. </dd>
+                    <dt>
+                        <h4><img src="{% static 'FreeLims/cloud.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Cloud-Based Storage</h4>
+                    </dt>
+                    <dd>Through cloud-based storage, Globalims, empowers labs to move away from paper-based records, fulfill ESG requirements, and increase analyst collaboration. </dd>
+                    <dt>
+                        <h4><img src="{% static 'FreeLims/lock.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Controlled Records</h4>
+                    </dt>
+                    <dd>Auditable and secure records are the bedrock of a cGMP/GLP laboratory. Globalims ensures the validity of all records in the instance of internal or external auditing. </dd>
+                    <dt>
+                        <h4><img src="{% static 'FreeLims/interface.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Intuitive Interface</h4>
+                    </dt>
+                    <dd>Globalims is built by analysts for analysts. The application has been designed to be easily picked-up by any user without the need for lengthy training.</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div id="features"></div>
+    <div class="container" style="text-align: center; margin-top: 50px; content-align: center;">
+        <h1>Features</h1>
+    </div>
+    <div class="row" style="margin-top: 50px;">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <img src="{% static 'FreeLims/splashimg3.jpg' %}" style="width: 625px; margin-left: 30px; border-radius: 50px; margin-top: 25px;">
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6" style="align: center;">
+        <div class="container" style="width: 625px; height: 525px; border-radius: 35px; background: transparent; margin-top: 15px; margin-left: 25px;-webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+-moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);">
+            <dl style="margin-left: 15px;">
+                <dt style="padding: 20px 20px 0 0;">
+
+                    <h4><img src="{% static 'FreeLims/inventory.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Sample & Reagent Inventory Management</h4>
+                </dt>
+                <dd>Records can easily be scaled to your lab's individual testing volume. Including sample record generation, testing assignment and result reporting.
+                    Reagent inventory can be easily created for multiple use-case scenarios allowing your lab to accurately track consumption, stock and expiry.</dd>
+                <dt>
+                    <h4><img src="{% static 'FreeLims/barcode.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Barcode & Report Generation</h4>
+                </dt>
+                <dd>Each sample or reagent entry automatically generates a barcode which can be used for inventory identification within the lab. Additionally, for each inventory type
+                a CSV report can be downloaded allowing your lab further control over your data.</dd>
+                <dt>
+                    <h4><img src="{% static 'FreeLims/exclamation.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Inventory Expiry Notification</h4>
+                </dt>
+                <dd>Not only does GlabaLIMS track your lab inventory, but alerts you of all samples and reagents within 30 days of their expiry on the homepage.
+                    Thus, Reducing the need to manually check inventory or wait for email reports like other LIMS applications </dd>
+                <dt>
+                    <h4><img src="{% static 'FreeLims/graph2.svg' %}" style="margin-bottom: 5px; width: 25px; margin-right: 5px;">Data Trending & Method Storage*</h4>
+                </dt>
+                <dd>Currently *premium features Data Trending & Method Storage packages allow your lab to more easily integrate otherwise external services into a single application.
+                    Allowing your analysts less downtime searching for methods or trending results. Please note, GlobaLIMS is not a raw data analysis or document control application.</dd>
+            </dl>
+        </div>
+    </div>
+
+    </div>
+    <div style="height: 675px;">
+    <div id="contact"></div>
+    <div class="container" style="text-align: center; margin-top: 50px; content-align: center;">
+        <h1>Contact</h1>
+    </div>
+    <div class="row" style="margin-top: 50px;">
+    <div class="col-sm-6 col-md-6 col-lg-6">
+        <div style="margin-left: 32.5%">
+            <h3 style="border-bottom: 1px solid grey; width: 270px; margin-top: -5%;">Satisfaction Exemplified</h3>
+        </div>
+        <img src="{% static 'FreeLims/splashimg2.jpg' %}" style="width: 550px; margin-left: 60px; border-radius: 50px; margin-top: 15px;">
+    </div>
+    <div class="col-sm-6 col-md-6 col-lg-6" style="align: center;">
+        <div class="container" style="width: 625px; height: 500px; border-radius: 35px; background: transparent; margin-top: 15px; margin-left: 25px;-webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+-moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);">
+            <div class="container" style="width: 400px; height: 50px; margin-top: 50px">
+                <h4>For premium feature pricing or any other general inquiries please use the contact box below! </h4>
+            </div>
+            <div class="container" style="width: 600px; margin-top: 10%;">
+                <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+                    <!--Grid row-->
+                    <div class="row">
+                        <!--Grid column-->
+                        <div class="col-md-6">
+                            <div class="md-form mb-0">
+                                <input type="text" id="name" name="name" class="form-control">
+                                <label for="name" class="">Your name</label>
+                            </div>
+                        </div>
+                        <!--Grid column-->
+                        <!--Grid column-->
+                        <div class="col-md-6">
+                            <div class="md-form mb-0">
+                                <input type="text" id="email" name="email" class="form-control">
+                                <label for="email" class="">Your email</label>
+                            </div>
+                        </div>
+                        <!--Grid column-->
+                    </div>
+                    <!--Grid row-->
+                    <!--Grid row-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="md-form mb-0">
+                                <input type="text" id="subject" name="subject" class="form-control">
+                                <label for="subject" class="">Subject</label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Grid row-->
+                    <!--Grid row-->
+                    <div class="row">
+                        <!--Grid column-->
+                        <div class="col-md-12">
+                            <div class="md-form">
+                                <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
+                                <label for="message">Your message</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="submit" value="Submit">
+                        </div>
+                    </div>
+                    <!--Grid row-->
+                </form>
+            </div>
+
+        </div>
+    </div>
+    </div>
+    </div>
+
+</body>
+</html>
