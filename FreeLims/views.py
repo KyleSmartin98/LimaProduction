@@ -4,21 +4,26 @@ from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryFo
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.contrib import messages
-from .models import Sample, User, Cheminventory
+from .models import Sample, User, Cheminventory, Profile
 from django.http import HttpResponse
 import csv, shortuuid
 from datetime import datetime
 from .filters import SampleFilter, InventoryFilter, quickSampleFilter
 import barcode
 from barcode.writer import ImageWriter
+from django.contrib.auth.decorators import login_required
+
 
 def landingPage(request):
 
     return render(request, 'FreeLims/landingpage.html')
 
+@login_required(login_url='login')
 def home(request):
-    inventories = Cheminventory.objects.all()
-    samples = Sample.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    samples = Sample.objects.filter(organization=user)
+    inventories = Cheminventory.objects.filter(organization=user)
     mySampleFilter = quickSampleFilter(request.GET, queryset=samples)
     samples = mySampleFilter.qs
 
@@ -52,32 +57,44 @@ def LogIn(request):
             if 'register' in request.POST:
                 form = SignUpForm(request.POST)
                 if form.is_valid():
-                    form.save()
-                    user = form.cleaned_data.get('username')
-                    messages.success(request, 'Account was created for ' + user)
-            else: print(form.errors)
+                    user = form.save()
+                    username = form.cleaned_data.get('username')
+                    Profile.objects.create(
+                        user=user,
+                        organization=form.cleaned_data['organization']
+                    )
+                    user.save()
+                    messages.success(request, 'Account was created for ' + username)
+            else:
+                form = SignUpForm()
+                print(form.errors, 'failed')
 
     context = {'form': form}
     return render(request, 'FreeLims/LogIn.html', context)
 
+@login_required(login_url='login')
 def Sample_page(request):
-    samples = Sample.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    samples = Sample.objects.filter(organization=user)
     form = SampleForm()
-
-    if request.method == 'POST':
-        form = SampleForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.logged_by = User.objects.get(pk=request.user.id)
-            obj.save()
-        else:
-            print("ERROR : Form is invalid")
-            print(form.errors)
-
     myfilter = SampleFilter(request.GET, queryset = samples)
     samples = myfilter.qs
     has_filters = any(field in request.GET for field in
                       set(myfilter.get_fields()))
+
+    if request.method == 'POST':
+        form = SampleForm(request.POST)
+        if form.is_valid():
+            user = User.objects.get(pk=request.user.id)
+            obj = form.save(commit=False)
+            obj.logged_by = user
+            obj.organization = user.profile.organization
+            #Profile.objects.get(user=User.objects.get('organization'))
+            obj.save()
+        else:
+            print("ERROR : Form is invalid")
+            print(form.errors)
 
     context = {
         'form': form,
@@ -87,6 +104,7 @@ def Sample_page(request):
                }
     return render(request, 'FreeLims/Sample.html', context)
 
+@login_required(login_url='login')
 def sampleBarcodeDownload(request, pk):
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
@@ -99,20 +117,24 @@ def sampleBarcodeDownload(request, pk):
     image.save(response, "PNG")
     return response
 
+@login_required(login_url='login')
 def sample_export(request):
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
     writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date'])
-    for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
+    for sample in Sample.objects.filter(organization=user).values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
         writer.writerow(sample)
     response['Content-Disposition'] = f'attachment; filename= "Sample_{date_time}.csv"'
 
     return response
 
+@login_required(login_url='login')
 def Testing(request):
-    samples = Sample.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    samples = Sample.objects.filter(organization=user)
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     context = {
@@ -121,9 +143,12 @@ def Testing(request):
     }
     return render(request, 'FreeLims/Testing.html', context)
 
+@login_required(login_url='login')
 def Initiatesample(request, pk):
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    samples = Sample.objects.filter(organization=user)
     samplepk = Sample.objects.get(id=pk)
-    samples = Sample.objects.all()
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     form = InitiateForm(instance=samplepk)
@@ -145,8 +170,11 @@ def Initiatesample(request, pk):
     }
     return render(request, 'FreeLims/Testing.html', context)
 
+@login_required(login_url='login')
 def Results(request):
-    samples = Sample.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    samples = Sample.objects.filter(organization=user)
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     context = {
@@ -155,9 +183,12 @@ def Results(request):
     }
     return render(request, 'FreeLims/Results.html', context)
 
+@login_required(login_url='login')
 def Resultssubmit(request, pk):
     samplepk = Sample.objects.get(id=pk)
-    samples = Sample.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    samples = Sample.objects.filter(organization=user)
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     form = ResultForm(instance=samplepk)
@@ -181,23 +212,28 @@ def Resultssubmit(request, pk):
 
     return render(request, 'FreeLims/Results.html', context)
 
+@login_required(login_url='login')
 def result_export(request):
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
     writer.writerow(['sample name', 'sample description', 'tracking number', 'sample volume', 'sample quantity', 'sample type', 'expiration date', 'sample test', 'sample result', 'report date'])
-    for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date', 'sample_test', 'sample_result', 'report_date'):
+    for sample in Sample.objects.filter(organization=user).values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date', 'sample_test', 'sample_result', 'report_date'):
         writer.writerow(sample)
     response['Content-Disposition'] = f'attachment; filename= "Result_{date_time}.csv"'
 
     return response
 
+@login_required(login_url='login')
 def Trending(request):
     return render(request, 'FreeLims/Trending.html')
 
+@login_required(login_url='login')
 def Inventory(request):
-    inventories = Cheminventory.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    inventories = Cheminventory.objects.filter(organization=user)
     myfilter = InventoryFilter(request.GET, queryset=inventories)
     inventories = myfilter.qs
     if request.method == 'POST':
@@ -220,8 +256,11 @@ def Inventory(request):
 
     return render(request, 'FreeLims/Inventory.html', context)
 
+@login_required(login_url='login')
 def Inventorycreate(request):
-    inventories = Cheminventory.objects.all()
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
+    inventories = Cheminventory.objects.filter(organization=user)
     form = InventoryForm()
     qtyform = Qtyform()
     id = shortuuid.ShortUUID(alphabet="0123456789")
@@ -232,6 +271,7 @@ def Inventorycreate(request):
         qty = request.POST.get('quantity')
         form = InventoryForm(request.POST)
         if form.is_valid():
+            user = User.objects.get(pk=request.user.id)
             obj = form.save(commit=False)
             if obj.quarantine is True:
                 obj.open_container = False
@@ -239,6 +279,7 @@ def Inventorycreate(request):
             obj.logged_date = str(datetime.now())
             obj.quantity = str(1)
             obj.Lab_lot = f'GL{str(lot_id)}'
+            obj.organization = user.profile.organization
             for i in range(int(qty)):
                 obj.pk = None
                 obj.save()
@@ -255,6 +296,7 @@ def Inventorycreate(request):
 
     return render(request, 'FreeLims/Inventory.html', context)
 
+@login_required(login_url='login')
 def InventoryOpen(request, pk):
     inventorypk = Cheminventory.objects.get(id=pk)
     inventories = Cheminventory.objects.filter(id=pk)
@@ -282,6 +324,7 @@ def InventoryOpen(request, pk):
 
     return render(request, 'FreeLims/Inventory.html', context)
 
+@login_required(login_url='login')
 def BarcodeDownload(request, pk):
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
@@ -296,19 +339,20 @@ def BarcodeDownload(request, pk):
     image.save(response, "PNG")
     return response
 
+@login_required(login_url='login')
 def inventory_export(request):
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
     writer.writerow(['Reagent name', 'Reagent manufacturer', 'Reagent Lot', 'GlobaLIMS Lot', 'Expiry', 'Volume', 'Location', 'Logged Date'])
-    for inventory in Cheminventory.objects.all().values_list('name', 'manufacturer', 'manufacturer_lot', 'Lab_lot', 'expiry', 'volume_size', 'location', 'logged_date'):
+    for inventory in Cheminventory.objects.filter(organization=user).values_list('name', 'manufacturer', 'manufacturer_lot', 'Lab_lot', 'expiry', 'volume_size', 'location', 'logged_date'):
         writer.writerow(inventory)
     response['Content-Disposition'] = f'attachment; filename= "Inventory_{date_time}.csv"'
     return response
 
 
-
+@login_required(login_url='login')
 def Method(request):
     return render(request, 'FreeLims/Method.html')
 

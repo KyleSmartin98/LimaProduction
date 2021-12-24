@@ -3,6 +3,33 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
 
+class Profile(models.Model):
+    ROLE = (
+        ('Lab Technician','Lab Technician'),
+        ('Manufacturing Technician', 'Manufacturing Technician'),
+        ('Analyst','Analyst'),
+        ('QC Analyst','QC Analyst'),
+        ('Manufacturing Analyst','Manufacturing Analyst'),
+        ('Lead Analyst','Lead Analyst'),
+        ('Lead QC Analyst','Lead QC Analyst'),
+        ('Lead Mfg Analyst','Lead Mfg Analyst'),
+        ('Supervisor','Supervisor'),
+        ('QC Supervisor','QC Supervisor'),
+        ('Mfg Supervisor', 'Mfg Supervisor'),
+        ('Manager','Manager'),
+        ('Director','Director'),
+    )
+    DEPARTMENT = (
+        ('GENERAL LAB','GENERAL LAB'),
+        ('QC CHEM','QC CHEM'),
+        ('QC MICRO-BIO','QC MICRO-BIO'),
+        ('QC BIO','QC BIO'),
+        ('MANUFACTURING','MANUFACTURING')
+    )
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    organization = models.CharField(max_length=125, default=None, null=True)
+    role = models.CharField(choices=ROLE, max_length=100, default=None, null=True)
+    department = models.CharField(choices=DEPARTMENT, max_length=100, default=None, null=True)
 
 class Sample(models.Model):
     SAMPLE_TYPE = (
@@ -25,8 +52,9 @@ class Sample(models.Model):
         (True, 'Pass'),
         (False, 'Fail')
     )
-    organization = models.CharField(max_length=200)
+
     sample_name = models.CharField(max_length=100)
+    organization = models.CharField(max_length=200)
     sample_description = models.CharField(max_length=200)
     tracking_number = models.CharField(max_length=100)
     sample_volume = models.CharField(max_length=100)
@@ -46,6 +74,7 @@ class Sample(models.Model):
     result_pf = models.BooleanField(choices=PF, max_length=4, blank=True, default=None, null=True)
     sample_result = models.CharField(max_length=100, default=None, null=True)
     comments = models.CharField(max_length=200,  null=True, default=None)
+    reference = models.CharField(max_length=200,  null=True, default=None)
 
     class Meta:
         # sort by "the date" in descending order unless
@@ -75,6 +104,7 @@ class Cheminventory(models.Model):
         (False, 'Active')
     )
     logged_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    organization = models.CharField(max_length=125, default=None, null=True)
     logged_date = models.DateTimeField(default=datetime.now, null=True)
     name = models.CharField(max_length=200)
     manufacturer = models.CharField(choices=MANUFACTURERS, max_length=100)

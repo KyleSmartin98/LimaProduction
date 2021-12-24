@@ -276,3 +276,6 @@ def InventoryDispose(request):
                     {% endfor %}
                 </table>
             </div>-->
+
+
+for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
