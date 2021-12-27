@@ -76,6 +76,8 @@ https://supabase.com/pricing
 
 https://stackoverflow.com/questions/54330831/django-display-specific-text-if-date-is-older-than-10-days/54331220#54331220
 
+https://stackoverflow.com/questions/50660395/reportlab-how-to-change-page-orientation/50660701
+
 https://pubs.acs.org/doi/pdf/10.1021/acs.jchemed.9b01131
 class sample_initiated(Sample):
     SAMPLE_TEST = (

@@ -66,6 +66,7 @@
                 <th>Test</th>
                 <th>Results</th>
                 <th>Criteria</th>
+                <th>Result Summary</th>
             </tr>
           </thead>
         {% csrf_token %}
@@ -82,6 +83,11 @@
                 {% if sample.sample_result|length > 0 %}
                 <td>{{sample.sample_result}}</td>
                 <td>{{sample.sample_pf|yesno}}</td>
+                <td>
+                    <button class="buttonDownload">
+                        <a class="inventory-barcode-link" href="{% url 'Results_summary' sample.id %}" >Download</a>
+                    </button>
+                </td>
                 {% else %}
                 <td>
                     <button class="sample-initiation-btn">

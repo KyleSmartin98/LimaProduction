@@ -12,6 +12,10 @@ from .filters import SampleFilter, InventoryFilter, quickSampleFilter
 import barcode
 from barcode.writer import ImageWriter
 from django.contrib.auth.decorators import login_required
+from django.views.generic import View
+from .utils import render_to_pdf
+from django.template.loader import get_template
+
 
 
 def landingPage(request):
@@ -119,6 +123,8 @@ def sampleBarcodeDownload(request, pk):
 
 @login_required(login_url='login')
 def sample_export(request):
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
@@ -213,7 +219,35 @@ def Resultssubmit(request, pk):
     return render(request, 'FreeLims/Results.html', context)
 
 @login_required(login_url='login')
+def resultsSummary(request, pk, *args, **kwargs):
+    samples = Sample.objects.get(id=pk)
+    now = datetime.now()
+    user = User.objects.get(pk=request.user.id)
+    organization = user.profile.organization
+    tracking = str(samples.tracking_number)
+    date_time = now.strftime("%m/%d/%Y")
+    context = {
+        'samples': samples,
+        'now': date_time,
+        'organization': organization,
+    }
+    if samples.organization == organization:
+        pdf = render_to_pdf('FreeLims/resultSummary.html', context)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = tracking + "_" + date_time + ".pdf"
+        content = "inline; filename= %s " %(filename)
+        response['Content-Disposition'] = content
+        return response
+    else:
+        return redirect('Results')
+
+
+
+
+@login_required(login_url='login')
 def result_export(request):
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
@@ -341,6 +375,8 @@ def BarcodeDownload(request, pk):
 
 @login_required(login_url='login')
 def inventory_export(request):
+    user = User.objects.get(pk=request.user.id)
+    user = user.profile.organization
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')

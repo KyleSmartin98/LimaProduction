@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    @page {
+        size: A4 landscape; /* can use also 'landscape' for orientation */
+        margin-top: 0.5in;
+        margin-bottom: 1.0in;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_name;
+            left: 25pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_org;
+            -pdf-keep-with-next: true;
+            -pdf-word-wrap: CJK;
+            left: 300pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_date;
+            left: 550pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_linebreak;
+             width: 75%; top: 80pt; height: 20pt; background: black;
+
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content_name;
+            left: 50pt; width: 512pt; top: 550pt; height: 20pt;
+        }
+        @frame content_frame {
+        -pdf-word-wrap: CJK;
+        border: 0pt solid white;
+        width: 11in;
+        top: 1.5in;
+        height: 7.5in;
+      }
+    }
+    .desc {
+        font-size: 18px;
+        text-align: center;
+        margin-top: 3px;
+        margin-bottom: 3px;
+        padding: 3px;
+        border: 1px solid transparent;
+    }
+    td{
+        height: 175px;
+        text-align: center;
+        vertical-align: text-top;
+        padding: 0px;
+    }
+    table {
+        -pdf-keep-with-next: true;
+        -pdf-word-wrap: CJK;
+    }
+    .signature-Container{
+
+    }
+</style>
+<body>
+<div id="header_content_name">
+    <p style="font-size: 25px;">Result Summary Report</p>
+</div>
+<div id="header_content_org">
+    <p style="font-size: 25px;">{{organization}}</p>
+</div>
+<div id="header_content_date">
+    <p style="font-size: 25px;">Date Prepared: {{now}} </p>
+</div>
+<div id="header_content_linebreak">
+    <p style="background-color: black; height: 1px;">U+2800</p>
+</div>
+<div id="footer_content_name">
+    <p style="font-size: 15px;"> Prepared by: GlobaLIMS</p>
+</div>
+<div class="desc">
+    <table>
+        <tr>
+            <th>Sample Name</th>
+            <th>Sample Description</th>
+            <th>Tracking Number</th>
+            <th>Test</th>
+            <th>Result</th>
+            <th>Criteria</th>
+        </tr>
+        <tr>
+            <td>{{samples.sample_name}}</td>
+            <td>{{samples.sample_description}}</td>
+            <td>{{samples.tracking_number}}</td>
+            <td>{{samples.sample_test}}</td>
+            <td>{{samples.sample_result}}</td>
+            <td>Criteria</td>
+        </tr>
+    </table>
+</div>
+<div class="desc" style="margin-top: 200px;  border: 1px solid transparent;">
+    <table style="border-collapse:collapse;">
+        <tr style="width: 100px; margin-right: 25px;">
+            <th style="color: black; font-size: 25px;">____________________________</th>
+            <th style="color: black; font-size: 25px;">____________________________</th>
+        </tr>
+        <tr>
+            <td style="height: 25px; text-align: left; margin-left: 100px; font-size: 20px; padding: 0px;">Analyst Signature / Date</td>
+            <td style="height: 25px; text-align: left; margin-left: 100px; font-size: 20px; padding: 0px;">Reviewer Signature / Date</td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
