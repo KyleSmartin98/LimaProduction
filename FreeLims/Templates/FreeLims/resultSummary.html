@@ -29,6 +29,10 @@
             -pdf-frame-content: footer_content_name;
             left: 50pt; width: 512pt; top: 550pt; height: 20pt;
         }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content_bar;
+             width: 75%; top: 500pt; height: 20pt;
+        }
         @frame content_frame {
         -pdf-word-wrap: CJK;
         border: 0pt solid white;
@@ -48,15 +52,11 @@
     td{
         height: 175px;
         text-align: center;
-        vertical-align: text-top;
         padding: 0px;
     }
     table {
         -pdf-keep-with-next: true;
         -pdf-word-wrap: CJK;
-    }
-    .signature-Container{
-
     }
 </style>
 <body>
@@ -74,6 +74,9 @@
 </div>
 <div id="footer_content_name">
     <p style="font-size: 15px;"> Prepared by: GlobaLIMS</p>
+</div>
+<div id="footer_content_bar">
+    <p style="background-color: black; height: 1px;">U+2800</p>
 </div>
 <div class="desc">
     <table>
