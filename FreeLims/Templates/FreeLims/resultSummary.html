@@ -29,6 +29,10 @@
             -pdf-frame-content: footer_content_name;
             left: 50pt; width: 512pt; top: 550pt; height: 20pt;
         }
+         @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content_page;
+            left: 725pt; width: 512pt; top: 550pt; height: 20pt;
+        }
         @frame footer_frame {           /* Another static Frame */
             -pdf-frame-content: footer_content_bar;
              width: 75%; top: 500pt; height: 20pt;
@@ -61,10 +65,10 @@
 </style>
 <body>
 <div id="header_content_name">
-    <p style="font-size: 25px;">Result Summary Report</p>
+    <p style="font-size: 30px; font-style: italic;">Result Summary Report</p>
 </div>
 <div id="header_content_org">
-    <p style="font-size: 25px;">{{organization}}</p>
+    <p style="font-size: 25px;">{{organization|upper}}</p>
 </div>
 <div id="header_content_date">
     <p style="font-size: 25px;">Date Prepared: {{now}} </p>
@@ -72,12 +76,16 @@
 <div id="header_content_linebreak">
     <p style="background-color: black; height: 1px;">U+2800</p>
 </div>
-<div id="footer_content_name">
-    <p style="font-size: 15px;"> Prepared by: GlobaLIMS</p>
-</div>
 <div id="footer_content_bar">
     <p style="background-color: black; height: 1px;">U+2800</p>
 </div>
+<div id="footer_content_name">
+    <p style="font-size: 15px;"> Prepared by: GlobaLIMS</p>
+</div>
+<div id="footer_content_page">
+    <p style="font-size: 15px;"> Page <pdf:pagenumber> of 1 </p>
+</div>
+
 <div class="desc">
     <table>
         <tr>

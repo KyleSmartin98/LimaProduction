@@ -22,7 +22,7 @@
             </li>
             <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
                 <div class="nav-dropdown"> <!--Dropdown class-->
-                    <button class="sample-modal-btn-text">Page Navigation</button> <!--Button to Activate dropdown-->
+                    <button class="sample-modal-btn-text">Navigation</button> <!--Button to Activate dropdown-->
                     <div class="nav-dropdown-content"> <!--DropDown Content-->
                         <a href="{% url 'Sample' %}">Sample Log-In</a>
                         <a href="{% url 'Results' %}">Result Reporting</a>
@@ -40,20 +40,8 @@
         <table class=“sample-table”>
             <thead>
             <tr bgcolor="#BACDDE">
-              <th>
-                  Sample Name
-                  <a href="#" class="filter-icon-link" >
-                      {% load static %}
-                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
-              <th>
-                  Description
-                  <a href="#" class="filter-icon-link" >
-                      {% load static %}
-                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
+              <th>Sample Name</th>
+              <th>Description</th>
               <th>Tracking Number</th>
               <th>Volume & Size</th>
               <th>Expiry</th>
@@ -89,7 +77,7 @@
 </div>
 <div class="initiation-submit-modal" id="initiatesample">
     <div class="initiation-submit-modal-content">
-        <a href="" class="modal__close">Close</a>
+        <a href="{% url 'Testing' %}" class="modal__close">Close</a>
         <span class="registration-header">Sample Initiation Form</span>
         <form action="" method="POST">
             {% csrf_token %}

@@ -46,20 +46,8 @@
         <table class=“sample-table”>
             <thead>
             <tr bgcolor="#BACDDE">
-              <th>
-                  Sample Name
-                  <a href="#namefilter" class="filter-icon-link" >
-                      {% load static %}
-                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
-              <th>
-                  Description
-                  <a href="#descfilter" class="filter-icon-link" >
-                      {% load static %}
-                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
+              <th>Sample Name</th>
+              <th>Description</th>
               <th>Tracking Number</th>
               <th>Volume / Size</th>
               <th>Expiry</th>
@@ -74,7 +62,7 @@
             {% if sample.initiated == True %}
           <tbody>
             <tr>
-                <td>{{ sample.sample_name}}</td>
+                <td>{{sample.sample_name}}</td>
                 <td>{{sample.sample_description}}</td>
                 <td>{{sample.tracking_number}}</td>
                 <td>{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
@@ -85,7 +73,7 @@
                 <td>{{sample.sample_pf|yesno}}</td>
                 <td>
                     <button class="buttonDownload">
-                        <a class="inventory-barcode-link" href="{% url 'Results_summary' sample.id %}" >Download</a>
+                        <a class="inventory-barcode-link" href="{% url 'Results_summary' sample.id %}" target="_blank">Download</a>
                     </button>
                 </td>
                 {% else %}
@@ -113,7 +101,6 @@
             {% csrf_token %}
             {{form}}
             <input type="submit" Value="Submit" class="registration-submit">
-            <input type="reset" value="Clear Input Fields" class="registration-submit">
         </form>
     </div>
 </div>

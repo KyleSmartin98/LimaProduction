@@ -51,20 +51,8 @@
         <table class=“sample-table”>
             <thead>
             <tr bgcolor="#BACDDE">
-              <th>
-                  Sample Name
-                  <a href="#namefilter" class="filter-icon-link" >
-                      {% load static %}
-                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
-              <th>
-                  Description
-                  <a href="#descfilter" class="filter-icon-link" >
-                      {% load static %}
-                      <img src="{% static 'FreeLims/filter.svg' %}" class="filter-icon"/>
-                  </a>
-              </th>
+              <th>Sample Name</th>
+              <th>Description</th>
               <th>Tracking Number</th>
                 <th>Volume / Size</th>
               <th>Type</th>
@@ -100,9 +88,9 @@
 
 <div class="sample-submit-modal" id="samplesubmit">
     <div class="sample-submit-modal-content">
-        <a href="" class="modal__close">Close</a>
+        <a href="{% url 'Sample' %}" class="modal__close">Close</a>
         <span class="registration-header">Sample Log-In Form</span>
-        <form action="" method="POST">
+        <form action="{% url 'Sample' %}" method="POST">
             {% csrf_token %}
             {{form}}
             <input type="submit" Value="Add Sample" class="registration-submit">

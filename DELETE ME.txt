@@ -78,6 +78,12 @@ https://stackoverflow.com/questions/54330831/django-display-specific-text-if-dat
 
 https://stackoverflow.com/questions/50660395/reportlab-how-to-change-page-orientation/50660701
 
+https://stackoverflow.com/questions/54703856/how-to-logout-an-inactive-user-in-django
+
+https://alicecampkin.medium.com/how-to-set-up-environment-variables-in-django-f3c4db78c55f
+
+https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django
+
 https://pubs.acs.org/doi/pdf/10.1021/acs.jchemed.9b01131
 class sample_initiated(Sample):
     SAMPLE_TEST = (
@@ -281,3 +287,26 @@ def InventoryDispose(request):
 
 
 for sample in Sample.objects.all().values_list('sample_name', 'sample_description', 'tracking_number', 'sample_volume', 'sample_quantity', 'sample_type', 'expiration_date'):
+
+page <pdf:pagenumber> of <pdf:pagecount>
+
+    samples = Sample.objects.get(id=pk)
+    now = datetime.now()
+    user = User.objects.get(pk=request.user.id)
+    organization = user.profile.organization
+    tracking = str(samples.tracking_number)
+    date_time = now.strftime("%m/%d/%Y")
+    context = {
+        'samples': samples,
+        'now': date_time,
+        'organization': organization,
+    }
+    if samples.organization == organization:
+        pdf = render_to_pdf('FreeLims/resultSummary.html', context)
+        response = HttpResponse(pdf, content_type='application/pdf')
+        filename = tracking + "_" + date_time + ".pdf"
+        content = "inline; filename= %s " %(filename)
+        response['Content-Disposition'] = content
+        return response
+    else:
+        return redirect('Results')

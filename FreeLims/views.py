@@ -12,15 +12,32 @@ from .filters import SampleFilter, InventoryFilter, quickSampleFilter
 import barcode
 from barcode.writer import ImageWriter
 from django.contrib.auth.decorators import login_required
-from django.views.generic import View
 from .utils import render_to_pdf
-from django.template.loader import get_template
+from django.core.mail import send_mail
 
 
 
 def landingPage(request):
+    if request.method == "POST":
+        contact_name = request.POST['contact-name']
+        contact_email = request.POST['contact-email']
+        contact_sub = request.POST['contact-subject']
+        contact_message = request.POST['contact-message']
 
-    return render(request, 'FreeLims/landingpage.html')
+        send_mail(
+            'Message From:'+ '' + contact_name + '' + 'about' + '' + contact_sub,
+            contact_message,
+            contact_email,
+            ['caretagus@gmail.com']
+        )
+
+        context = {
+            'contact_name': contact_name
+        }
+        return render(request, 'FreeLims/landingpage.html', context)
+    else:
+        return render(request, 'FreeLims/landingpage.html')
+
 
 @login_required(login_url='login')
 def home(request):
@@ -113,13 +130,18 @@ def sampleBarcodeDownload(request, pk):
     now = datetime.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     sample = Sample.objects.get(id=pk)
-    lot = str(sample.tracking_number)
-    ean = barcode.get('Code128', f'{lot}', writer=ImageWriter())
-    ean.save(f'{lot}_Barcode')
-    image = ean.render()
-    response = HttpResponse(content_type="image/png")
-    image.save(response, "PNG")
-    return response
+    user = User.objects.get(pk=request.user.id)
+    organization = user.profile.organization
+    if sample.organization == organization:
+        lot = str(sample.tracking_number)
+        ean = barcode.get('Code128', f'{lot}', writer=ImageWriter())
+        ean.save(f'{lot}_Barcode')
+        image = ean.render()
+        response = HttpResponse(content_type="image/png")
+        image.save(response, "PNG")
+        return response
+    else:
+        return redirect('Sample')
 
 @login_required(login_url='login')
 def sample_export(request):
@@ -158,17 +180,23 @@ def Initiatesample(request, pk):
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     form = InitiateForm(instance=samplepk)
-    if request.method == 'POST':
-        form = InitiateForm(request.POST, instance=samplepk)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.initiated_by = User.objects.get(pk=request.user.id)
-            obj.initiated_date = str(datetime.now())
-            obj.save()
-            return redirect('Testing')
+    if samplepk.initiated == False:
+        if samplepk.organization == user:
+            if request.method == 'POST':
+                form = InitiateForm(request.POST, instance=samplepk)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.initiated_by = User.objects.get(pk=request.user.id)
+                    obj.initiated_date = str(datetime.now())
+                    obj.save()
+                    return redirect('Testing')
+                else:
+                    print("ERROR : Form is invalid")
+                    print(form.errors)
         else:
-            print("ERROR : Form is invalid")
-            print(form.errors)
+                return redirect('Testing')
+    else: return redirect('Testing')
+
     context = {
         'samples': samples,
         'form': form,
@@ -198,18 +226,26 @@ def Resultssubmit(request, pk):
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     form = ResultForm(instance=samplepk)
-    if request.method == 'POST':
-        form = ResultForm(request.POST, instance=samplepk)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.reported_by = User.objects.get(pk=request.user.id)
-            obj.report_date = str(datetime.now())
-            obj.save()
-            return redirect('Results')
+    if samplepk.organization == user:
+        if samplepk.sample_result is None:
+            if samplepk.initiated == True:
+                if request.method == 'POST':
+                    form = ResultForm(request.POST, instance=samplepk)
+                    if form.is_valid():
+                        obj = form.save(commit=False)
+                        obj.reported_by = User.objects.get(pk=request.user.id)
+                        obj.report_date = str(datetime.now())
+                        obj.save()
+                        return redirect('Results')
+                    else:
+                        print("ERROR : Form is invalid")
+                        print(form.errors)
+            else:
+                return redirect('Results')
         else:
-            print("ERROR : Form is invalid")
-            print(form.errors)
-
+            return redirect('Results')
+    else:
+        return redirect('Results')
     context = {
         'form': form,
         'samples': samples,
@@ -232,12 +268,15 @@ def resultsSummary(request, pk, *args, **kwargs):
         'organization': organization,
     }
     if samples.organization == organization:
-        pdf = render_to_pdf('FreeLims/resultSummary.html', context)
-        response = HttpResponse(pdf, content_type='application/pdf')
-        filename = tracking + "_" + date_time + ".pdf"
-        content = "inline; filename= %s " %(filename)
-        response['Content-Disposition'] = content
-        return response
+        if samples.sample_result is not None:
+            pdf = render_to_pdf('FreeLims/resultSummary.html', context)
+            response = HttpResponse(pdf, content_type='application/pdf')
+            filename = tracking + "_" + date_time + ".pdf"
+            content = "inline; filename= %s " %(filename)
+            response['Content-Disposition'] = content
+            return response
+        else:
+            return redirect('Results')
     else:
         return redirect('Results')
 
@@ -335,21 +374,26 @@ def InventoryOpen(request, pk):
     inventorypk = Cheminventory.objects.get(id=pk)
     inventories = Cheminventory.objects.filter(id=pk)
     form = OpenForm(instance=inventorypk)
+    user = User.objects.get(pk=request.user.id)
+    organization = user.profile.organization
     if inventorypk.quarantine is False:
-        messages.error(request, 'This Reagent is Open')
+        #messages.error(request, 'This Reagent is Open')
         return redirect('Inventory')
     else:
-        if request.method == 'POST':
-            form = OpenForm(request.POST, instance=inventorypk)
-            if form.is_valid():
-                obj = form.save(commit=False)
-                obj.quarantine = False
-                obj.open_container = True
-                obj.save()
-                return redirect('Inventory')
-            else:
-                print("ERROR : Form is invalid")
-                print(form.errors)
+        if inventorypk.organization == organization:
+            if request.method == 'POST':
+                form = OpenForm(request.POST, instance=inventorypk)
+                if form.is_valid():
+                    obj = form.save(commit=False)
+                    obj.quarantine = False
+                    obj.open_container = True
+                    obj.save()
+                    return redirect('Inventory')
+                else:
+                    print("ERROR : Form is invalid")
+                    print(form.errors)
+        else:
+            return redirect('Inventory')
 
     context = {
         'form': form,
@@ -364,14 +408,19 @@ def BarcodeDownload(request, pk):
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     inventory = Cheminventory.objects.get(id=pk)
     gl_lot = str(inventory.Lab_lot)
+    user = User.objects.get(pk=request.user.id)
+    organization = user.profile.organization
     gl_name = str(inventory.name)
     gl_expiry = str(inventory.expiry)
-    ean = barcode.get('Code128', f'{gl_lot}', writer=ImageWriter())
-    ean.save(f'{gl_lot}_Barcode')
-    image = ean.render()
-    response = HttpResponse(content_type="image/png")
-    image.save(response, "PNG")
-    return response
+    if inventory.organization == organization:
+        ean = barcode.get('Code128', f'{gl_lot}', writer=ImageWriter())
+        ean.save(f'{gl_lot}_Barcode')
+        image = ean.render()
+        response = HttpResponse(content_type="image/png")
+        image.save(response, "PNG")
+        return response
+    else:
+        return redirect('Inventory')
 
 @login_required(login_url='login')
 def inventory_export(request):

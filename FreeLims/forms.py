@@ -150,7 +150,7 @@ class ResultForm(ModelForm):
     }))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        resulttetitles = ['result_pf','sample_result','comments']
+        resulttetitles = ['result_pf','sample_result','reference' ,'comments']
         self.fields["result_pf"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Passed?',
@@ -163,13 +163,19 @@ class ResultForm(ModelForm):
             'class': 'registration-input',
             'autocomplete': 'off',
         })
+        self.fields["reference"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Notebook Reference',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
 
         for i in resulttetitles:
             self.fields[i].label = ""
 
     class Meta:
         model = Sample
-        fields = ['result_pf','sample_result','comments']
+        fields = ['result_pf','sample_result','reference','comments']
 
 class InventoryForm(ModelForm):
     comments = forms.CharField(widget=forms.Textarea(attrs={
