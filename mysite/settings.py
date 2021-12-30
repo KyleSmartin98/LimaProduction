@@ -140,8 +140,9 @@ SESSION_COOKIE_AGE = 900                   # 0r 5 * 60, same thing
 SESSION_SAVE_EVERY_REQUEST = True          # Will prrevent from logging you out after 300 seconds
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com '
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER ='caretagus@gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASS')
+ACCOUNT_EMAIL_VERIFICATION = 'none'

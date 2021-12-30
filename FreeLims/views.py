@@ -25,10 +25,11 @@ def landingPage(request):
         contact_message = request.POST['contact-message']
 
         send_mail(
-            'Message From:'+ '' + contact_name + '' + 'about' + '' + contact_sub,
+            'Message From:'+ ' ' + contact_name + ' ' + ' ' + contact_email + ' ' + 'about' + ' ' + contact_sub,
             contact_message,
             contact_email,
-            ['caretagus@gmail.com']
+            ['caretagus@gmail.com'],
+            fail_silently=False,
         )
 
         context = {

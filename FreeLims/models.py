@@ -2,6 +2,10 @@ from django.db import models
 from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.core.management.utils import get_random_secret_key
+
+def generateHiddenKey():
+    return get_random_secret_key()
 
 class Profile(models.Model):
     ROLE = (
@@ -30,6 +34,7 @@ class Profile(models.Model):
     organization = models.CharField(max_length=125, default=None, null=True)
     role = models.CharField(choices=ROLE, max_length=100, default=None, null=True)
     department = models.CharField(choices=DEPARTMENT, max_length=100, default=None, null=True)
+    #Secret_Key =  models.CharField(max_length=100, default = generateHiddenKey)
 
 class Sample(models.Model):
     SAMPLE_TYPE = (
