@@ -1,8 +1,7 @@
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, \
     OpenForm
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
 from django.contrib import messages
 from .models import Sample, User, Cheminventory, Profile
 from django.http import HttpResponse
@@ -14,6 +13,7 @@ from barcode.writer import ImageWriter
 from django.contrib.auth.decorators import login_required
 from .utils import render_to_pdf
 from django.core.mail import send_mail
+from django.template import loader
 
 
 
@@ -83,9 +83,35 @@ def LogIn(request):
                     username = form.cleaned_data.get('username')
                     Profile.objects.create(
                         user=user,
-                        organization=form.cleaned_data['organization']
+                        organization=form.cleaned_data['organization'],
+                        email=form.cleaned_data['email'],
                     )
                     user.save()
+                    profiles = Profile.objects.get(user=user)
+                    if profiles.user is not None:
+                        username = str(profiles.user)
+                        email = profiles.email
+                        organization = profiles.organization
+                        secretKey = profiles.Secret_Key
+                        email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
+                        email_subject = "Your GlobaLIMS Account is Registered!"
+                        context = {
+                            'organization': organization,
+                            'secretKey': secretKey,
+                            'username': username,
+                        }
+                        html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                        send_mail(
+                            email_subject,
+                            email_body,
+                            'caretagus@gmail.com',
+                            [email],
+                            fail_silently=True,
+                            html_message=html_message
+                        )
+                        messages.success(request, 'Please check your email for your account information')
+                    else:
+                        return redirect('LogIn')
                     messages.success(request, 'Account was created for ' + username)
             else:
                 form = SignUpForm()

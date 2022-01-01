@@ -12,6 +12,9 @@
         {% for message in messages %}
             <p>{{message}}</p>
         {% endfor %}
+        {% if form.errors %}
+        <p>{{form.errors}}</p>
+        {% else %}
         <form method="POST">
             {% csrf_token %}
             <span class="Log-in-header">Username</span>
@@ -22,10 +25,11 @@
             <input type="text" placeholder="Organization" class="Log-in-input">
             <input type="submit" Value="Sign In" name="login" class="Log-in-btn">
         </form>
+        {% endif %}
         <button class="register-btn" id="registerbtn"> <!--register-->
             <span>Register</span>
         </button>
-        <div class="modal" id="registermodal">
+        <div class="modal" id="registermodal" style="z-axis: 1;">
             <div class="modal-content">
                 <form method="POST" action="" id="signupform">
                     {% csrf_token %}
@@ -40,16 +44,15 @@
                     <span class="registration-desc">Password</span>
                     {{form.password1}}
                     {{form.password2}}
-                    {{form.errors}}
                     <input type="submit" Value="Sign Up" class="registration-submit" name="register">
                 </form>
             </div>
         </div>
-        <a class="a-PageLink" href="{% url 'home' %}">
+       <!--<a class="a-PageLink" href="{% url 'home' %}">
             <button class="register-btn">
                 <span> Try Without Registering</span>
-            </button> <!--Proceed without Logging-In-->
-        </a>
+            </button>
+        </a>-->
     </div>
     {% load static %}
     <script src="{% static 'FreeLims/app.js' %}"></script>

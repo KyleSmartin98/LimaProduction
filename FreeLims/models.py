@@ -31,10 +31,16 @@ class Profile(models.Model):
         ('MANUFACTURING','MANUFACTURING')
     )
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    first_name = models.CharField(max_length=100, default=None, null=True)
+    last_name = models.CharField(max_length=100, default=None, null=True)
+    empl_ID = models.CharField(max_length=100, default=None, null=True)
     organization = models.CharField(max_length=125, default=None, null=True)
     role = models.CharField(choices=ROLE, max_length=100, default=None, null=True)
     department = models.CharField(choices=DEPARTMENT, max_length=100, default=None, null=True)
-    #Secret_Key =  models.CharField(max_length=100, default = generateHiddenKey)
+    location = models.CharField(max_length=150, default=None, null=True)
+    Secret_Key = models.CharField(max_length=100, default=generateHiddenKey)
+    email = models.CharField(max_length=100, default=None, null=True)
+
 
 class Sample(models.Model):
     SAMPLE_TYPE = (
