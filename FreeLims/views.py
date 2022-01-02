@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, \
-    OpenForm
+    OpenForm, editProfile
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Sample, User, Cheminventory, Profile
@@ -119,6 +119,28 @@ def LogIn(request):
 
     context = {'form': form}
     return render(request, 'FreeLims/LogIn.html', context)
+
+def settings_page(request):
+
+    profiles = Profile.objects.get(user=request.user.id)
+    profileForm = editProfile(instance=profiles)
+    if profiles is not None:
+        context = {
+            'profiles': profiles,
+            'profileForm': profileForm,
+        }
+        if request.method == 'POST':
+            if 'editProfile' in request.POST:
+                profileForm = editProfile(request.POST, instance=profiles)
+                if profileForm.is_valid():
+                    obj = profileForm.save()
+                    obj.save
+                    messages.success(request, 'Your Profile Has Been Updated!')
+                    return redirect('settings')
+    else:
+        context = {}
+        return
+    return render(request, 'FreeLims/settings.html', context)
 
 @login_required(login_url='login')
 def Sample_page(request):

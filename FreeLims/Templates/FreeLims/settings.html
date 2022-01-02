@@ -1,0 +1,68 @@
+{% extends 'FreeLims/base.html' %}
+{% block content %}
+{% load static %}
+<div class="settings-header">
+    <h1>Settings</h1>
+</div>
+<div class="settings-main-container">
+    <div class="settings-left-container">
+    <ul class="settings-ul">
+      <li>
+        <input type="checkbox" id="list-item-1">
+          <label for="list-item-1" class="settings-label"><img src="{% static 'FreeLims/profile.svg' %}" class="Icon-paper" style="filter: invert(0%); display: inline-block;" /><h3 style="display: inline-block;">Update Personal Information</h3></label>
+        <ul>
+          <form method="POST">
+            {% csrf_token %}
+          <li>{{profileForm.first_name}}</li>
+          <li>{{profileForm.last_name}}</li>
+          <li>{{profileForm.empl_ID}}</li>
+          <li>{{profileForm.role}}</li>
+          <li>{{profileForm.department}}</li>
+          <li>{{profileForm.location}}</li>
+          <input type="submit" value="Submit" name="editProfile">
+          </form>
+        </ul>
+      </li>
+      <li>
+        <input type="checkbox" id="list-item-2">
+          <label for="list-item-2" class="settings-label"><img src="{% static 'FreeLims/lock.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Change Password</h3></label>
+        <ul>
+          <li>Open Sans</li>
+          <li>Roboto</li>
+          <li>Lato</li>
+          <li>Stabo</li>
+          <li>Oswald</li>
+        </ul>
+      </li>
+      <li>
+        <input type="checkbox" id="list-item-3">
+        <label for="list-item-3" class="settings-label"><img src="{% static 'FreeLims/key.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Request Secret Key</h3></label>
+
+          <ul>
+            <li>klklk</li>
+            <li>Source Code Pro</li>
+            <li>Droid Sans Mono</li>
+            <li>Ubuntu Mono</li>
+            <li>Cousine</li>
+          </ul>
+      </li>
+      <li>
+        <input type="checkbox" id="list-item-4">
+        <label for="list-item-4" class="settings-label"><img src="{% static 'FreeLims/exclamation.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Report a Problem</h3></label>
+        <ul>
+          <li>Inconsolata</li>
+          <li>Source Code Pro</li>
+          <li>Droid Sans Mono</li>
+          <li>Ubuntu Mono</li>
+          <li>Cousine</li>
+        </ul>
+      </li>
+    </ul>
+    </div>
+    <div class="settings-right-container">
+        hhhh
+    </div>
+</div>
+
+
+{% endblock %}

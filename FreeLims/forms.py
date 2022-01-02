@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Sample, Cheminventory
+from .models import Sample, Cheminventory, Profile
 from django.forms import ModelForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -286,3 +286,24 @@ class OpenForm(ModelForm):
         model = Cheminventory
         fields = ['open_container']
 
+class editProfile(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'role', 'department', 'location']
+        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Role', 'Department', 'Location']
+        for i, j in zip(profileAttributes, profileAttributeNames):
+            self.fields[i].widget.attrs.update({
+                'type': 'text',
+                'placeholder': f'{j}',
+                'class': 'registration-input',
+                'autocomplete': 'off',
+            })
+            self.fields[i].label = ""
+            self.fields["role"].choices = [("", "Role"), ] + list(
+                self.fields["role"].choices)[1:]
+            self.fields["department"].choices = [("", "Department"), ] + list(
+                self.fields["department"].choices)[1:]
+
+    class Meta:
+        model = Profile
+        fields = ['first_name', 'last_name', 'empl_ID', 'role', 'department', 'location']

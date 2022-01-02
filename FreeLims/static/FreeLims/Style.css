@@ -389,6 +389,7 @@
 .quick-table-tr-data{
     background: #8cc2ff;
 }
+/*Settings */
 .Settings-btn{
     display: flex;
     width: 125px;
@@ -420,6 +421,106 @@
     filter: invert(100%);
 
 }
+.settings-header{
+    width: 100%;
+    text-align: center;
+    height: 45px;
+    margin-top: 25px;
+    display: block;
+}
+.settings-main-container{
+    width: 100%;
+    height: 800px;
+    margin-top: 35px;
+    border-radius: 35px;
+    background-color: transparent;
+
+}
+
+.settings-left-container{
+    background-color: transparent;
+    display: inline-flex;
+    margin-top: 0px;
+    width: 55%;
+    height: auto;
+    border-radius: 35px;
+    margin-left: 50px;
+    box-shadow: 1px 1px 5px #555 inset;
+}
+.settings-right-container{
+    background-color: white;
+    display: inline-flex;
+    width: 30%;
+    margin-top: 50px;
+    border-radius: 35px;
+    margin-left: 100px;
+    height: auto;
+    box-shadow: 1px 1px 5px #555 inset;
+}
+.settings-ul{
+    list-style: none;
+    border-radius: 35px;
+    margin: 0;
+    padding: 0;
+    width: 85%;
+    margin-left: 25px;
+    margin-top: 25px;
+    margin-bottom: 25px ;
+    border-style: none;
+}
+
+.settings-label{
+    display: block;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid #fff;
+    border-bottom: none;
+    width: 100%;
+    border-radius: 35px;
+    margin-left: 20px;
+    border-style: none;
+}
+
+.settings-label:hover{
+  background: #26C281;
+  border-radius: 35px;
+  width: 100%;
+}
+
+.settings-label.last{
+  border-bottom: 1px solid #fff;
+}
+
+.settings-icon{
+    -webkit-transform: rotate(-90deg)
+}
+
+input[type="checkbox"]{
+  position: absolute;
+  left: -9999px;
+  border-style: none;
+}
+
+input[type="checkbox"] ~ ul{
+  height: 0;
+  transform: scaleY(0);
+  border-style: none;
+}
+
+input[type="checkbox"]:checked ~ ul{
+  height: 100%;
+  transform-origin: top;
+  transition: transform .2s ease-out;
+  transform: scaleY(1);
+}
+
+input[type="checkbox"]:checked + label{
+  background: #26C281;
+  border-bottom: 1px solid #fff;
+  border-style: none;
+}
+
+/* Home Notification */
 .home-notification-div{
     position: relative;
     display: flex;
@@ -499,7 +600,7 @@
     border: 5px #2b6777;
     width: 451px;
     min-width: 450px;
-    height: 600px;
+    height: 425px;
     -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
     -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
     text-align: center;
@@ -602,9 +703,9 @@
     position: fixed;
     left: 0;
     top: 0;
-    margin-Top: 3px;
-    width: 400px;
-    height: 500px;
+    margin-Top: 0px;
+    width: 405px;
+    height: 415px;
     background-color: Transparent;
     opacity: 0;
     border-radius: 50px;
@@ -612,11 +713,10 @@
     visibility: hidden;
     transform: scale(1.1);
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
-    backdrop-filter: blur(5px);
 }
 .modal-content {
     position: relative;
-    margin-top: 2.5rem ;
+    margin-top: 0rem ;
     width: 350px;
     height: 405px;
     margin-left: 6.5%;
