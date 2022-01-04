@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Sample, Cheminventory, Profile
 from django.forms import ModelForm
@@ -295,7 +295,7 @@ class editProfile(forms.ModelForm):
             self.fields[i].widget.attrs.update({
                 'type': 'text',
                 'placeholder': f'{j}',
-                'class': 'registration-input',
+                'class': 'settings-input',
                 'autocomplete': 'off',
             })
             self.fields[i].label = ""
@@ -307,3 +307,58 @@ class editProfile(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['first_name', 'last_name', 'empl_ID', 'role', 'department', 'location']
+
+class privateKeyForm(forms.Form):
+    privateKey = forms.CharField(max_length=75)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["privateKey"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Private Key',
+            'class': 'settings-input',
+            'autocomplete': 'off',
+        })
+        self.fields["privateKey"].label = ""
+
+class passwordChangeForm(SetPasswordForm):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(SetPasswordForm, self).__init__(*args, **kwargs)
+    new_password1 = forms.CharField(
+        label='',
+        widget=forms.PasswordInput(attrs={'placeholder': 'New Password',
+                                          'class': 'settings-input'}),
+    )
+    new_password2 = forms.CharField(
+        label='',
+        widget=forms.PasswordInput(attrs={'placeholder': 'Verify Password',
+                                          'class': 'settings-input'}),
+    )
+
+
+    '''
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["new_password1"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Password',
+            'class': 'registration-input',
+            'required': '',
+            'autocomplete': 'off',
+        })
+        self.fields["new_password2"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Verify Password',
+            'class': 'registration-input',
+            'required': '',
+            'autocomplete': 'off',
+        })
+    '''
+    def clean(self):
+        password1 = self.cleaned_data.get('new_password1')
+        password2 = self.cleaned_data.get('new_password2')
+        if password1 != password2:
+            raise forms.ValidationError('password mismatch')
+
+
+

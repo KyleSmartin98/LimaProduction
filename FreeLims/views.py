@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, \
-    OpenForm, editProfile
+    OpenForm, editProfile, passwordChangeForm, privateKeyForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Sample, User, Cheminventory, Profile
@@ -58,7 +58,7 @@ def home(request):
 
 def logout_request(request):
     logout(request)
-    messages.info(request, "You have successfully logged out.")
+    messages.info(request, "You have successfully logged out.", extra_tags='logout_message')
     return redirect('login')
 
 def LogIn(request):
@@ -120,26 +120,43 @@ def LogIn(request):
     context = {'form': form}
     return render(request, 'FreeLims/LogIn.html', context)
 
+@login_required(login_url='login')
 def settings_page(request):
 
     profiles = Profile.objects.get(user=request.user.id)
     profileForm = editProfile(instance=profiles)
-    if profiles is not None:
-        context = {
-            'profiles': profiles,
-            'profileForm': profileForm,
-        }
-        if request.method == 'POST':
-            if 'editProfile' in request.POST:
-                profileForm = editProfile(request.POST, instance=profiles)
-                if profileForm.is_valid():
-                    obj = profileForm.save()
+    secretKeyForm = privateKeyForm()
+    pass_form = passwordChangeForm(user=request.user)
+    pass
+    if request.method == 'POST':
+        if 'updateProfile' in request.POST:
+            profileForm = editProfile(request.POST, instance=profiles)
+            if profileForm.is_valid():
+                obj = profileForm.save()
+                obj.save
+                messages.success(request, 'Your Profile Has Been Updated!', extra_tags="profile_updated")
+                return redirect('settings')
+        if 'updatePassword' in request.POST:
+            privateKey = request.POST.get('privateKey')
+            if privateKey == profiles.Secret_Key:
+                pass_form = passwordChangeForm(request.POST, user=request.user)
+                if pass_form.is_valid():
+                    obj = pass_form.save()
                     obj.save
-                    messages.success(request, 'Your Profile Has Been Updated!')
+                    messages.success(request, 'Your Password Has Been Updated!', extra_tags='password_updated')
                     return redirect('settings')
-    else:
-        context = {}
-        return
+                else:
+                    messages.warning(request, 'Passwords do Not Match', extra_tags='incorrect_passwords')
+                    print('failed')
+            else:
+                messages.warning(request, 'Your Secret Key is Incorrect', extra_tags='incorrect_privateKey')
+                print('failed key')
+    context = {
+        'profiles': profiles,
+        'profileForm': profileForm,
+        'secretKeyForm': secretKeyForm,
+        'pass_form': pass_form
+    }
     return render(request, 'FreeLims/settings.html', context)
 
 @login_required(login_url='login')

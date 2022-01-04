@@ -9,9 +9,13 @@
 </head>
 <body class="Background">
     <div class="Log-in-main-div"> <!--Center Container for log-in-->
+        {% if messages %}
         {% for message in messages %}
+        {% if 'info' in message.tags %}
             <p>{{message}}</p>
+        {% endif %}
         {% endfor %}
+        {% endif %}
         {% if form.errors %}
         <p>{{form.errors}}</p>
         {% else %}
@@ -29,6 +33,7 @@
         <button class="register-btn" id="registerbtn">
             <span>Register</span>
         </button>
+        <a><p>Forgot Your Password?</p></a>
         <div class="modal" id="registermodal" style="z-axis: 1;">
             <div class="modal-content">
                 <form method="POST" action="" id="signupform">

@@ -110,10 +110,12 @@
                 </div>
             </div>
             <div class="right-flex-container"> <!--Preferences-->
-               <button class="Settings-btn"> <!--Settings-->
-                   <img src="{% static 'FreeLims/settings.svg' %}" class="Settings-img"/>
-                   <span class="Btn-Text">Settings</span>
-               </button>
+                <a class="a-PageLink" href="{% url 'settings' %}">
+                   <button class="Settings-btn"> <!--Settings-->
+                       <img src="{% static 'FreeLims/settings.svg' %}" class="Settings-img"/>
+                       <span class="Btn-Text">Settings</span>
+                   </button>
+                </a>
             </div>
         </div>
         <div class="home-notification-div">

@@ -84,6 +84,8 @@ https://alicecampkin.medium.com/how-to-set-up-environment-variables-in-django-f3
 
 https://stackoverflow.com/questions/41298963/is-there-a-function-for-generating-settings-secret-key-in-django
 
+https://python.plainenglish.io/how-to-convert-your-dash-app-into-an-executable-gui-b1d4271a8fa7
+
 https://pubs.acs.org/doi/pdf/10.1021/acs.jchemed.9b01131
 class sample_initiated(Sample):
     SAMPLE_TEST = (
@@ -319,3 +321,20 @@ page <pdf:pagenumber> of <pdf:pagecount>
         untold story
 
         LutherSturmanPharma
+
+        title of each page
+
+
+        #66beff <- Neutral Info Color
+
+
+     Alert Styling
+    min-width: 200px;
+    width: auto;
+    height: 25px;
+    color: black;
+    border-radius: 25px;
+    background: #66BEFF;
+    border-color: #0073ff;
+    text-align: center;
+    border-style: solid;

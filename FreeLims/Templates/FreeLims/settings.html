@@ -3,35 +3,37 @@
 {% load static %}
 <div class="settings-header">
     <h1>Settings</h1>
+    <!--<div style="border-bottom: 1px solid black; width: 50%; margin-left: 25%;"></div>-->
 </div>
 <div class="settings-main-container">
     <div class="settings-left-container">
     <ul class="settings-ul">
-      <li>
+      <li class="settings-ul-li">
         <input type="checkbox" id="list-item-1">
           <label for="list-item-1" class="settings-label"><img src="{% static 'FreeLims/profile.svg' %}" class="Icon-paper" style="filter: invert(0%); display: inline-block;" /><h3 style="display: inline-block;">Update Personal Information</h3></label>
         <ul>
           <form method="POST">
-            {% csrf_token %}
-          <li>{{profileForm.first_name}}</li>
-          <li>{{profileForm.last_name}}</li>
-          <li>{{profileForm.empl_ID}}</li>
-          <li>{{profileForm.role}}</li>
-          <li>{{profileForm.department}}</li>
-          <li>{{profileForm.location}}</li>
-          <input type="submit" value="Submit" name="editProfile">
+          {% csrf_token %}
+          {{profileForm.first_name}}
+          {{profileForm.last_name}}
+          {{profileForm.empl_ID}}
+          {{profileForm.role}}
+          {{profileForm.department}}
+          {{profileForm.location}}
+          <input type="submit" value="Submit" name="updateProfile" class="settings-info-btn">
           </form>
         </ul>
       </li>
-      <li>
+      <li class="settings-ul-li">
         <input type="checkbox" id="list-item-2">
           <label for="list-item-2" class="settings-label"><img src="{% static 'FreeLims/lock.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Change Password</h3></label>
         <ul>
-          <li>Open Sans</li>
-          <li>Roboto</li>
-          <li>Lato</li>
-          <li>Stabo</li>
-          <li>Oswald</li>
+          <form method="POST">
+          {% csrf_token %}
+          {{secretKeyForm}}
+          {{pass_form}}
+          <input type="submit" value="Submit" name="updatePassword" class="settings-info-btn">
+          </form>
         </ul>
       </li>
       <li>
@@ -59,9 +61,11 @@
       </li>
     </ul>
     </div>
+   {% if profileUpdate %}
     <div class="settings-right-container">
-        hhhh
+      <p>{{profileUpdate}}</p>
     </div>
+    {% endif %}
 </div>
 
 
