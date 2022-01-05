@@ -338,3 +338,24 @@ page <pdf:pagenumber> of <pdf:pagecount>
     border-color: #0073ff;
     text-align: center;
     border-style: solid;
+
+
+    .sample-submit-modal-sm {
+    position: absolute;
+    margin-left: 30%;
+    top: 5%;
+    margin-Top: 3px;
+    width: 400px;
+    height: 350px;
+    background-color: Transparent;
+    opacity: 0;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+modal:target {
+  visibility: visible;
+  opacity: 1;
+}

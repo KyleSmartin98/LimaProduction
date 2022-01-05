@@ -20,6 +20,80 @@
 .Background{
     background-color: #c8d8e4;
 }
+.info-message{
+    margin-left: 5%;
+    margin-top: 20px;
+    display: block;
+    position: relative;
+    min-width: 200px;
+    max-width: 400px;
+    width: auto;
+    height: 30px;
+    color: black;
+    border-radius: 25px;
+    background: #66BEFF;
+    border-color: #0073ff;
+    text-align: center;
+    border-style: solid;
+}
+.info-message p{
+    margin-top: 5px;
+    color: white;
+    font-family: Arial;
+}
+.errorlist{
+    list-style-type: none;
+    margin-right: 10%;
+}
+.errorlist li{
+    margin-top: 2%;
+    font-family: Arial;
+    font-size: 14px;
+
+}
+.error-message{
+    margin-left: 5%;
+    margin-top: 20px;
+    display: block;
+    position: relative;
+    min-width: 200px;
+    max-width: 400px;
+    width: auto;
+    min-height: 65px;
+    height: auto;
+    max-height: 500px;
+    color: black;
+    border-radius: 25px;
+    background: #ff8282;
+    border-color: #ff0000;
+    text-align: center;
+    border-style: solid;
+}
+.error-message p{
+    font-family: Arial;
+    font-size: 14px;
+    font-weight: bold;
+    color: black;
+}
+.success-message{
+    margin-left: 5%;
+    margin-top: 20px;
+    display: block;
+    position: relative;
+    min-width: 200px;
+    max-width: 400px;
+    width: auto;
+    min-height: 100px;
+    height: auto;
+    max-height: 500px;
+    color: black;
+    border-radius: 25px;
+    background: #66ff9e;
+    border-color: #00ff5d;
+    text-align: center;
+    border-style: solid;
+}
+
 .Top {
     overflow: hidden;
     text-align: center;
@@ -472,6 +546,9 @@
 .settings-ul-li{
     margin-top: 20px;
 }
+.settings-ul-li ul{
+    margin-left: 10%;
+}
 .settings-li{
     list-style: none;
 }
@@ -528,7 +605,7 @@ input[type="checkbox"]:checked + label{
 .settings-input{
     position: relative;
     display: flex;
-    width: 500px;
+    width: 375px;
     height: 25px;
     left: 12.5%;
     background: #c8d8e4;
@@ -551,7 +628,7 @@ input[type="checkbox"]:checked + label{
 .settings-info-btn{
     position: relative;
     display: flex;
-    width: 505px;
+    width: 380px;
     height: 30px;
     background: #c8d8e4;
     border-radius: 35px;
@@ -773,6 +850,10 @@ input[type="checkbox"]:checked + label{
     transform: scale(1.1);
     transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
 }
+.modal:target {
+  visibility: visible;
+  opacity: 1;
+}
 .modal-content {
     position: relative;
     margin-top: 0rem ;
@@ -905,7 +986,9 @@ input[type="checkbox"]:checked + label{
 }
 
 /* Table Attributes */
-
+th{
+    font-family: Arial;
+}
 .Table-attributes{
     overflow: visible;
     position: absolute;

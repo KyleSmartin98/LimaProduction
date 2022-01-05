@@ -5,19 +5,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
-    <title>FreeLIMS Log In</title>
+    <title>GlobaLIMS-Log In</title>
 </head>
 <body class="Background">
     <div class="Log-in-main-div"> <!--Center Container for log-in-->
         {% if messages %}
         {% for message in messages %}
         {% if 'info' in message.tags %}
+        <div class="info-message">
             <p>{{message}}</p>
+        </div>
+        {% else %}
+        {% endif %}
+        {% if 'success' in message.tags %}
+        <div class="success-message">
+            <p>{{message}}</p>
+        </div>
+        {% else %}
+        {% endif %}
+        {% if 'invalidpassword' in message.tags %}
+        <div class="error-message">
+            <p>{{message}}</p>
+        </div>
         {% endif %}
         {% endfor %}
         {% endif %}
         {% if form.errors %}
-        <p>{{form.errors}}</p>
+        <div class="error-message">
+            <p>{{form.errors}}</p>
+        </div>
         {% else %}
         <form method="POST">
             {% csrf_token %}
@@ -30,15 +46,18 @@
             <input type="submit" Value="Sign In" name="login" class="Log-in-btn">
         </form>
         {% endif %}
-        <button class="register-btn" id="registerbtn">
-            <span>Register</span>
-        </button>
-        <a><p>Forgot Your Password?</p></a>
+        <a class="sample-initiation-link" href="#registermodal">
+            <button class="register-btn" id="registerbtn">
+                <span>Register</span>
+            </button>
+        </a>
+        <a><p style="color: #c8d8e4;font-family: karrikregular;">Forgot Your Password?</p></a>
         <div class="modal" id="registermodal" style="z-axis: 1;">
             <div class="modal-content">
+                <a href="{% url 'login' %}" class="modal__close">Close</a>
                 <form method="POST" action="" id="signupform">
                     {% csrf_token %}
-                    <span class="close-button">&times;</span>
+                    <!--<span class="close-button">&times;</span>-->
                     <span class="registration-header">Create Account</span>
                     <span class="registration-desc">Username</span>
                     {{form.username}}
@@ -53,14 +72,31 @@
                 </form>
             </div>
         </div>
-       <!--<a class="a-PageLink" href="{% url 'home' %}">
-            <button class="register-btn">
-                <span> Try Without Registering</span>
-            </button>
-        </a>-->
+        <div class="modal" id="changepassword" style="z-axis: 1;">
+            <div class="modal-content">
+                <a href="{% url 'login' %}" class="modal__close">Close</a>
+                <form method="POST" action="" id="changepasswordform">
+                    {% csrf_token %}
+                    <!--<span class="close-button">&times;</span>-->
+                    <span class="registration-header">Change Password</span>
+                    <!--<span class="registration-desc">Username</span>
+                    {{form.username}}
+                    <span class="registration-desc">Organization</span>
+                    {{form.organization}}
+                    <span class="registration-desc">Email</span>
+                    {{form.email}}
+                    <span class="registration-desc">Password</span>
+                    {{form.password1}}
+                    {{form.password2}} -->
+                    <input type="submit" Value="Change Password" class="registration-submit" name="changepassword">
+                </form>
+            </div>
+        </div>
     </div>
+    <!--
     {% load static %}
     <script src="{% static 'FreeLims/app.js' %}"></script>
+    -->
 </body>
 
 </html>

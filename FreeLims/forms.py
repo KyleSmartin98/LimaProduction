@@ -3,10 +3,9 @@ from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Sample, Cheminventory, Profile
 from django.forms import ModelForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-
 
 class SignUpForm(UserCreationForm):
+    error_css_class = 'error-list'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({
@@ -317,6 +316,7 @@ class privateKeyForm(forms.Form):
             'placeholder': 'Private Key',
             'class': 'settings-input',
             'autocomplete': 'off',
+            'spellcheck': 'false',
         })
         self.fields["privateKey"].label = ""
 
@@ -334,26 +334,6 @@ class passwordChangeForm(SetPasswordForm):
         widget=forms.PasswordInput(attrs={'placeholder': 'Verify Password',
                                           'class': 'settings-input'}),
     )
-
-
-    '''
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["new_password1"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Password',
-            'class': 'registration-input',
-            'required': '',
-            'autocomplete': 'off',
-        })
-        self.fields["new_password2"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Verify Password',
-            'class': 'registration-input',
-            'required': '',
-            'autocomplete': 'off',
-        })
-    '''
     def clean(self):
         password1 = self.cleaned_data.get('new_password1')
         password2 = self.cleaned_data.get('new_password2')

@@ -15,9 +15,8 @@ from .utils import render_to_pdf
 from django.core.mail import send_mail
 from django.template import loader
 
-
-
 def landingPage(request):
+    page_title = 'GlobaLIMS'
     if request.method == "POST":
         contact_name = request.POST['contact-name']
         contact_email = request.POST['contact-email']
@@ -33,12 +32,11 @@ def landingPage(request):
         )
 
         context = {
-            'contact_name': contact_name
+            'contact_name': contact_name,
         }
         return render(request, 'FreeLims/landingpage.html', context)
     else:
         return render(request, 'FreeLims/landingpage.html')
-
 
 @login_required(login_url='login')
 def home(request):
@@ -48,11 +46,13 @@ def home(request):
     inventories = Cheminventory.objects.filter(organization=user)
     mySampleFilter = quickSampleFilter(request.GET, queryset=samples)
     samples = mySampleFilter.qs
+    page_title = 'GlobaLIMS-Home'
 
     context = {
         'samples': samples,
         'mySampleFilter': mySampleFilter,
         'inventories': inventories,
+        'page_title': page_title
     }
     return render(request, 'FreeLims/home.html', context)
 
@@ -63,6 +63,7 @@ def logout_request(request):
 
 def LogIn(request):
     form = SignUpForm()
+
     if request.user.is_authenticated:
         return redirect('home')
     else:
@@ -75,6 +76,7 @@ def LogIn(request):
                     login(request, new_user)
                     return redirect('home')
                 else:
+                    messages.error(request, 'The Email Address and/or Password You Entered are Invalid. Please Try Again or Reset Your Password.', extra_tags='invalidpassword')
                     print('failed')
             if 'register' in request.POST:
                 form = SignUpForm(request.POST)
@@ -109,10 +111,10 @@ def LogIn(request):
                             fail_silently=True,
                             html_message=html_message
                         )
-                        messages.success(request, 'Please check your email for your account information')
-                    else:
-                        return redirect('LogIn')
-                    messages.success(request, 'Account was created for ' + username)
+                        messages.success(request, 'Account was created for ' + username +
+                                         '. Please check your email for your account information. ' +
+                                         ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
+                        return redirect('login')
             else:
                 form = SignUpForm()
                 print(form.errors, 'failed')
@@ -122,7 +124,7 @@ def LogIn(request):
 
 @login_required(login_url='login')
 def settings_page(request):
-
+    page_title = 'GlobaLIMS-Settings'
     profiles = Profile.objects.get(user=request.user.id)
     profileForm = editProfile(instance=profiles)
     secretKeyForm = privateKeyForm()
@@ -155,12 +157,14 @@ def settings_page(request):
         'profiles': profiles,
         'profileForm': profileForm,
         'secretKeyForm': secretKeyForm,
-        'pass_form': pass_form
+        'pass_form': pass_form,
+        'page_title': page_title
     }
     return render(request, 'FreeLims/settings.html', context)
 
 @login_required(login_url='login')
 def Sample_page(request):
+    page_title='GlobaLIMS-Sample'
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
     samples = Sample.objects.filter(organization=user)
@@ -188,6 +192,7 @@ def Sample_page(request):
         'samples': samples,
         'myfilter': myfilter,
         'has_filters': has_filters,
+        'page_title': page_title,
                }
     return render(request, 'FreeLims/Sample.html', context)
 
@@ -226,6 +231,7 @@ def sample_export(request):
 
 @login_required(login_url='login')
 def Testing(request):
+    page_title = 'GlobaLIMS-Sample Testing'
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
     samples = Sample.objects.filter(organization=user)
@@ -234,11 +240,13 @@ def Testing(request):
     context = {
         'samples': samples,
         'myfilter': myfilter,
+        'page_title': page_title,
     }
     return render(request, 'FreeLims/Testing.html', context)
 
 @login_required(login_url='login')
 def Initiatesample(request, pk):
+    page_title = 'GlobaLIMS-Sample Initiation'
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
     samples = Sample.objects.filter(organization=user)
@@ -267,11 +275,13 @@ def Initiatesample(request, pk):
         'samples': samples,
         'form': form,
         'myfilter': myfilter,
+        'page_title': page_title
     }
     return render(request, 'FreeLims/Testing.html', context)
 
 @login_required(login_url='login')
 def Results(request):
+    page_title='GlobaLIMS-Result Reporting'
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
     samples = Sample.objects.filter(organization=user)
@@ -280,11 +290,13 @@ def Results(request):
     context = {
         'samples': samples,
         'myfilter': myfilter,
+        'page_title': page_title,
     }
     return render(request, 'FreeLims/Results.html', context)
 
 @login_required(login_url='login')
 def Resultssubmit(request, pk):
+    page_title='GlobaLIMS-Result Submission'
     samplepk = Sample.objects.get(id=pk)
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
@@ -316,12 +328,14 @@ def Resultssubmit(request, pk):
         'form': form,
         'samples': samples,
         'myfilter': myfilter,
+        'page_title': page_title
     }
 
     return render(request, 'FreeLims/Results.html', context)
 
 @login_required(login_url='login')
 def resultsSummary(request, pk, *args, **kwargs):
+    page_title='GlobaLIMS-Result Summary Report'
     samples = Sample.objects.get(id=pk)
     now = datetime.now()
     user = User.objects.get(pk=request.user.id)
@@ -332,6 +346,7 @@ def resultsSummary(request, pk, *args, **kwargs):
         'samples': samples,
         'now': date_time,
         'organization': organization,
+        'page_title': page_title
     }
     if samples.organization == organization:
         if samples.sample_result is not None:
@@ -345,9 +360,6 @@ def resultsSummary(request, pk, *args, **kwargs):
             return redirect('Results')
     else:
         return redirect('Results')
-
-
-
 
 @login_required(login_url='login')
 def result_export(request):
@@ -370,6 +382,7 @@ def Trending(request):
 
 @login_required(login_url='login')
 def Inventory(request):
+    page_title='GlobaLIMS-Inventory'
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
     inventories = Cheminventory.objects.filter(organization=user)
@@ -391,12 +404,14 @@ def Inventory(request):
     context = {
         'inventories': inventories,
         'myfilter': myfilter,
+        'page_title': page_title,
     }
 
     return render(request, 'FreeLims/Inventory.html', context)
 
 @login_required(login_url='login')
 def Inventorycreate(request):
+    page_title='GlobaLIMS-Add Inventory'
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
     inventories = Cheminventory.objects.filter(organization=user)
@@ -431,12 +446,14 @@ def Inventorycreate(request):
         'form': form,
         'qtyform': qtyform,
         'myfilter': myfilter,
+        'page_title': page_title,
     }
 
     return render(request, 'FreeLims/Inventory.html', context)
 
 @login_required(login_url='login')
 def InventoryOpen(request, pk):
+    page_title='GlobaLIMS-Open Inventory'
     inventorypk = Cheminventory.objects.get(id=pk)
     inventories = Cheminventory.objects.filter(id=pk)
     form = OpenForm(instance=inventorypk)
@@ -464,6 +481,7 @@ def InventoryOpen(request, pk):
     context = {
         'form': form,
         'inventories': inventories,
+        'page_title': page_title
     }
 
     return render(request, 'FreeLims/Inventory.html', context)
@@ -501,7 +519,6 @@ def inventory_export(request):
         writer.writerow(inventory)
     response['Content-Disposition'] = f'attachment; filename= "Inventory_{date_time}.csv"'
     return response
-
 
 @login_required(login_url='login')
 def Method(request):
