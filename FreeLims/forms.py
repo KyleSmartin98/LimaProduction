@@ -343,5 +343,9 @@ class passwordChangeForm(SetPasswordForm):
         if password1 != password2:
             raise forms.ValidationError('password mismatch')
 
+    class Meta:
+        model = User
+        fields = ['new_password1', 'new_password2']
+
 
 

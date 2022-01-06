@@ -10,7 +10,7 @@
     <ul class="settings-ul">
       <li class="settings-ul-li">
         <input type="checkbox" id="list-item-1">
-          <label for="list-item-1" class="settings-label"><img src="{% static 'FreeLims/profile.svg' %}" class="Icon-paper" style="filter: invert(0%); display: inline-block;" /><h3 style="display: inline-block;">Update Personal Information</h3></label>
+          <label for="list-item-1" class="settings-label"><img src="{% static 'FreeLims/profile.svg' %}" class="Icon-paper" style="filter: invert(0%); display: inline-block;" /><h2 style="display: inline-block;">Update Personal Information</h2></label>
         <ul>
           <form method="POST">
           {% csrf_token %}
@@ -26,7 +26,7 @@
       </li>
       <li class="settings-ul-li">
         <input type="checkbox" id="list-item-2">
-          <label for="list-item-2" class="settings-label"><img src="{% static 'FreeLims/lock.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Change Password</h3></label>
+          <label for="list-item-2" class="settings-label"><img src="{% static 'FreeLims/lock.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h2 style="display: inline-block;">Change Password</h2></label>
         <ul>
           <form method="POST">
           {% csrf_token %}
@@ -36,21 +36,24 @@
           </form>
         </ul>
       </li>
-      <li>
+      <li class="settings-ul-li">
         <input type="checkbox" id="list-item-3">
-        <label for="list-item-3" class="settings-label"><img src="{% static 'FreeLims/key.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Request Secret Key</h3></label>
-
+        <label for="list-item-3" class="settings-label"><img src="{% static 'FreeLims/key.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h2 style="display: inline-block;">Request Secret Key</h2></label>
+          <ul style="margin-left: 12.5%;">
+            <div class="error-message" style="height: 65px; margin-left: 8%">
+              <p><strong>Please Only Request a New Secret Key If You Have Lost Your Old Key or Your Old Key Has Been Compromised! </strong></p>
+            </div>
+          </ul>
           <ul>
-            <li>klklk</li>
-            <li>Source Code Pro</li>
-            <li>Droid Sans Mono</li>
-            <li>Ubuntu Mono</li>
-            <li>Cousine</li>
+            <form method="POST">
+              {% csrf_token %}
+              <input type="submit" name="newPivateKey" class="settings-info-btn" value="Request New Key">
+            </form>
           </ul>
       </li>
       <li>
         <input type="checkbox" id="list-item-4">
-        <label for="list-item-4" class="settings-label"><img src="{% static 'FreeLims/exclamation.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h3 style="display: inline-block;">Report a Problem</h3></label>
+        <label for="list-item-4" class="settings-label"><img src="{% static 'FreeLims/exclamation.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h2 style="display: inline-block;">Report a Problem</h2></label>
         <ul>
           <li>Inconsolata</li>
           <li>Source Code Pro</li>
@@ -61,12 +64,5 @@
       </li>
     </ul>
     </div>
-   {% if profileUpdate %}
-    <div class="settings-right-container">
-      <p>{{profileUpdate}}</p>
-    </div>
-    {% endif %}
 </div>
-
-
 {% endblock %}

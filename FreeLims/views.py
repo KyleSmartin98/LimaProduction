@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 from .utils import render_to_pdf
 from django.core.mail import send_mail
 from django.template import loader
+from django.core.management.utils import get_random_secret_key
 
 def landingPage(request):
     page_title = 'GlobaLIMS'
@@ -128,7 +129,7 @@ def settings_page(request):
     profiles = Profile.objects.get(user=request.user.id)
     profileForm = editProfile(instance=profiles)
     secretKeyForm = privateKeyForm()
-    pass_form = passwordChangeForm(user=request.user)
+    pass_form = passwordChangeForm(request.user)
     pass
     if request.method == 'POST':
         if 'updateProfile' in request.POST:
@@ -141,10 +142,13 @@ def settings_page(request):
         if 'updatePassword' in request.POST:
             privateKey = request.POST.get('privateKey')
             if privateKey == profiles.Secret_Key:
-                pass_form = passwordChangeForm(request.POST, user=request.user)
+                pass_form = passwordChangeForm(request.user, request.POST)
                 if pass_form.is_valid():
-                    obj = pass_form.save()
-                    obj.save
+                    user = User.objects.get(id=request.user.id)
+                    new_password = request.POST.get('new_password1')
+                    user.set_password(new_password)
+                    user.save()
+                    print('Passed')
                     messages.success(request, 'Your Password Has Been Updated!', extra_tags='password_updated')
                     return redirect('settings')
                 else:
@@ -152,7 +156,8 @@ def settings_page(request):
                     print('failed')
             else:
                 messages.warning(request, 'Your Secret Key is Incorrect', extra_tags='incorrect_privateKey')
-                print('failed key')
+
+
     context = {
         'profiles': profiles,
         'profileForm': profileForm,

@@ -83,7 +83,7 @@
     min-width: 200px;
     max-width: 400px;
     width: auto;
-    min-height: 100px;
+    min-height: 45px;
     height: auto;
     max-height: 500px;
     color: black;
@@ -94,6 +94,11 @@
     border-style: solid;
 }
 
+.success-message p{
+    font-family: Arial;
+    font-size: 14px;
+    color: black;
+}
 .Top {
     overflow: hidden;
     text-align: center;
@@ -563,7 +568,9 @@
     margin-left: 20px;
     border-style: none;
 }
-
+.settings-label h2{
+    font-family: Arial;
+}
 .settings-label:hover{
   background: #4dbfa6;
   border-radius: 35px;
@@ -605,7 +612,7 @@ input[type="checkbox"]:checked + label{
 .settings-input{
     position: relative;
     display: flex;
-    width: 375px;
+    width: 67.5%;
     height: 25px;
     left: 12.5%;
     background: #c8d8e4;
@@ -628,7 +635,7 @@ input[type="checkbox"]:checked + label{
 .settings-info-btn{
     position: relative;
     display: flex;
-    width: 380px;
+    width: 68.5%;
     height: 30px;
     background: #c8d8e4;
     border-radius: 35px;
