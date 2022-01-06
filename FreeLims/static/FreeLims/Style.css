@@ -999,7 +999,8 @@ th{
     min-width: 75%;
     margin-left: 25px;
     margin-top: 15px;
-    height: 85px;
+    min-height: 85px;
+    height: auto;
     background-color: #2b6777;
     box-shadow: 1px 1px 5px #555 inset;
     border-radius: 40px;
@@ -1135,9 +1136,9 @@ th{
 }
 .sample-submit-modal-content {
     position: relative;
-    margin-top: 3rem ;
+    margin-top: 6.5rem ;
     width: 350px;
-    height: 500px;
+    height: 400px;
     margin-left: 6.5%;
     background-color: #c8d8e4;
     padding: 1rem 1.5rem;
@@ -1327,7 +1328,7 @@ th{
 .Search-span{
     display: inline;
     float: left;
-    width: 400px;
+    width: 350px;
 }
 
 
@@ -1396,7 +1397,7 @@ th{
     align: center;
     width: 85%;
     margin-left: 100px;
-    margin-top: 125px;
+    margin-top: 135px;
     height: 65%;
     background-color: #c8d8e4;
     box-shadow: 1px 1px 5px #555 inset;
@@ -1523,15 +1524,20 @@ tr td{
     -moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
 }
 .initiate-span{
-    position: absolute;
-    display: inline;
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
     margin-left: 75px;
     color: black;
     font-family: "karrikregular";
     font-size: 20px;
 
 }
-
+.bool-checkbox{
+    position: relative;
+    display: inline-block;
+    margin-top: 15px;
+}
 /*Result submission*/
 .result-submit-modal{
     position: absolute;

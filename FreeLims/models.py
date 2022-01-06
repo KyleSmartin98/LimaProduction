@@ -59,6 +59,10 @@ class Sample(models.Model):
         ('Raw Material', 'Raw Material'),
         ('CTL Testing', 'CTL Testing'),
     )
+    INITIATED = (
+        (True, 'Initiate'),
+        (False, 'Do Not Initiate')
+    )
     PF = (
         (True, 'Pass'),
         (False, 'Fail')
@@ -75,7 +79,7 @@ class Sample(models.Model):
     logged_date = models.DateTimeField(default=datetime.now)
     logged_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    initiated = models.BooleanField(default=False) #Will determine if value is shown in initiated view
+    initiated = models.BooleanField(choices=INITIATED,default=False) #Will determine if value is shown in initiated view
     sample_test = models.CharField(max_length=200, choices=SAMPLE_TEST, null=True)
     initiated_by = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='initiatedUser')
     initiated_date = models.DateTimeField(default=datetime.now, null=True)
@@ -86,6 +90,7 @@ class Sample(models.Model):
     sample_result = models.CharField(max_length=100, default=None, null=True)
     comments = models.CharField(max_length=200,  null=True, default=None)
     reference = models.CharField(max_length=200,  null=True, default=None)
+    criteria = models.CharField(max_length=100, default=None, null=True)
 
     class Meta:
         # sort by "the date" in descending order unless
@@ -105,6 +110,10 @@ class Cheminventory(models.Model):
         ('General Lab Storage', 'General Lab Storage (25°C)'),
         ('Refrigerator', 'Refrigerator (2-8°C)'),
         ('Freezer', 'Freezer')
+    )
+    QUARANTINE = (
+        (True, 'Quarantine'),
+        (False, 'Do Not Quarantine')
     )
     OPENCLOSE = (
         (True, 'Open'),
@@ -127,7 +136,7 @@ class Cheminventory(models.Model):
     location = models.CharField(choices=LOCATIONS, max_length=100)
     comments = models.CharField(max_length=250)
 
-    quarantine = models.BooleanField(default=False)
+    quarantine = models.BooleanField(default=False, choices=QUARANTINE)
     open_container = models.BooleanField(choices=OPENCLOSE, blank=True, default=True, null=True)
 
     inv_disposal = models.BooleanField(choices=DISPOSAL, blank=True, default=False, null=True)

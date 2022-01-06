@@ -20,17 +20,6 @@
                 <button class="sample-modal-btn-text" type="submit" form="frmFoo" name="btn_dispose" value="dispose" onclick="!this.form && document.getElementById('disposeform').submit()">
                 Dispose
                 </button>
-                <!--<button class="sample-modal-btn">
-                    <a href ="#" class="sample-submit-text">Dispose</a>
-                </button>-->
-            </li>
-            <!--<li class = "Table-attributes-Nav-bar">
-                <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
-            </li> -->
-            <li class = "Table-attributes-Nav-bar">
-                <button class="sample-modal-btn">
-                    <a href ="{% url 'Inventory' %}" class="sample-submit-text">&#8855 Table Filter</a>
-                </button>
             </li>
             <li class = "Table-attributes-Nav-bar">
                 <button class="sample-modal-btn">
@@ -163,7 +152,6 @@
             <div class="reagent-submit-right">
                 {{form.volume_size}}
                 {{form.location}}
-                <span class="reagent-quarantine-span">Quarantine Reagent?</span>
                 {{form.quarantine}}
                 {{form.comments}}
                 <input type="submit" Value="Submit" class="reagent-submit">

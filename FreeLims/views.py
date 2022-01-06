@@ -206,10 +206,11 @@ def sampleBarcodeDownload(request, pk):
     if sample.organization == organization:
         lot = str(sample.tracking_number)
         ean = barcode.get('Code128', f'{lot}', writer=ImageWriter())
-        ean.save(f'{lot}_Barcode')
+        #ean.save(f'{lot}_Barcode')
         image = ean.render()
         response = HttpResponse(content_type="image/png")
         image.save(response, "PNG")
+        response['Content-Disposition'] = f'attachment; filename= "{lot}_barcode.png"'
         return response
     else:
         return redirect('Sample')
@@ -498,10 +499,11 @@ def BarcodeDownload(request, pk):
     gl_expiry = str(inventory.expiry)
     if inventory.organization == organization:
         ean = barcode.get('Code128', f'{gl_lot}', writer=ImageWriter())
-        ean.save(f'{gl_lot}_Barcode')
+        #ean.save(f'{gl_lot}_Barcode')
         image = ean.render()
         response = HttpResponse(content_type="image/png")
         image.save(response, "PNG")
+        response['Content-Disposition'] = f'attachment; filename= "{gl_lot}_barcode.png"'
         return response
     else:
         return redirect('Inventory')

@@ -131,11 +131,10 @@ class InitiateForm(ModelForm):
         super().__init__(*args, **kwargs)
         initiatetitles = ['initiated','sample_test']
         self.fields["initiated"].widget.attrs.update({
-            'type': 'text',
+            'type': 'checkbox',
             'placeholder': 'Initiate?',
             'class': 'registration-input',
             'autocomplete': 'off',
-            'style': 'margin-left: 70px'
         })
         self.fields["sample_test"].widget.attrs.update({
             'type': 'text',
@@ -162,7 +161,7 @@ class ResultForm(ModelForm):
     }))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        resulttetitles = ['result_pf','sample_result','reference' ,'comments']
+        resulttetitles = ['result_pf','sample_result','reference' ,'comments', 'criteria']
         self.fields["result_pf"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Passed?',
@@ -181,13 +180,18 @@ class ResultForm(ModelForm):
             'class': 'registration-input',
             'autocomplete': 'off',
         })
-
+        self.fields["criteria"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Criteria',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
         for i in resulttetitles:
             self.fields[i].label = ""
 
     class Meta:
         model = Sample
-        fields = ['result_pf','sample_result','reference','comments']
+        fields = ['result_pf','sample_result','criteria','reference','comments']
 
 class InventoryForm(ModelForm):
     comments = forms.CharField(widget=forms.Textarea(attrs={
@@ -233,8 +237,7 @@ class InventoryForm(ModelForm):
         self.fields["location"].choices = [("", "Storage Location"), ] + list(
             self.fields["location"].choices)[1:]
         self.fields["quarantine"].widget.attrs.update({
-            'class': 'reagent-input',
-            'style': 'margin-left:100px'
+            'class': 'reagent-input'
         })
 
         for i in inventorytitles:

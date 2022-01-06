@@ -12,14 +12,6 @@
     </div>
     <div class="Table-attributes-Nav-list">
         <ul class="Table-attributes-ul">
-            <!--<li class = "Table-attributes-Nav-bar">
-                <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
-            </li> -->
-            <li class = "Table-attributes-Nav-bar">
-                <button class="sample-modal-btn">
-                    <a href ="{% url 'Testing' %}" class="sample-submit-text">Clear Table Filter</a>
-                </button>
-            </li>
             <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
                 <div class="nav-dropdown"> <!--Dropdown class-->
                     <button class="sample-modal-btn-text">Navigation</button> <!--Button to Activate dropdown-->
@@ -40,11 +32,11 @@
         <table class=“sample-table”>
             <thead>
             <tr bgcolor="#BACDDE">
-              <th>Sample Name</th>
-              <th>Description</th>
-              <th>Tracking Number</th>
-              <th>Volume & Size</th>
-              <th>Expiry</th>
+                <th>Sample Name</th>
+                <th>Description</th>
+                <th>Tracking Number</th>
+                <th>Volume & Size</th>
+                <th>Expiry</th>
                 <th>logged Date</th>
                 <th>Logged By</th>
                 <th>Initiate Sample</th>
@@ -81,11 +73,8 @@
         <span class="registration-header">Sample Initiation Form</span>
         <form action="" method="POST">
             {% csrf_token %}
-            <span class="initiate-span">Initiate Sample</span>
-            {{form.initiated}}
-            {{form.sample_test}}
+            {{form}}
             <input type="submit" Value="Submit" class="registration-submit">
-            <input type="reset" value="Clear Input Fields" class="registration-submit">
         </form>
     </div>
 </div>

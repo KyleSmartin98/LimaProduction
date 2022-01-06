@@ -1,6 +1,6 @@
 {% extends 'FreeLims/base.html' %}
 {% block content %}
-<div class = "Table-attributes"> <!--Table attributes -->
+<div class = "Table-attributes">
     <div class="Search-span">
         <form method="get">
             <input type="submit" value="Search" class="sample-modal-btn-text-lg">
@@ -12,22 +12,14 @@
     </div>
     <div class="Table-attributes-Nav-list">
         <ul class="Table-attributes-ul">
-            <!--<li class = "Table-attributes-Nav-bar">
-                <input type="submit" value="Delete Sample" id="Delete_Sample" class="trigger">
-            </li> -->
-            <li class = "Table-attributes-Nav-bar">
-                <button class="sample-modal-btn">
-                    <a href ="{% url 'Results' %}" class="sample-submit-text">&#8855 Table Filter</a>
-                </button>
-            </li>
             <li class = "Table-attributes-Nav-bar">
                 <form action="{% url 'downloadresultcsv' %}" method="post">
                 {% csrf_token %}
                  <button type="submit" class="sample-modal-btn-text">Download CSV</button>
                  </form>
             </li>
-            <li class = "Table-attributes-Nav-bar"> <!--DropDown for Nav-->
-                <div class="nav-dropdown"> <!--Dropdown class-->
+            <li class = "Table-attributes-Nav-bar">
+                <div class="nav-dropdown">
                     <button class="sample-modal-btn-text">Navigation</button> <!--Button to Activate dropdown-->
                     <div class="nav-dropdown-content"> <!--DropDown Content-->
                         <a href="{% url 'Sample' %}">Sample Log-In</a>
@@ -70,7 +62,7 @@
                 <td>{{sample.sample_test}}</td>
                 {% if sample.sample_result|length > 0 %}
                 <td>{{sample.sample_result}}</td>
-                <td>{{sample.sample_pf|yesno}}</td>
+                <td>{{sample.criteria}}</td>
                 <td>
                     <button class="buttonDownload">
                         <a class="inventory-barcode-link" href="{% url 'Results_summary' sample.id %}" target="_blank">Download</a>
