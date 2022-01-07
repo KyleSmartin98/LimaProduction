@@ -71,11 +71,21 @@
     <div class="initiation-submit-modal-content">
         <a href="{% url 'Testing' %}" class="modal__close">Close</a>
         <span class="registration-header">Sample Initiation Form</span>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <div class="success-message" style="margin-left: 0%;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
         <form action="" method="POST">
             {% csrf_token %}
             {{form}}
-            <input type="submit" Value="Submit" class="registration-submit">
+            <input type="submit" Value="Submit" class="registration-submit" data-dismiss="initiation-submit-modal">
         </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

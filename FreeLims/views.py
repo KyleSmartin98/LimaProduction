@@ -17,7 +17,6 @@ from django.template import loader
 from django.core.management.utils import get_random_secret_key
 
 def landingPage(request):
-    page_title = 'GlobaLIMS'
     if request.method == "POST":
         contact_name = request.POST['contact-name']
         contact_email = request.POST['contact-email']
@@ -64,6 +63,8 @@ def logout_request(request):
 
 def LogIn(request):
     form = SignUpForm()
+    secretKeyForm = privateKeyForm()
+    pass_form = passwordChangeForm(request.user)
 
     if request.user.is_authenticated:
         return redirect('home')
@@ -119,8 +120,29 @@ def LogIn(request):
             else:
                 form = SignUpForm()
                 print(form.errors, 'failed')
+            if 'changepassword' in request.POST:
+                privateKey = request.POST.get('privateKey')
+                pass_form = passwordChangeForm(request.user, request.POST)
+                if pass_form.is_valid():
+                    profile = Profile.objects.get(Secret_Key=privateKey)
+                    user = profile.user
+                    u = User.objects.get(username=user)
+                    new_password = request.POST.get('new_password1')
+                    u.set_password(new_password)
+                    u.save()
+                    print('Passed')
+                    messages.success(request, 'Your Password Has Been Updated!')
+                    return redirect('login')
+                else:
+                    messages.error(request, 'Your New Password Was Unable to Be Saved!')
+                    return redirect('login')
 
-    context = {'form': form}
+
+    context = {
+        'form': form,
+        'secretKeyForm': secretKeyForm,
+        'pass_form': pass_form
+    }
     return render(request, 'FreeLims/LogIn.html', context)
 
 @login_required(login_url='login')
@@ -269,6 +291,7 @@ def Initiatesample(request, pk):
                     obj.initiated_by = User.objects.get(pk=request.user.id)
                     obj.initiated_date = str(datetime.now())
                     obj.save()
+                    messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
                     return redirect('Testing')
                 else:
                     print("ERROR : Form is invalid")
@@ -320,6 +343,7 @@ def Resultssubmit(request, pk):
                         obj.reported_by = User.objects.get(pk=request.user.id)
                         obj.report_date = str(datetime.now())
                         obj.save()
+                        messages.success(request, 'Your Result Submission Form Has Been Saved!')
                         return redirect('Results')
                     else:
                         print("ERROR : Form is invalid")

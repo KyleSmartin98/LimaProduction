@@ -89,11 +89,21 @@
     <div class="result-submit-modal-content">
         <a href="{% url 'Results' %}" class="modal__close">Close</a>
         <span class="registration-header">Result Submission</span>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <div class="success-message" style="margin-left: 0%;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
         <form action="" method="POST">
             {% csrf_token %}
             {{form}}
             <input type="submit" Value="Submit" class="registration-submit">
         </form>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

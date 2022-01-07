@@ -865,7 +865,9 @@ input[type="checkbox"]:checked + label{
     position: relative;
     margin-top: 0rem ;
     width: 350px;
-    height: 405px;
+    min-height: 200px;
+    height: auto;
+    max-height: 405px;
     margin-left: 6.5%;
     background-color: #c8d8e4;
     padding: 1rem 1.5rem;
@@ -1520,9 +1522,11 @@ tr td{
 }
 .initiation-submit-modal-content {
     position: relative;
-    margin-top: 8rem ;
+    margin-top: 12.5rem ;
     width: 350px;
-    height: 250px;
+    min-height: 100px;
+    height: auto;
+    max-height: 200px;
     margin-left: 6.5%;
     background-color: #c8d8e4;
     padding: 1rem 1.5rem;
@@ -1569,7 +1573,9 @@ tr td{
     position: relative;
     margin-top: 6.5rem ;
     width: 350px;
-    height: 350px;
+    min-height: 100px;
+    height: auto;
+    max-height: 350px;
     margin-left: 35%;
     background-color: #c8d8e4;
     padding: 1rem 1.5rem;

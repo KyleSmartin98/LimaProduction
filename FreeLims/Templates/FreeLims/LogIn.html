@@ -35,6 +35,7 @@
             <p>{{form.errors}}</p>
         </div>
         {% else %}
+        {% endif %}
         <form method="POST">
             {% csrf_token %}
             <span class="Log-in-header">Username</span>
@@ -45,13 +46,12 @@
             <input type="text" placeholder="Organization" class="Log-in-input">-->
             <input type="submit" Value="Sign In" name="login" class="Log-in-btn">
         </form>
-        {% endif %}
         <a class="sample-initiation-link" href="#registermodal">
             <button class="register-btn" id="registerbtn">
                 <span>Register</span>
             </button>
         </a>
-        <a><p style="color: #c8d8e4;font-family: karrikregular;">Forgot Your Password?</p></a>
+        <a href="#changepassword" class="a-PageLink "><p style="color: #c8d8e4;font-family: karrikregular;">Forgot Your Password?</p></a>
         <div class="modal" id="registermodal" style="z-axis: 1;">
             <div class="modal-content">
                 <a href="{% url 'login' %}" class="modal__close">Close</a>
@@ -75,19 +75,11 @@
         <div class="modal" id="changepassword" style="z-axis: 1;">
             <div class="modal-content">
                 <a href="{% url 'login' %}" class="modal__close">Close</a>
-                <form method="POST" action="" id="changepasswordform">
-                    {% csrf_token %}
-                    <!--<span class="close-button">&times;</span>-->
+                <form method="POST" action="{% url 'login' %}" id="changepasswordform">
                     <span class="registration-header">Change Password</span>
-                    <!--<span class="registration-desc">Username</span>
-                    {{form.username}}
-                    <span class="registration-desc">Organization</span>
-                    {{form.organization}}
-                    <span class="registration-desc">Email</span>
-                    {{form.email}}
-                    <span class="registration-desc">Password</span>
-                    {{form.password1}}
-                    {{form.password2}} -->
+                    {% csrf_token %}
+                    {{secretKeyForm}}
+                    {{pass_form}}
                     <input type="submit" Value="Change Password" class="registration-submit" name="changepassword">
                 </form>
             </div>
