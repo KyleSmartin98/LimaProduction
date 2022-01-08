@@ -291,8 +291,8 @@ class OpenForm(ModelForm):
 class editProfile(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'role', 'department', 'location']
-        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Role', 'Department', 'Location']
+        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'department', 'location']
+        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Department', 'Location']
         for i, j in zip(profileAttributes, profileAttributeNames):
             self.fields[i].widget.attrs.update({
                 'type': 'text',
@@ -301,14 +301,13 @@ class editProfile(forms.ModelForm):
                 'autocomplete': 'off',
             })
             self.fields[i].label = ""
-            self.fields["role"].choices = [("", "Role"), ] + list(
-                self.fields["role"].choices)[1:]
+            '''
             self.fields["department"].choices = [("", "Department"), ] + list(
-                self.fields["department"].choices)[1:]
-
+                self.fields["department"].choices)
+            '''
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'empl_ID', 'role', 'department', 'location']
+        fields = ['first_name', 'last_name', 'empl_ID', 'department', 'location']
 
 class privateKeyForm(forms.Form):
     privateKey = forms.CharField(max_length=75)

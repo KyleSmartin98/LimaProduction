@@ -99,7 +99,7 @@
                 <td>
                     <form id="disposeform" method="POST" action="">
                         {% csrf_token %}
-                        <input type="checkbox" name="inputs" value="{{inventory.id}}">
+                        <input type="checkbox" name="inputs" value="{{inventory.id}}" id="inputs" class="disposal-checkbox">
                     </form>
                 </td>
                 {% endif %}
@@ -179,7 +179,6 @@
             {% for message in messages %}
             <p>{{message}}</p>
             {% endfor %}
-            <input type="reset" value="Clear Input Field" class="reagent-submit">
             <input type="submit" Value="Submit" class="reagent-submit">
         </form>
     </div>

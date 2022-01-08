@@ -24,7 +24,7 @@ def landingPage(request):
         contact_message = request.POST['contact-message']
 
         send_mail(
-            'Message From:'+ ' ' + contact_name + ' ' + ' ' + contact_email + ' ' + 'about' + ' ' + contact_sub,
+            'Message From: '+ contact_name + ' about ' + contact_sub,
             contact_message,
             contact_email,
             ['caretagus@gmail.com'],
@@ -174,12 +174,51 @@ def settings_page(request):
                     messages.success(request, 'Your Password Has Been Updated!', extra_tags='password_updated')
                     return redirect('settings')
                 else:
-                    messages.warning(request, 'Passwords do Not Match', extra_tags='incorrect_passwords')
+                    messages.error(request, 'Passwords do Not Match', extra_tags='incorrect_passwords')
                     print('failed')
             else:
-                messages.warning(request, 'Your Secret Key is Incorrect', extra_tags='incorrect_privateKey')
-
-
+                messages.error(request, 'Your Secret Key is Incorrect', extra_tags='incorrect_privateKey')
+        if 'newPivateKey' in request.POST:
+            secretKey=get_random_secret_key()
+            profile = Profile.objects.get(id=request.user.id)
+            if profile.Secret_Key != secretKey:
+                profile.Secret_Key = secretKey
+                profile.save()
+                email_subject='[GlobaLIMS] Your New Secret Key'
+                email_body='Here is Your New Secret Key, Please Copy it to Somewhere Safe!: ' + secretKey
+                email = profile.email
+                send_mail(
+                    email_subject,
+                    email_body,
+                    'caretagus@gmail.com',
+                    [email],
+                    fail_silently=True,
+                )
+                messages.success(request, 'Your New Secret Key Has Been Generated! Check Your Email!')
+                return redirect('settings')
+                print('success')
+            else:
+                messages.error(request, 'Your Secret Key Was Unable to be Generated?! Please Try again!')
+                print('success')
+        if 'reportProblem' in request.POST:
+            email_subject = request.POST.get('emailSubject')
+            email_body = request.POST.get('emailBody')
+            if email_subject != '':
+                if email_body != '':
+                    profile = Profile.objects.get(id=request.user.id)
+                    email = profile.email
+                    send_mail(
+                        email_subject,
+                        email_body,
+                        email,
+                        ['caretagus@gmail.com'],
+                        fail_silently=True,
+                    )
+                    messages.success(request, 'Your Report Has Been Received!')
+                else:
+                    messages.error(request, 'Message has No Content')
+            else:
+                messages.error(request, 'Subject has No Content')
     context = {
         'profiles': profiles,
         'profileForm': profileForm,

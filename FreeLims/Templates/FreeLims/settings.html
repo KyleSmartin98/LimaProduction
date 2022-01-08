@@ -2,14 +2,14 @@
 {% block content %}
 {% load static %}
 <div class="settings-header">
-    <h1>Settings</h1>
+    <h1 style="font-family: karrikregular; font-size: 35px;">Settings</h1>
     <!--<div style="border-bottom: 1px solid black; width: 50%; margin-left: 25%;"></div>-->
 </div>
 <div class="settings-main-container">
     <div class="settings-left-container">
     <ul class="settings-ul">
       <li class="settings-ul-li">
-        <input type="checkbox" id="list-item-1">
+        <input type="checkbox" id="list-item-1" class="settings-checkbox">
           <label for="list-item-1" class="settings-label"><img src="{% static 'FreeLims/profile.svg' %}" class="Icon-paper" style="filter: invert(0%); display: inline-block;" /><h2 style="display: inline-block;">Update Personal Information</h2></label>
         <ul>
           <form method="POST">
@@ -25,7 +25,7 @@
         </ul>
       </li>
       <li class="settings-ul-li">
-        <input type="checkbox" id="list-item-2">
+        <input type="checkbox" id="list-item-2" class="settings-checkbox">
           <label for="list-item-2" class="settings-label"><img src="{% static 'FreeLims/lock.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h2 style="display: inline-block;">Change Password</h2></label>
         <ul>
           <form method="POST">
@@ -37,7 +37,7 @@
         </ul>
       </li>
       <li class="settings-ul-li">
-        <input type="checkbox" id="list-item-3">
+        <input type="checkbox" id="list-item-3" class="settings-checkbox">
         <label for="list-item-3" class="settings-label"><img src="{% static 'FreeLims/key.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h2 style="display: inline-block;">Request Secret Key</h2></label>
           <ul style="margin-left: 12.5%;">
             <div class="error-message" style="height: 65px; margin-left: 8%">
@@ -51,18 +51,35 @@
             </form>
           </ul>
       </li>
-      <li>
-        <input type="checkbox" id="list-item-4">
+      <li class="settings-ul-li">
+        <input type="checkbox" id="list-item-4" class="settings-checkbox">
         <label for="list-item-4" class="settings-label"><img src="{% static 'FreeLims/exclamation.svg' %}" class="Icon-paper" style="filter: invert(0%);"/><h2 style="display: inline-block;">Report a Problem</h2></label>
         <ul>
-          <li>Inconsolata</li>
-          <li>Source Code Pro</li>
-          <li>Droid Sans Mono</li>
-          <li>Ubuntu Mono</li>
-          <li>Cousine</li>
+          <form method="POST">
+            {% csrf_token %}
+            <input type="text" class="settings-input" name="emailSubject" placeholder="Subject">
+            <textarea class="settings-textarea" placeholder="Message Content" maxlength="300" name="emailBody"></textarea>
+            <input type="submit" value="Submit" name="reportProblem" class="settings-info-btn">
+          </form>
         </ul>
       </li>
     </ul>
+    </div>
+    <div class="settings-right-container">
+          {% if messages %}
+    {% for message in messages %}
+    {% if 'success' in message.tags %}
+        <div class="success-message">
+            <p>{{message}}</p>
+        </div>
+    {% endif %}
+    {% if 'error' in message.tags %}
+        <div class="error-message">
+            <p>{{message}}</p>
+        </div>
+  {% endif %}
+  {% endfor %}
+  {% endif %}
     </div>
 </div>
 {% endblock %}

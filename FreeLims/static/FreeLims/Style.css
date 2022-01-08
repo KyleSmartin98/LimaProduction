@@ -59,7 +59,7 @@
     min-width: 200px;
     max-width: 400px;
     width: auto;
-    min-height: 65px;
+    min-height: 45px;
     height: auto;
     max-height: 500px;
     color: black;
@@ -105,14 +105,15 @@
     justify-content: center;
     display: block;
     position: relative;
-    width: 100%;
+    min-width: 1405px;
+    max-width: auto;
     z-index: 1;
 
 }
 .Top-display-left {
     display: inline-block;
-    padding: 20px;
-    margin: 5px;
+    /*padding: 20px;*/
+    margin-left: 10%;
     position: relative;
     float: left;
 
@@ -120,7 +121,7 @@
 .Top-display-center {
     display: inline-block;
     padding: 0px;
-    margin-left: 25%;
+    /*margin-left: 25%;*/
     margin-top: 50px;
     position: relative;
     text-align: center;
@@ -527,15 +528,16 @@
     box-shadow: 1px 1px 5px #555 inset;
 }
 .settings-right-container{
-    background-color: white;
+   /*background-color: white;*/
     display: inline-flex;
     width: 30%;
     margin-top: 50px;
     border-radius: 35px;
     margin-left: 100px;
     height: auto;
-    box-shadow: 1px 1px 5px #555 inset;
+    /*box-shadow: 1px 1px 5px #555 inset;*/
     align-item: center;
+    text-align: center;
 }
 .settings-ul{
     list-style: none;
@@ -585,7 +587,7 @@
     -webkit-transform: rotate(-90deg)
 }
 
-input[type="checkbox"]{
+.settings-checkbox{
   position: absolute;
   left: -9999px;
   border-style: none;
@@ -631,6 +633,35 @@ input[type="checkbox"]:checked + label{
     outline:none;
     color: black;
     /* #2b6777 border: none; */
+}
+.settings-textarea{
+    position: relative;
+    display: flex;
+    min-width: 68%;
+    max-width: 68%;
+    min-height: 0px;
+    height: auto;
+    max-height: 250px;
+    left: 12.5%;
+    background: #c8d8e4;
+    border-style: solid;
+    border-color: #297cba;
+    border-radius: 35px;
+    margin-top: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color: black;
+    /* #2b6777 border: none; */
+    font-family: arial;
+    border-width: 2px;
+    padding: 15px 0;
+
 }
 .settings-info-btn{
     position: relative;
@@ -1466,6 +1497,7 @@ td{
     font-size: 14px;
     color: black;
     border-bottom: solid 1px rgba(255,255,255,0.1);
+    font-family: Helvetica;
 }
 tr td{
     background: #8cc2ff;
@@ -1850,4 +1882,7 @@ tr td{
 .inventory-barcode-link:hover{
     text-decoration: none;
     color: white;
+}
+.disposal-checkbox{
+    position: none;
 }

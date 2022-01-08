@@ -24,6 +24,7 @@ class Profile(models.Model):
         ('Director','Director'),
     )
     DEPARTMENT = (
+        ('','Department'),
         ('GENERAL LAB','GENERAL LAB'),
         ('QC CHEM','QC CHEM'),
         ('QC MICRO-BIO','QC MICRO-BIO'),
