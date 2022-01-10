@@ -137,7 +137,22 @@
 <div class="reagent-submit-modal" id="addreagent">
     <div class="reagent-submit-modal-content">
         <a href="" class="modal__close">Close</a>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="error-message" style="margin-left: 15%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% if 'success' in message.tags %}
+        <div class="success-message" style="margin-left: 15%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
         <span class="registration-header" style="margin-left:25px">Reagent Submission Form </span>
+        {% endif %}
         <form action="" method="POST">
             {% csrf_token %}
             <div class="reagent-submit-left">
@@ -147,13 +162,14 @@
                 <span class="reagent-span">Reagent Expiry</span>
                 {{form.expiry}}
                 {{qtyform.quantity}}
-                <input type="reset" value="Clear Input Field" class="reagent-submit">
+                {{form.volume_size}}
             </div>
             <div class="reagent-submit-right">
-                {{form.volume_size}}
                 {{form.location}}
                 {{form.quarantine}}
                 {{form.comments}}
+                <input type="text" class="registration-input" placeholder="Username" name="username" >
+                <input type="password" class="registration-input" placeholder="Password" name="password">
                 <input type="submit" Value="Submit" class="reagent-submit">
             </div>
         </form>

@@ -4,7 +4,7 @@ from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryFo
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Sample, User, Cheminventory, Profile
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 import csv, shortuuid
 from datetime import datetime
 from .filters import SampleFilter, InventoryFilter, quickSampleFilter
@@ -179,7 +179,7 @@ def settings_page(request):
             else:
                 messages.error(request, 'Your Secret Key is Incorrect', extra_tags='incorrect_privateKey')
         if 'newPivateKey' in request.POST:
-            secretKey=get_random_secret_key()
+            secretKey = get_random_secret_key()
             profile = Profile.objects.get(id=request.user.id)
             if profile.Secret_Key != secretKey:
                 profile.Secret_Key = secretKey
@@ -187,13 +187,19 @@ def settings_page(request):
                 email_subject='[GlobaLIMS] Your New Secret Key'
                 email_body='Here is Your New Secret Key, Please Copy it to Somewhere Safe!: ' + secretKey
                 email = profile.email
+                context = {
+                    'secretKey': secretKey,
+                }
+                html_message = loader.render_to_string('FreeLims/secretKeyEmail.html', context)
                 send_mail(
                     email_subject,
                     email_body,
                     'caretagus@gmail.com',
                     [email],
                     fail_silently=True,
+                    html_message=html_message
                 )
+
                 messages.success(request, 'Your New Secret Key Has Been Generated! Check Your Email!')
                 return redirect('settings')
                 print('success')
@@ -241,17 +247,24 @@ def Sample_page(request):
                       set(myfilter.get_fields()))
 
     if request.method == 'POST':
-        form = SampleForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(pk=request.user.id)
-            obj = form.save(commit=False)
-            obj.logged_by = user
-            obj.organization = user.profile.organization
-            #Profile.objects.get(user=User.objects.get('organization'))
-            obj.save()
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            form = SampleForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(pk=request.user.id)
+                obj = form.save(commit=False)
+                obj.logged_by = user
+                obj.organization = user.profile.organization
+                #Profile.objects.get(user=User.objects.get('organization'))
+                obj.save()
+                form = SampleForm()
+                messages.success(request, 'Your Sample Has Been Saved!')
+            else:
+                messages.error(request, 'Your Sample Has Not Been Saved!')
         else:
-            print("ERROR : Form is invalid")
-            print(form.errors)
+            messages.error(request, 'Either Your Password or Username Was Incorrect!')
 
     context = {
         'form': form,
@@ -324,20 +337,26 @@ def Initiatesample(request, pk):
     if samplepk.initiated == False:
         if samplepk.organization == user:
             if request.method == 'POST':
-                form = InitiateForm(request.POST, instance=samplepk)
-                if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.initiated_by = User.objects.get(pk=request.user.id)
-                    obj.initiated_date = str(datetime.now())
-                    obj.save()
-                    messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
-                    return redirect('Testing')
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    form = InitiateForm(request.POST, instance=samplepk)
+                    if form.is_valid():
+                        obj = form.save(commit=False)
+                        obj.initiated_by = User.objects.get(pk=request.user.id)
+                        obj.initiated_date = str(datetime.now())
+                        obj.save()
+                        messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
+                        return redirect('Testing')
+                    else:
+                        messages.error(request, 'Your Sample Was Not Saved')
                 else:
-                    print("ERROR : Form is invalid")
-                    print(form.errors)
+                    messages.error(request, 'Either Your Password or Username Was Incorrect!')
         else:
-                return redirect('Testing')
-    else: return redirect('Testing')
+            return redirect('Testing')
+    else:
+        return redirect('Testing')
 
     context = {
         'samples': samples,
@@ -376,17 +395,22 @@ def Resultssubmit(request, pk):
         if samplepk.sample_result is None:
             if samplepk.initiated == True:
                 if request.method == 'POST':
-                    form = ResultForm(request.POST, instance=samplepk)
-                    if form.is_valid():
-                        obj = form.save(commit=False)
-                        obj.reported_by = User.objects.get(pk=request.user.id)
-                        obj.report_date = str(datetime.now())
-                        obj.save()
-                        messages.success(request, 'Your Result Submission Form Has Been Saved!')
-                        return redirect('Results')
+                    username = request.POST.get('username')
+                    password = request.POST.get('password')
+                    user = authenticate(username=username, password=password)
+                    if user is not None:
+                        form = ResultForm(request.POST, instance=samplepk)
+                        if form.is_valid():
+                            obj = form.save(commit=False)
+                            obj.reported_by = User.objects.get(pk=request.user.id)
+                            obj.report_date = str(datetime.now())
+                            obj.save()
+                            messages.success(request, 'Your Result Submission Form Has Been Saved!')
+                            return redirect('Results')
+                        else:
+                            messages.error(request, 'Your Results Were Not Saved!')
                     else:
-                        print("ERROR : Form is invalid")
-                        print(form.errors)
+                        messages.error(request, 'Either Your Password or Username Was Incorrect!')
             else:
                 return redirect('Results')
         else:
@@ -491,25 +515,33 @@ def Inventorycreate(request):
     myfilter = InventoryFilter(request.GET, queryset=inventories)
     inventories = myfilter.qs
     if request.method == 'POST':
-        qty = request.POST.get('quantity')
-        form = InventoryForm(request.POST)
-        if form.is_valid():
-            user = User.objects.get(pk=request.user.id)
-            obj = form.save(commit=False)
-            if obj.quarantine is True:
-                obj.open_container = False
-            obj.logged_by = User.objects.get(pk=request.user.id)
-            obj.logged_date = str(datetime.now())
-            obj.quantity = str(1)
-            obj.Lab_lot = f'GL{str(lot_id)}'
-            obj.organization = user.profile.organization
-            for i in range(int(qty)):
-                obj.pk = None
-                obj.save()
+        username=request.POST.get('username')
+        password=request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            qty = request.POST.get('quantity')
+            form = InventoryForm(request.POST)
+            if form.is_valid():
+                user = User.objects.get(pk=request.user.id)
+                obj = form.save(commit=False)
+                if obj.quarantine is True:
+                    obj.open_container = False
+                obj.logged_by = User.objects.get(pk=request.user.id)
+                obj.logged_date = str(datetime.now())
+                obj.quantity = str(1)
+                obj.Lab_lot = f'GL{str(lot_id)}'
+                obj.organization = user.profile.organization
+                for i in range(int(qty)):
+                    obj.pk = None
+                    obj.save()
+                messages.success(request, 'Inventory Has Been Saved!')
+                form = InventoryForm()
+                return redirect('Inventory')
+            else:
+                print("ERROR : Form is invalid")
+                print(form.errors)
         else:
-            print("ERROR : Form is invalid")
-            print(form.errors)
-
+            messages.error(request, 'Either Your Password or Username Was Incorrect!')
     context = {
         'inventories': inventories,
         'form': form,

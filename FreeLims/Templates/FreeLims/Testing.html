@@ -73,6 +73,16 @@
         <span class="registration-header">Sample Initiation Form</span>
         {% if messages %}
         {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="error-message" style="margin-left: 0%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% endif %}
+        {% if messages %}
+        {% for message in messages %}
         {% if 'success' in message.tags %}
         <div class="success-message" style="margin-left: 0%;">
             <p>{{message}}</p>
@@ -83,6 +93,8 @@
         <form action="" method="POST">
             {% csrf_token %}
             {{form}}
+            <input type="text" class="registration-input" placeholder="Username" name="username" >
+            <input type="password" class="registration-input" placeholder="Password" name="password">
             <input type="submit" Value="Submit" class="registration-submit" data-dismiss="initiation-submit-modal">
         </form>
         {% endif %}

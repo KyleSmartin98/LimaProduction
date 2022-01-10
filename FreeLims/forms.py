@@ -78,42 +78,42 @@ class SampleForm(ModelForm):
         self.fields["sample_name"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Name',
-            'class': 'sample-input',
+            'class': 'reagent-input',
             'autocomplete': 'off',
         })
         self.fields["tracking_number"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Tracking Number',
-            'class': 'sample-input',
+            'class': 'reagent-input',
             'autocomplete': 'off',
         })
         self.fields["sample_volume"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Volume / Mass',
-            'class': 'sample-input',
+            'class': 'reagent-input',
             'autocomplete': 'off',
         })
         self.fields["sample_quantity"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Quantity',
-            'class': 'sample-input',
+            'class': 'reagent-input',
             'autocomplete': 'off',
         })
         self.fields["sample_type"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Sample Type',
-            'class': 'sample-input',
+            'class': 'reagent-input',
             'autocomplete': 'off',
 
         })
         self.fields["sample_type"].choices = [("", "Sample Type"), ] + list(
             self.fields["sample_type"].choices)[1:]
         self.fields["expiration_date"].widget.attrs.update({
-            'type': 'date',
+            'type': 'text',
             'placeholder': 'Sample Expiration Date',
-            'class': 'sample-input',
+            'class': 'reagent-input',
             'autocomplete': 'off',
-            'style': 'font-family: Arial, sans-serif;'
+            'style': 'font-family: Arial, sans-serif;',
         })
 
         for i in sampletitles:
@@ -156,7 +156,8 @@ class InitiateForm(ModelForm):
 class ResultForm(ModelForm):
     comments = forms.CharField(widget=forms.Textarea(attrs={
         'class': 'registration-input-lg',
-        'placeholder': 'Comment, if None: Write (N/A)',
+        'placeholder': 'Comment, if None: Write N/A',
+        'style': 'width: 57%; margin-left:14%;'
 
     }))
     def __init__(self, *args, **kwargs):

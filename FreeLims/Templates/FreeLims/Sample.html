@@ -77,8 +77,46 @@
     </table>
   </div>
 </div>
-
-<div class="sample-submit-modal" id="samplesubmit">
+<div class="reagent-submit-modal" id="samplesubmit">
+    <div class="reagent-submit-modal-content">
+        <a href="" class="modal__close">Close</a>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="error-message" style="margin-left: 15%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% if 'success' in message.tags %}
+        <div class="success-message" style="margin-left: 15%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <span class="registration-header" style="margin-left:25px">Sample Log-In Form</span>
+        {% endif %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="reagent-submit-left">
+                {{form.sample_name}}
+                {{form.sample_description}}
+                {{form.tracking_number}}
+                <span class="reagent-span">Sample Expiry</span>
+                {{form.expiration_date}}
+            </div>
+            <div class="reagent-submit-right">
+                {{form.sample_quantity}}
+                {{form.sample_volume}}
+                {{form.sample_type}}
+                <input type="text" class="reagent-input" placeholder="Username" name="username" >
+                <input type="password" class="reagent-input" placeholder="Password" name="password">
+                <input type="submit" Value="Submit" class="reagent-submit">
+            </div>
+        </form>
+    </div>
+</div>
+<!--<div class="sample-submit-modal" id="samplesubmit">
     <div class="sample-submit-modal-content">
         <a href="{% url 'Sample' %}" class="modal__close">Close</a>
         <span class="registration-header">Sample Log-In Form</span>
@@ -88,31 +126,7 @@
             <input type="submit" Value="Add Sample" class="registration-submit">
         </form>
     </div>
-</div>
-<div class="sample-submit-modal-sm" id="namefilter">
-    <div class="filter-content-modal-xs">
-        <a href="" class="modal__close">Close</a>
-        <span class="registration-header" style="margin-left:25px">Filter by Sample Name </span>
-        <form action="" method="get">
-            {% csrf_token %}
-            {{myfilter.form.name}}
-            <input type="submit" Value="Filter" class="registration-submit">
-            <input type="reset" value="Clear Input Field" class="registration-submit">
-        </form>
-    </div>
-</div>
-<div class="sample-submit-modal-sm" id="descfilter">
-    <div class="filter-content-modal-xs">
-        <a href="" class="modal__close">Close</a>
-        <span class="registration-header" style="margin-left:25px">Filter by Description </span>
-        <form action="" method="get">
-            {% csrf_token %}
-            {{myfilter.form.description}}
-            <input type="submit" Value="Filter" class="registration-submit">
-            <input type="reset" value="Clear Input Field" class="registration-submit">
-        </form>
-    </div>
-</div>
+</div>-->
 {% load static %}
 <script src="{% static 'FreeLims/app.js' %}"></script>
 {% endblock %}
