@@ -17,6 +17,8 @@ from django.template import loader
 from django.core.management.utils import get_random_secret_key
 
 def landingPage(request):
+    if request.user.is_authenticated:
+        return redirect('home')
     if request.method == "POST":
         contact_name = request.POST['contact-name']
         contact_email = request.POST['contact-email']
@@ -566,16 +568,27 @@ def InventoryOpen(request, pk):
     else:
         if inventorypk.organization == organization:
             if request.method == 'POST':
-                form = OpenForm(request.POST, instance=inventorypk)
-                if form.is_valid():
-                    obj = form.save(commit=False)
-                    obj.quarantine = False
-                    obj.open_container = True
-                    obj.save()
-                    return redirect('Inventory')
+                username = request.POST.get('username')
+                password = request.POST.get('password')
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    form = OpenForm(request.POST, instance=inventorypk)
+                    if form.is_valid():
+                        obj = form.save(commit=False)
+                        if obj.open_container == True:
+                            obj.quarantine = False
+                            obj.save()
+                            messages.success(request, 'Inventory Item Has Been Opened')
+                            return redirect('Inventory')
+                        else:
+                            messages.success(request, 'Inventory Item Is Closed')
+
+                    else:
+                        print("ERROR : Form is invalid")
+                        print(form.errors)
                 else:
-                    print("ERROR : Form is invalid")
-                    print(form.errors)
+                    messages.error(request, 'Either Your Password or Username Was Incorrect!')
+                    return redirect('Inventory')
         else:
             return redirect('Inventory')
 

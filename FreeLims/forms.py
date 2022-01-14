@@ -274,16 +274,13 @@ class DisposeForm(forms.Form):
         model = Sample
         fields = ['inv_disposal']
 class OpenForm(ModelForm):
-    open_container = forms.BooleanField()
+    #open_container = forms.BooleanField()
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["open_container"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': '',
             'class': 'registration-input',
-            'autocomplete': 'off',
         })
-        self.fields["open_container"].label = ""
+        #self.fields["open_container"].label = ""
 
     class Meta:
         model = Cheminventory

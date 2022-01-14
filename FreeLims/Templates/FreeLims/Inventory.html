@@ -122,18 +122,6 @@
         </form>
     </div>
 </div>
-<div class="sample-submit-modal-sm" id="namefilter">
-    <div class="filter-content-modal-xs">
-        <a href="" class="modal__close">Close</a>
-        <span class="registration-header" style="margin-left:25px">Filter by Sample Name </span>
-        <form action="" method="get">
-            {% csrf_token %}
-            {{myfilter.form.name}}
-            <input type="submit" Value="Filter" class="registration-submit">
-            <input type="reset" value="Clear Input Field" class="registration-submit">
-        </form>
-    </div>
-</div>
 <div class="reagent-submit-modal" id="addreagent">
     <div class="reagent-submit-modal-content">
         <a href="" class="modal__close">Close</a>
@@ -168,39 +156,53 @@
                 {{form.location}}
                 {{form.quarantine}}
                 {{form.comments}}
-                <input type="text" class="registration-input" placeholder="Username" name="username" >
-                <input type="password" class="registration-input" placeholder="Password" name="password">
+                <input type="text" class="reagent-input" placeholder="Username" name="username" >
+                <input type="password" class="reagent-input" placeholder="Password" name="password">
                 <input type="submit" Value="Submit" class="reagent-submit">
             </div>
         </form>
     </div>
 </div>
-<div class="reagent-submit-modal" id="disposereagent">
+<!--<div class="reagent-submit-modal" id="disposereagent">
     <div class="reagent-submit-modal-content">
         <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
         <span class="registration-header" style="margin-left:25px">Dispose Reagent</span>
     </div>
-</div>
+</div>-->
 <div class="sample-submit-modal-sm" id="openreagent">
     <div class="filter-content-modal-xs" style="margin-top:18rem">
         <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
         <span class="registration-header" style="margin-left:25px">Reagent Open </span>
         <form action="" method="POST">
+            {% if messages %}
+            {% for message in messages %}
+            {% if 'error' in message.tags %}
+            <div class="error-message" style="margin-left: 0%; margin-top: 0;">
+                <p>{{message}}</p>
+            </div>
+            {% endif %}
+            {% if 'success' in message.tags %}
+            <div class="success-message" style="margin-left: 0%; margin-top: 0;">
+                <p>{{message}}</p>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% else %}
             {% for inventory in inventories %}
                 {% if inventory.quarantine == True %}
                 {% csrf_token %}
                 {{form.open_container}}
+                <input type="text" class="registration-input" placeholder="Username" name="username" >
+                <input type="password" class="registration-input" placeholder="Password" name="password">
+                <input type="submit" Value="Submit" class="reagent-submit" style="margin-left: 5%;">
+                {% else %}
+                <div class="info-message" style="margin-left: 0%;">
+                <p>Inventory Item Does Not Exist</p>
+                </div>
                 {% endif %}
             {% endfor %}
-            {% for message in messages %}
-            <p>{{message}}</p>
-            {% endfor %}
-            <input type="submit" Value="Submit" class="reagent-submit">
+            {% endif %}
         </form>
     </div>
 </div>
-{% load static %}
-<script src="{% static 'FreeLims/app.js' %}"></script>
-
-
 {% endblock %}

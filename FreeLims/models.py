@@ -18,9 +18,11 @@ class Profile(models.Model):
         ('Lead QC Analyst','Lead QC Analyst'),
         ('Lead Mfg Analyst','Lead Mfg Analyst'),
         ('Supervisor','Supervisor'),
-        ('QC Supervisor','QC Supervisor'),
+        ('QC Supervisor', 'QC Supervisor'),
         ('Mfg Supervisor', 'Mfg Supervisor'),
-        ('Manager','Manager'),
+        ('QC Manager', 'QC Manager'),
+        ('Manager', 'Manager'),
+        ('QC Director', 'QC Director'),
         ('Director','Director'),
     )
     DEPARTMENT = (
@@ -87,16 +89,22 @@ class Sample(models.Model):
 
     reported_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='reportedUser')
     report_date = models.DateTimeField(default=datetime.now, null=True)
-    result_pf = models.BooleanField(choices=PF, max_length=4, blank=True, default=None, null=True)
+    result_pf = models.BooleanField(choices=PF, max_length=6, blank=True, default=None, null=True)
     sample_result = models.CharField(max_length=100, default=None, null=True)
     comments = models.CharField(max_length=200,  null=True, default=None)
     reference = models.CharField(max_length=200,  null=True, default=None)
     criteria = models.CharField(max_length=100, default=None, null=True)
 
+    #review_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='reviewerUser')
+    #review_date = models.DateTimeField(default=datetime.now, null=True)
+
+
     class Meta:
         # sort by "the date" in descending order unless
         # overridden in the query with order_by()
         ordering = ['expiration_date']
+
+
 class Cheminventory(models.Model):
     MANUFACTURERS = (
         ('Fisher Scientific', 'Fisher Scientific'),
@@ -116,7 +124,7 @@ class Cheminventory(models.Model):
         (True, 'Quarantine'),
         (False, 'Do Not Quarantine')
     )
-    OPENCLOSE = (
+    STATUS = (
         (True, 'Open'),
         (False, 'Close')
     )
@@ -138,7 +146,9 @@ class Cheminventory(models.Model):
     comments = models.CharField(max_length=250)
 
     quarantine = models.BooleanField(default=False, choices=QUARANTINE)
-    open_container = models.BooleanField(choices=OPENCLOSE, blank=True, default=True, null=True)
+    open_container = models.BooleanField(choices=STATUS, blank=True, default=True, null=True)
+    #open_date = models.DateTimeField(default=datetime.now, null=True)
+    #open_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='openUser')
 
     inv_disposal = models.BooleanField(choices=DISPOSAL, blank=True, default=False, null=True)
     disposal_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='disposalUser')
