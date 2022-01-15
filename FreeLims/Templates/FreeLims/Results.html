@@ -38,14 +38,19 @@
         <table class=“sample-table”>
             <thead>
             <tr bgcolor="#BACDDE">
-              <th>Sample Name</th>
-              <th>Description</th>
-              <th>Tracking Number</th>
-              <th>Volume / Size</th>
-              <th>Expiry</th>
+                <th>Sample Name</th>
+                <th>Description</th>
+                <th>Tracking Number</th>
+                <th>Volume / Size</th>
+                <th>Expiry</th>
                 <th>Test</th>
                 <th>Results</th>
                 <th>Criteria</th>
+                {% for i in reviewRoles %}
+                {% if request.user.profile.role == i %}
+                <th>Reviewed By</th>
+                {% endif %}
+                {% endfor %}
                 <th>Result Summary</th>
             </tr>
           </thead>
@@ -63,6 +68,19 @@
                 {% if sample.sample_result|length > 0 %}
                 <td>{{sample.sample_result}}</td>
                 <td>{{sample.criteria}}</td>
+                {% for i in reviewRoles %}
+                {% if request.user.profile.role == i %}
+                {% if sample.result_pf is None %}
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="{% url 'Results_review' sample.id %}#reviewResult" >Review</a>
+                    </button>
+                </td>
+                {% else %}
+                <td>Reviewed</td>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
                 <td>
                     <button class="buttonDownload">
                         <a class="inventory-barcode-link" href="{% url 'Results_summary' sample.id %}" target="_blank">Download</a>
@@ -77,6 +95,12 @@
                 <td>
                     Awaiting Result
                 </td>
+                {% for i in reviewRoles %}
+                {% if request.user.profile.role == i %}
+                <td>N/A</td>
+                <td>N/A</td>
+                {% endif %}
+                {% endfor %}
                 {% endif %}
             </tr>
           </tbody>
@@ -110,10 +134,47 @@
         {% else %}
         <form action="" method="POST">
             {% csrf_token %}
-            {{form}}
+            {{form.sample_result}}
+            {{form.criteria}}
+            {{form.reference}}
+            {{form.comments}}
             <input type="text" class="registration-input" placeholder="Username" name="username" >
             <input type="password" class="registration-input" placeholder="Password" name="password">
             <input type="submit" Value="Submit" class="registration-submit">
+        </form>
+        {% endif %}
+    </div>
+</div>
+<div class="result-submit-modal" id="reviewResult">
+    <div class="result-submit-modal-content">
+        <a href="{% url 'Results' %}" class="modal__close">Close</a>
+        <span class="registration-header">Review Results</span>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="error-message" style="margin-left: 0%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        {% endif %}
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <div class="success-message" style="margin-left: 0%;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            {{form.result_pf}}
+            <input type="text" class="registration-input" placeholder="Username" name="username" >
+            <input type="password" class="registration-input" placeholder="Password" name="password">
+            <input type="submit" Value="Submit" class="registration-submit" name="reviewSubmit">
+            <input type="submit" Value="Return to Analyst" class="registration-submit" name="sendBack">
         </form>
         {% endif %}
     </div>

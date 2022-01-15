@@ -376,10 +376,12 @@ def Results(request):
     samples = Sample.objects.filter(organization=user)
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
+    reviewRoles = ('Lead Analyst','Lead QC Analyst','Supervisor','QC Supervisor','Manager','QC Manager','Director', 'QC Director', )
     context = {
         'samples': samples,
         'myfilter': myfilter,
         'page_title': page_title,
+        'reviewRoles': reviewRoles,
     }
     return render(request, 'FreeLims/Results.html', context)
 
@@ -427,6 +429,69 @@ def Resultssubmit(request, pk):
     }
 
     return render(request, 'FreeLims/Results.html', context)
+
+@login_required(login_url='login')
+def Resultsreview(request, pk):
+    page_title='GlobaLIMS-Result Review'
+    samplepk = Sample.objects.get(id=pk)
+    user = User.objects.get(pk=request.user.id)
+    userOrg = user.profile.organization
+    samples = Sample.objects.filter(organization=userOrg)
+    myfilter = SampleFilter(request.GET, queryset=samples)
+    samples = myfilter.qs
+    form = ResultForm(instance=samplepk)
+    reviewRoles = ('Lead Analyst','Lead QC Analyst','Supervisor','QC Supervisor','Manager','QC Manager','Director', 'QC Director', )
+    if samplepk.organization == userOrg:
+        if samplepk.sample_result is not None:
+            if str(samplepk.reported_by) != str(request.user.username):
+                print(str(samplepk.reported_by) + str(request.user.username))
+                if user.profile.role in reviewRoles:
+                    if samplepk.initiated == True:
+                        if request.method == 'POST':
+                            username = request.POST.get('username')
+                            password = request.POST.get('password')
+                            user = authenticate(username=username, password=password)
+                            if user is not None:
+                                form = ResultForm(request.POST, instance=samplepk)
+                                if form.is_valid():
+                                    obj = form.save(commit=False)
+                                    obj.review_by = User.objects.get(pk=request.user.id)
+                                    obj.review_date = str(datetime.now())
+                                    obj.save()
+                                    messages.success(request, f'{str(request.user.profile.first_name)}, Your Review Has Been Saved!')
+                                    return redirect('Results')
+                                else:
+                                    messages.error(request, f'{str(request.user.profile.first_name)}, Your Review Was Not Saved!')
+                            else:
+                                messages.error(request, f'{str(request.user.profile.first_name)},Either Your Password or Username Was Incorrect!')
+                    else:
+                        messages.error(request, f'{str(request.user.profile.first_name)}, Sample Cannot Be Reviewed')
+                        return redirect('Results')
+                else:
+                    messages.error(request,f'{str(request.user.profile.first_name)}, You Do Not Have Permission to Review')
+                    print('Failed role')
+                    return redirect('Results')
+            else:
+                messages.error(request, f'{str(request.user.profile.first_name)}, You Do Not Have Permission to Review')
+                print('Failed same user')
+                return redirect('Results')
+
+        else:
+            messages.error(request, f'{str(request.user.profile.first_name)}, Sample Does Not Exist')
+            print('Failed sample results the same')
+            return redirect('Results')
+    else:
+        messages.error(request, f'{str(request.user.profile.first_name)}, Sample Does Not Exist')
+        return redirect('Results')
+    context = {
+        'form': form,
+        'samples': samples,
+        'myfilter': myfilter,
+        'page_title': page_title
+    }
+
+    return render(request, 'FreeLims/Results.html', context)
+
 
 @login_required(login_url='login')
 def resultsSummary(request, pk, *args, **kwargs):

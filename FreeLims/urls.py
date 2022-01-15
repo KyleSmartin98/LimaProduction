@@ -15,6 +15,7 @@ urlpatterns = [
     path('Trending/', views.Trending, name='Trending'),
     path('Results/', views.Results, name='Results'),
     path('Results_submit/<str:pk>/', views.Resultssubmit, name='Results_submit'),
+    path('Results_review/<str:pk>/', views.Resultsreview, name='Results_review'),
     path('Results_summary/<str:pk>/', views.resultsSummary, name='Results_summary'),
     path('Inventory_open/<str:pk>/', views.InventoryOpen, name='Inventory_open'),
     path('Barcode_download/<str:pk>/', views.BarcodeDownload, name='Barcode_download'),

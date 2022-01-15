@@ -289,8 +289,8 @@ class OpenForm(ModelForm):
 class editProfile(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'department', 'location']
-        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Department', 'Location']
+        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'role', 'department', 'location']
+        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Role','Department', 'Location']
         for i, j in zip(profileAttributes, profileAttributeNames):
             self.fields[i].widget.attrs.update({
                 'type': 'text',
@@ -305,7 +305,7 @@ class editProfile(forms.ModelForm):
             '''
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'empl_ID', 'department', 'location']
+        fields = ['first_name', 'last_name', 'empl_ID', 'role', 'department', 'location']
 
 class privateKeyForm(forms.Form):
     privateKey = forms.CharField(max_length=75)

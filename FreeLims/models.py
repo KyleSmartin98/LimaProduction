@@ -20,10 +20,13 @@ class Profile(models.Model):
         ('Supervisor','Supervisor'),
         ('QC Supervisor', 'QC Supervisor'),
         ('Mfg Supervisor', 'Mfg Supervisor'),
-        ('QC Manager', 'QC Manager'),
         ('Manager', 'Manager'),
+        ('QC Manager', 'QC Manager'),
+        ('Mfg Manager', 'Mfg Manager'),
+        ('Director', 'Director'),
         ('QC Director', 'QC Director'),
-        ('Director','Director'),
+        ('Mfg Director', 'Mfg Director'),
+
     )
     DEPARTMENT = (
         ('','Department'),
@@ -95,8 +98,8 @@ class Sample(models.Model):
     reference = models.CharField(max_length=200,  null=True, default=None)
     criteria = models.CharField(max_length=100, default=None, null=True)
 
-    #review_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='reviewerUser')
-    #review_date = models.DateTimeField(default=datetime.now, null=True)
+    review_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='reviewerUser')
+    review_date = models.DateTimeField(default=datetime.now, null=True)
 
 
     class Meta:
