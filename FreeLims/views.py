@@ -492,6 +492,47 @@ def Resultsreview(request, pk):
 
     return render(request, 'FreeLims/Results.html', context)
 
+@login_required(login_url='login')
+def auditReview(request, pk, *args, **kwargs):
+    page_title='GlobaLIMS-Audit Review'
+    samples = Sample.objects.get(id=pk)
+    now = datetime.now()
+    user = User.objects.get(pk=request.user.id)
+    organization = user.profile.organization
+    tracking = str(samples.tracking_number)
+    usersName = request.user.profile.first_name +" "+ request.user.profile.last_name
+    date_time = now.strftime("%m/%d/%Y")
+    reviewRoles = ('Lead Analyst','Lead QC Analyst','Supervisor','QC Supervisor','Manager','QC Manager','Director', 'QC Director', )
+    context = {
+        'samples': samples,
+        'now': date_time,
+        'organization': organization,
+        'page_title': page_title,
+        'tracking': tracking,
+        'usersName': usersName,
+    }
+    if samples.organization == organization:
+        if samples.sample_result is not None:
+            if str(samples.reported_by) != str(request.user.username):
+                print(str(samples.reported_by) + str(request.user.username))
+                if user.profile.role in reviewRoles:
+                    if samples.initiated == True:
+                        pdf = render_to_pdf('FreeLims/auditview.html', context)
+                        response = HttpResponse(pdf, content_type='application/pdf')
+                        filename = "Audit_"+ tracking + "_" + date_time + ".pdf"
+                        content = "inline; filename= %s " %(filename)
+                        response['Content-Disposition'] = content
+                        return response
+                    else:
+                        return redirect('Results')
+                else:
+                    return redirect('Results')
+            else:
+                return redirect('Results')
+        else:
+            return redirect('Results')
+    else:
+        return redirect('Results')
 
 @login_required(login_url='login')
 def resultsSummary(request, pk, *args, **kwargs):
