@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    @page {
+        size: A4 portrait; /* can use also 'landscape' for orientation */
+        margin-top: 0.5in;
+        margin-bottom: 1.0in;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_name;
+            left: 25pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_org;
+            -pdf-keep-with-next: true;
+            -pdf-word-wrap: CJK;
+            left: 300pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_date;
+            left: 550pt; width: 512pt; top: 50pt; height: 40pt;
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_content_linebreak;
+             width: 75%; top: 80pt; height: 20pt; background: black;
+
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content_name;
+            left: 50pt; width: 512pt; top: 1600pt; height: 20pt;
+        }
+         @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content_page;
+            left: 725pt; width: 512pt; top: 1650pt; height: 20pt;
+        }
+        @frame footer_frame {           /* Another static Frame */
+            -pdf-frame-content: footer_content_bar;
+             width: 75%; top: 500pt; height: 20pt;
+        }
+        @frame content_frame {
+        -pdf-word-wrap: CJK;
+        border: 0pt solid white;
+        width: 11in;
+        top: 1.5in;
+        height: 7.5in;
+      }
+    }
+    .desc {
+        font-size: 18px;
+        text-align: left;
+        margin-top: 100pt;
+        margin-bottom: 3px;
+        margin-left: 25px;
+    }
+    td{
+        height: 175px;
+        text-align: center;
+        padding: 0px;
+    }
+    table {
+        -pdf-keep-with-next: true;
+        -pdf-word-wrap: CJK;
+    }
+</style>
+<body>
+<div class="desc">
+<p style="text-align: right; margin-right: 25px; font-size: 24px;">Audit Report</p>
+<p style="text-align: right; margin-right: 25px;">Audit Prepared Date: {{now}}</p>
+<p style="text-align: right; margin-right: 25px;">Audit Prepared for: {{usersName}}</p>
+    <p style="text-align: right; margin-right: 25px;">Audit Prepared by: LIMa</p>
+
+<p>Sample Name: {{samples.sample_name}}</p>
+<p>Description: {{samples.sample_description}}</p>
+<p>Tracking Number: {{samples.tracking_number}}</p>
+<p>Sample Size: {{samples.sample_quantity}}x{{samples.sample_volume}}</p>
+<p>Sample Type: {{samples.sample_type}}</p>
+<p>Expiration Date: {{samples.expiration_date}}</p>
+<p>Logged By: {{samples.logged_by}}</p>
+<p>Date Logged: {{samples.logged_date}}</p>
+<p>Initiated By: {{samples.initiated_by}}</p>
+<p>Initiated Date: {{samples.initiated_date}}</p>
+<p>Assigned Test: {{samples.sample_test}}</p>
+<p>Reported By: {{samples.reported_by}}</p>
+<p>Report Date: {{samples.report_date}}</p>
+<p>Test Result: {{samples.sample_result}}</p>
+<p>Test Criteria: {{samples.criteria}}</p>
+<p>Reference: {{samples.reference}}</p>
+<p>Comment: {{samples.comments}}</p>
+</div>
+
+</body>
+</html>
