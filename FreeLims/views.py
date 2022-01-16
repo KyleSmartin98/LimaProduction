@@ -396,30 +396,39 @@ def Resultssubmit(request, pk):
     samples = myfilter.qs
     form = ResultForm(instance=samplepk)
     if samplepk.organization == user:
-        if samplepk.sample_result is None:
-            if samplepk.initiated == True:
-                if request.method == 'POST':
-                    username = request.POST.get('username')
-                    password = request.POST.get('password')
-                    user = authenticate(username=username, password=password)
-                    if user is not None:
-                        form = ResultForm(request.POST, instance=samplepk)
-                        if form.is_valid():
-                            obj = form.save(commit=False)
-                            obj.reported_by = User.objects.get(pk=request.user.id)
-                            obj.report_date = str(datetime.now())
-                            obj.save()
-                            messages.success(request, 'Your Result Submission Form Has Been Saved!')
-                            return redirect('Results')
+        if samplepk.initiated_by == request.user:
+            if samplepk.sample_result is None:
+                if samplepk.initiated == True:
+                    if request.method == 'POST':
+                        username = request.POST.get('username')
+                        password = request.POST.get('password')
+                        user = authenticate(username=username, password=password)
+                        if user is not None:
+                            form = ResultForm(request.POST, instance=samplepk)
+                            if form.is_valid():
+                                obj = form.save(commit=False)
+                                obj.reported_by = User.objects.get(pk=request.user.id)
+                                obj.report_date = str(datetime.now())
+                                obj.save()
+                                messages.success(request, 'Your Result Submission Form Has Been Saved!')
+                                return redirect('Results')
+                            else:
+                                messages.error(request, 'Your Results Were Not Saved!')
+                                return redirect('Results')
                         else:
-                            messages.error(request, 'Your Results Were Not Saved!')
-                    else:
-                        messages.error(request, 'Either Your Password or Username Was Incorrect!')
+                            messages.error(request, 'Either Your Password or Username Was Incorrect!')
+                            return redirect('Results')
+                else:
+                    messages.error(request, 'Testing Has Not Been Initiated!')
+                    return redirect('Results')
             else:
+                messages.error(request, 'Testing Report Already Exists!')
                 return redirect('Results')
         else:
+            messages.error(request, 'You Do Not Have Permission to Report!')
             return redirect('Results')
     else:
+        messages.error(request, 'Does Not Exist!')
         return redirect('Results')
     context = {
         'form': form,
@@ -448,22 +457,34 @@ def Resultsreview(request, pk):
                 if user.profile.role in reviewRoles:
                     if samplepk.initiated == True:
                         if request.method == 'POST':
-                            username = request.POST.get('username')
-                            password = request.POST.get('password')
-                            user = authenticate(username=username, password=password)
-                            if user is not None:
-                                form = ResultForm(request.POST, instance=samplepk)
-                                if form.is_valid():
-                                    obj = form.save(commit=False)
-                                    obj.review_by = User.objects.get(pk=request.user.id)
-                                    obj.review_date = str(datetime.now())
-                                    obj.save()
-                                    messages.success(request, f'{str(request.user.profile.first_name)}, Your Review Has Been Saved!')
-                                    return redirect('Results')
+                            if 'reviewSubmit' in request.POST:
+                                username = request.POST.get('username')
+                                password = request.POST.get('password')
+                                user = authenticate(username=username, password=password)
+                                if user is not None:
+                                    form = ResultForm(request.POST, instance=samplepk)
+                                    if form.is_valid():
+                                        obj = form.save(commit=False)
+                                        obj.review_by = User.objects.get(pk=request.user.id)
+                                        obj.review_date = str(datetime.now())
+                                        obj.save()
+                                        messages.success(request, f'{str(request.user.profile.first_name)}, Your Review Has Been Saved!')
+                                        return redirect('Results')
+                                    else:
+                                        messages.error(request, f'{str(request.user.profile.first_name)}, Your Review Was Not Saved!')
                                 else:
-                                    messages.error(request, f'{str(request.user.profile.first_name)}, Your Review Was Not Saved!')
-                            else:
-                                messages.error(request, f'{str(request.user.profile.first_name)},Either Your Password or Username Was Incorrect!')
+                                    messages.error(request, f'{str(request.user.profile.first_name)},Either Your Password or Username Was Incorrect!')
+                            if 'sendBack' in request.POST:
+                                samplepk.reported_by = None
+                                samplepk.report_date = None
+                                samplepk.sample_result = None
+                                samplepk.comments = None
+                                samplepk.reference = None
+                                samplepk.criteria = None
+                                samplepk.result_pf = None
+                                samplepk.save()
+                                messages.success(request,f'{str(request.user.profile.first_name)}, Sample Has Been Sent Back to Analyst')
+
                     else:
                         messages.error(request, f'{str(request.user.profile.first_name)}, Sample Cannot Be Reviewed')
                         return redirect('Results')
