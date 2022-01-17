@@ -162,13 +162,7 @@ class ResultForm(ModelForm):
     }))
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        resulttetitles = ['result_pf','sample_result','reference' ,'comments', 'criteria']
-        self.fields["result_pf"].widget.attrs.update({
-            'type': 'text',
-            'placeholder': 'Passed?',
-            'class': 'registration-input',
-            'autocomplete': 'off',
-        })
+        resulttetitles = ['sample_result','reference' ,'comments', 'criteria']
         self.fields["sample_result"].widget.attrs.update({
             'type': 'text',
             'placeholder': 'Result',
@@ -192,7 +186,22 @@ class ResultForm(ModelForm):
 
     class Meta:
         model = Sample
-        fields = ['result_pf','sample_result','criteria','reference','comments']
+        fields = ['sample_result','criteria','reference','comments']
+
+class resultReviewForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["result_pf"].widget.attrs.update({
+            'type': 'text',
+            'placeholder': 'Passed?',
+            'class': 'registration-input',
+            'autocomplete': 'off',
+        })
+        self.fields["result_pf"].label = ""
+
+    class Meta:
+        model = Sample
+        fields = ['result_pf']
 
 class InventoryForm(ModelForm):
     comments = forms.CharField(widget=forms.Textarea(attrs={
@@ -289,8 +298,8 @@ class OpenForm(ModelForm):
 class editProfile(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'role', 'department', 'location']
-        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Role','Department', 'Location']
+        profileAttributes = ["first_name", 'last_name', 'empl_ID', 'role', 'department', 'location', 'timezone']
+        profileAttributeNames = ['First Name', 'Last Name', 'Employee ID', 'Role','Department', 'Location', 'Timezone']
         for i, j in zip(profileAttributes, profileAttributeNames):
             self.fields[i].widget.attrs.update({
                 'type': 'text',
@@ -305,7 +314,7 @@ class editProfile(forms.ModelForm):
             '''
     class Meta:
         model = Profile
-        fields = ['first_name', 'last_name', 'empl_ID', 'role', 'department', 'location']
+        fields = ['first_name', 'last_name', 'empl_ID', 'role', 'department', 'location', 'timezone']
 
 class privateKeyForm(forms.Form):
     privateKey = forms.CharField(max_length=75)

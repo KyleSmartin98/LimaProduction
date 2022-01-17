@@ -1,5 +1,6 @@
 {% extends 'FreeLims/base.html' %}
 {% block content %}
+{% load tz %}
 <div class = "Table-attributes">
     <div class="Search-span">
         <form method="get">
@@ -53,17 +54,21 @@
                 <th>Download Barcode</th>
             </tr>
           </thead>
+
         {% csrf_token %}
         {% for sample in samples %}
           <tbody>
             <tr>
+
                 <td>{{sample.sample_name}}</td>
                 <td>{{sample.sample_description}}</td>
                 <td>{{sample.tracking_number}}</td>
                 <td>{{sample.sample_volume}}</td>
                 <td>{{sample.sample_type}}</td>
+                {% localtime on %}
                 <td>{{sample.expiration_date|date:"Y-m-d"}}</td>
                 <td>{{sample.logged_date|date:"Y-m-d"}}</td>
+                {% endlocaltime %}
                 <td>{{sample.logged_by}}</td>
                 <td>
                     <button class="buttonDownload">

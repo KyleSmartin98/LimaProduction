@@ -1,6 +1,6 @@
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, \
-    OpenForm, editProfile, passwordChangeForm, privateKeyForm
+    OpenForm, editProfile, passwordChangeForm, privateKeyForm, resultReviewForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .models import Sample, User, Cheminventory, Profile
@@ -15,6 +15,8 @@ from .utils import render_to_pdf
 from django.core.mail import send_mail
 from django.template import loader
 from django.core.management.utils import get_random_secret_key
+from django.utils import timezone
+
 
 def landingPage(request):
     if request.user.is_authenticated:
@@ -279,7 +281,7 @@ def Sample_page(request):
 
 @login_required(login_url='login')
 def sampleBarcodeDownload(request, pk):
-    now = datetime.now()
+    now = timezone.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     sample = Sample.objects.get(id=pk)
     user = User.objects.get(pk=request.user.id)
@@ -300,7 +302,7 @@ def sampleBarcodeDownload(request, pk):
 def sample_export(request):
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
-    now = datetime.now()
+    now = timezone.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
@@ -347,7 +349,7 @@ def Initiatesample(request, pk):
                     if form.is_valid():
                         obj = form.save(commit=False)
                         obj.initiated_by = User.objects.get(pk=request.user.id)
-                        obj.initiated_date = str(datetime.now())
+                        obj.initiated_date = str(timezone.now())
                         obj.save()
                         messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
                         return redirect('Testing')
@@ -408,7 +410,7 @@ def Resultssubmit(request, pk):
                             if form.is_valid():
                                 obj = form.save(commit=False)
                                 obj.reported_by = User.objects.get(pk=request.user.id)
-                                obj.report_date = str(datetime.now())
+                                obj.report_date = str(timezone.now())
                                 obj.save()
                                 messages.success(request, 'Your Result Submission Form Has Been Saved!')
                                 return redirect('Results')
@@ -448,7 +450,7 @@ def Resultsreview(request, pk):
     samples = Sample.objects.filter(organization=userOrg)
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
-    form = ResultForm(instance=samplepk)
+    form = resultReviewForm(instance=samplepk)
     reviewRoles = ('Lead Analyst','Lead QC Analyst','Supervisor','QC Supervisor','Manager','QC Manager','Director', 'QC Director', )
     if samplepk.organization == userOrg:
         if samplepk.sample_result is not None:
@@ -462,15 +464,16 @@ def Resultsreview(request, pk):
                                 password = request.POST.get('password')
                                 user = authenticate(username=username, password=password)
                                 if user is not None:
-                                    form = ResultForm(request.POST, instance=samplepk)
+                                    form = resultReviewForm(request.POST, instance=samplepk)
                                     if form.is_valid():
                                         obj = form.save(commit=False)
                                         obj.review_by = User.objects.get(pk=request.user.id)
-                                        obj.review_date = str(datetime.now())
+                                        obj.review_date = str(timezone.now())
                                         obj.save()
                                         messages.success(request, f'{str(request.user.profile.first_name)}, Your Review Has Been Saved!')
                                         return redirect('Results')
                                     else:
+                                        print(form.errors)
                                         messages.error(request, f'{str(request.user.profile.first_name)}, Your Review Was Not Saved!')
                                 else:
                                     messages.error(request, f'{str(request.user.profile.first_name)},Either Your Password or Username Was Incorrect!')
@@ -517,7 +520,7 @@ def Resultsreview(request, pk):
 def auditReview(request, pk, *args, **kwargs):
     page_title='GlobaLIMS-Audit Review'
     samples = Sample.objects.get(id=pk)
-    now = datetime.now()
+    now = timezone.now()
     user = User.objects.get(pk=request.user.id)
     organization = user.profile.organization
     tracking = str(samples.tracking_number)
@@ -559,7 +562,7 @@ def auditReview(request, pk, *args, **kwargs):
 def resultsSummary(request, pk, *args, **kwargs):
     page_title='GlobaLIMS-Result Summary Report'
     samples = Sample.objects.get(id=pk)
-    now = datetime.now()
+    now = timezone.now()
     user = User.objects.get(pk=request.user.id)
     organization = user.profile.organization
     tracking = str(samples.tracking_number)
@@ -587,7 +590,7 @@ def resultsSummary(request, pk, *args, **kwargs):
 def result_export(request):
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
-    now = datetime.now()
+    now = timezone.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)
@@ -618,7 +621,7 @@ def Inventory(request):
                 Cheminventory.objects.filter(id=i).update(
                     inv_disposal = True,
                     disposal_by = User.objects.get(pk=request.user.id),
-                    disposal_date = str(datetime.now())
+                    disposal_date = str(timezone.now())
                 )
                 return redirect('Inventory')
 
@@ -656,7 +659,7 @@ def Inventorycreate(request):
                 if obj.quarantine is True:
                     obj.open_container = False
                 obj.logged_by = User.objects.get(pk=request.user.id)
-                obj.logged_date = str(datetime.now())
+                obj.logged_date = str(timezone.now())
                 obj.quantity = str(1)
                 obj.Lab_lot = f'GL{str(lot_id)}'
                 obj.organization = user.profile.organization
@@ -729,7 +732,7 @@ def InventoryOpen(request, pk):
 
 @login_required(login_url='login')
 def BarcodeDownload(request, pk):
-    now = datetime.now()
+    now = timezone.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     inventory = Cheminventory.objects.get(id=pk)
     gl_lot = str(inventory.Lab_lot)
@@ -752,7 +755,7 @@ def BarcodeDownload(request, pk):
 def inventory_export(request):
     user = User.objects.get(pk=request.user.id)
     user = user.profile.organization
-    now = datetime.now()
+    now = timezone.now()
     date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
     response = HttpResponse(content_type='text/csv')
     writer = csv.writer(response)

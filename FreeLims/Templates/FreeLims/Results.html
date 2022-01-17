@@ -1,5 +1,6 @@
 {% extends 'FreeLims/base.html' %}
 {% block content %}
+{% load tz %}
 <div class = "Table-attributes">
     <div class="Search-span">
         <form method="get">
@@ -43,8 +44,9 @@
                 <th>Tracking Number</th>
                 <th>Volume / Size</th>
                 <th>Expiry</th>
+                <th>Initiated By:</th>
                 <th>Test</th>
-                <th>Results</th>
+                <th>Result</th>
                 <th>Criteria</th>
                 {% for i in reviewRoles %}
                 {% if request.user.profile.role == i %}
@@ -64,7 +66,10 @@
                 <td>{{sample.sample_description}}</td>
                 <td>{{sample.tracking_number}}</td>
                 <td>{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                {% localtime on %}
                 <td>{{sample.expiration_date|date:"Y-m-d"}}</td>
+                {% endlocaltime %}
+                <td>{{sample.initiated_by}}</td>
                 <td>{{sample.sample_test}}</td>
                 {% if sample.sample_result|length > 0 %}
                 <td>{{sample.sample_result}}</td>
@@ -83,7 +88,12 @@
                     </button>
                 </td>
                 {% else %}
-                <td>Reviewed</td>
+                <td>{{sample.review_by}}</td>
+                <td>
+                    <button class="sample-initiation-btn">
+                        <a class="sample-initiation-link" href="{% url 'Audit_review' sample.id %}" >Audit</a>
+                    </button>
+                </td>
                 {% endif %}
                 {% endif %}
                 {% endfor %}
@@ -180,7 +190,6 @@
             {{form.result_pf}}
             <input type="text" class="registration-input" placeholder="Username" name="username" >
             <input type="password" class="registration-input" placeholder="Password" name="password">
-            <a href="#" class="a-PageLink" ><p style="color: #2b6777; font-family: karrikregular; margin-left: 32.5%">View Audit Trail</p></a>
             <input type="submit" Value="Submit" class="registration-submit" name="reviewSubmit">
             <input type="submit" Value="Return to Analyst" class="registration-submit" name="sendBack">
         </form>

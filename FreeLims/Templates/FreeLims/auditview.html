@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    {% load tz %}
 <style>
     @page {
         size: A4 portrait; /* can use also 'landscape' for orientation */
@@ -74,14 +75,22 @@
 <p>Tracking Number: {{samples.tracking_number}}</p>
 <p>Sample Size: {{samples.sample_quantity}}x{{samples.sample_volume}}</p>
 <p>Sample Type: {{samples.sample_type}}</p>
+{% localtime on %}
 <p>Expiration Date: {{samples.expiration_date}}</p>
+{% endlocaltime %}
 <p>Logged By: {{samples.logged_by}}</p>
+{% localtime on %}
 <p>Date Logged: {{samples.logged_date}}</p>
+{% endlocaltime %}
 <p>Initiated By: {{samples.initiated_by}}</p>
+{% localtime on %}
 <p>Initiated Date: {{samples.initiated_date}}</p>
+{% endlocaltime %}
 <p>Assigned Test: {{samples.sample_test}}</p>
 <p>Reported By: {{samples.reported_by}}</p>
+{% localtime on %}
 <p>Report Date: {{samples.report_date}}</p>
+{% endlocaltime %}
 <p>Test Result: {{samples.sample_result}}</p>
 <p>Test Criteria: {{samples.criteria}}</p>
 <p>Reference: {{samples.reference}}</p>

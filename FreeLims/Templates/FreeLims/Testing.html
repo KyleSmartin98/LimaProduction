@@ -1,5 +1,6 @@
 {% extends 'FreeLims/base.html' %}
 {% block content %}
+{% load tz %}
 <div class = "Table-attributes"> <!--Table attributes -->
     <div class="Search-span">
         <form method="get">
@@ -51,8 +52,12 @@
                 <td>{{sample.sample_description}}</td>
                 <td>{{sample.tracking_number}}</td>
                 <td>{{sample.sample_quantity}}x{{sample.sample_volume}}</td>
+                {% localtime on %}
                 <td>{{sample.expiration_date|date:"Y-m-d"}}</td>
+                {% endlocaltime %}
+                {% localtime on %}
                 <td >{{sample.logged_date|date:"Y-m-d"}}</td>
+                {% endlocaltime %}
                 <td>{{sample.logged_by}}</td>
                 <td>
                     <button class="sample-initiation-btn">

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from datetime import datetime
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.core.management.utils import get_random_secret_key
+import pytz
 
 def generateHiddenKey():
     return get_random_secret_key()
@@ -44,6 +45,7 @@ class Profile(models.Model):
     role = models.CharField(choices=ROLE, max_length=100, default=None, null=True)
     department = models.CharField(choices=DEPARTMENT, max_length=100, default=None, null=True)
     location = models.CharField(max_length=150, default=None, null=True)
+    timezone = models.CharField(max_length=128, choices=[(tz, tz) for tz in ['UTC'] + pytz.country_timezones('US')],default="UTC")
     Secret_Key = models.CharField(max_length=100, default=generateHiddenKey)
     email = models.CharField(max_length=100, default=None, null=True)
 

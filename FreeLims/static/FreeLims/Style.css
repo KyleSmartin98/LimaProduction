@@ -1465,7 +1465,7 @@ th{
  }
  .sample-tbl-results-container{
     margin-top: 25px;
-    margin-left:2.5%;
+    margin-left: 0;
     max-height: 500px;
 
  }
