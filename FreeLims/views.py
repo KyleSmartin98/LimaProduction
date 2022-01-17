@@ -6,7 +6,8 @@ from django.contrib import messages
 from .models import Sample, User, Cheminventory, Profile
 from django.http import HttpResponse, HttpResponseRedirect
 import csv, shortuuid
-from datetime import datetime
+import datetime
+from datetime import datetime as dttime
 from .filters import SampleFilter, InventoryFilter, quickSampleFilter
 import barcode
 from barcode.writer import ImageWriter
@@ -340,23 +341,28 @@ def Initiatesample(request, pk):
     form = InitiateForm(instance=samplepk)
     if samplepk.initiated == False:
         if samplepk.organization == user:
-            if request.method == 'POST':
-                username = request.POST.get('username')
-                password = request.POST.get('password')
-                user = authenticate(username=username, password=password)
-                if user is not None:
-                    form = InitiateForm(request.POST, instance=samplepk)
-                    if form.is_valid():
-                        obj = form.save(commit=False)
-                        obj.initiated_by = User.objects.get(pk=request.user.id)
-                        obj.initiated_date = str(timezone.now())
-                        obj.save()
-                        messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
-                        return redirect('Testing')
+            delta = samplepk.expiration_date.date() - datetime.date.today()
+            if delta.days > 0:
+                if request.method == 'POST':
+                    username = request.POST.get('username')
+                    password = request.POST.get('password')
+                    user = authenticate(username=username, password=password)
+                    if user is not None:
+                        form = InitiateForm(request.POST, instance=samplepk)
+                        if form.is_valid():
+                            obj = form.save(commit=False)
+                            obj.initiated_by = User.objects.get(pk=request.user.id)
+                            obj.initiated_date = str(timezone.now())
+                            obj.save()
+                            messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
+                            return redirect('Testing')
+                        else:
+                            messages.error(request, 'Your Sample Was Not Saved')
                     else:
-                        messages.error(request, 'Your Sample Was Not Saved')
-                else:
-                    messages.error(request, 'Either Your Password or Username Was Incorrect!')
+                        messages.error(request, 'Either Your Password or Username Was Incorrect!')
+            else:
+                messages.error(request, 'Sample Has Expired!')
+
         else:
             return redirect('Testing')
     else:
@@ -401,25 +407,30 @@ def Resultssubmit(request, pk):
         if samplepk.initiated_by == request.user:
             if samplepk.sample_result is None:
                 if samplepk.initiated == True:
-                    if request.method == 'POST':
-                        username = request.POST.get('username')
-                        password = request.POST.get('password')
-                        user = authenticate(username=username, password=password)
-                        if user is not None:
-                            form = ResultForm(request.POST, instance=samplepk)
-                            if form.is_valid():
-                                obj = form.save(commit=False)
-                                obj.reported_by = User.objects.get(pk=request.user.id)
-                                obj.report_date = str(timezone.now())
-                                obj.save()
-                                messages.success(request, 'Your Result Submission Form Has Been Saved!')
-                                return redirect('Results')
+                    delta = samplepk.expiration_date.date()-datetime.date.today()
+                    if delta.days > 0:
+                        if request.method == 'POST':
+                            username = request.POST.get('username')
+                            password = request.POST.get('password')
+                            user = authenticate(username=username, password=password)
+                            if user is not None:
+                                form = ResultForm(request.POST, instance=samplepk)
+                                if form.is_valid():
+                                    obj = form.save(commit=False)
+                                    obj.reported_by = User.objects.get(pk=request.user.id)
+                                    obj.report_date = str(timezone.now())
+                                    obj.save()
+                                    messages.success(request, 'Your Result Submission Form Has Been Saved!')
+                                    return redirect('Results')
+                                else:
+                                    messages.error(request, 'Your Results Were Not Saved!')
+                                    return redirect('Results')
                             else:
-                                messages.error(request, 'Your Results Were Not Saved!')
+                                messages.error(request, 'Either Your Password or Username Was Incorrect!')
                                 return redirect('Results')
-                        else:
-                            messages.error(request, 'Either Your Password or Username Was Incorrect!')
-                            return redirect('Results')
+                    else:
+                        messages.error(request, 'Sample Has Expired!')
+                        return redirect('Results')
                 else:
                     messages.error(request, 'Testing Has Not Been Initiated!')
                     return redirect('Results')
