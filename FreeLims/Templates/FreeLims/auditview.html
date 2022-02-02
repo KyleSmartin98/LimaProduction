@@ -54,8 +54,7 @@
         margin-left: 25px;
     }
     td{
-        height: 175px;
-        text-align: center;
+        text-align: left;
         padding: 0px;
     }
     table {
@@ -65,36 +64,46 @@
 </style>
 <body>
 <div class="desc">
-<p style="text-align: right; margin-right: 25px; font-size: 24px;">Audit Report</p>
-<p style="text-align: right; margin-right: 25px;">Audit Prepared Date: {{now}}</p>
-<p style="text-align: right; margin-right: 25px;">Audit Prepared for: {{usersName}}</p>
-    <p style="text-align: right; margin-right: 25px;">Audit Prepared by: LIMa</p>
-
-<p>Sample Name: {{samples.sample_name}}</p>
-<p>Description: {{samples.sample_description}}</p>
-<p>Tracking Number: {{samples.tracking_number}}</p>
-<p>Sample Size: {{samples.sample_quantity}}x{{samples.sample_volume}}</p>
-<p>Sample Type: {{samples.sample_type}}</p>
-{% localtime on %}
-<p>Expiration Date: {{samples.expiration_date}}</p>
-{% endlocaltime %}
-<p>Logged By: {{samples.logged_by}}</p>
-{% localtime on %}
-<p>Date Logged: {{samples.logged_date}}</p>
-{% endlocaltime %}
-<p>Initiated By: {{samples.initiated_by}}</p>
-{% localtime on %}
-<p>Initiated Date: {{samples.initiated_date}}</p>
-{% endlocaltime %}
-<p>Assigned Test: {{samples.sample_test}}</p>
-<p>Reported By: {{samples.reported_by}}</p>
-{% localtime on %}
-<p>Report Date: {{samples.report_date}}</p>
-{% endlocaltime %}
-<p>Test Result: {{samples.sample_result}}</p>
-<p>Test Criteria: {{samples.criteria}}</p>
-<p>Reference: {{samples.reference}}</p>
-<p>Comment: {{samples.comments}}</p>
+    <table>
+        <tr>
+            <th>
+                <p style="text-align: right; margin-right: 25px; font-size: 24px;">Audit Report</p>
+                <p style="text-align: right; margin-right: 25px;">Audit Prepared Date: {{now}}</p>
+                <p style="text-align: right; margin-right: 25px;">Audit Prepared for: {{usersName}}</p>
+                <p style="text-align: right; margin-right: 25px;">Audit Prepared by: LIMa</p>
+            </th>
+        </tr>
+        <tr>
+            <td>
+                <p>Sample Name: {{samples.sample_name}}</p>
+                <p>Description: {{samples.sample_description}}</p>
+                <p>Tracking Number: {{samples.tracking_number}}</p>
+                <p>Sample Size: {{samples.sample_quantity}}x{{samples.sample_volume}}</p>
+                <p>Sample Type: {{samples.sample_type}}</p>
+                {% localtime on %}
+                <p>Expiration Date: {{samples.expiration_date}}</p>
+                {% endlocaltime %}
+                <p>Logged By: {{samples.logged_by}}</p>
+                {% localtime on %}
+                <p>Date Logged: {{samples.logged_date}}</p>
+                {% endlocaltime %}
+                <p>Initiated By: {{samples.initiated_by}}</p>
+                {% localtime on %}
+                <p>Initiated Date: {{samples.initiated_date}}</p>
+                {% endlocaltime %}
+                <p>Assigned Test: {{samples.sample_test}}</p>
+                <p>Reported By: {{samples.reported_by}}</p>
+                {% localtime on %}
+                <p>Report Date: {{samples.report_date}}</p>
+                {% endlocaltime %}
+                <p>Test Result: {{samples.sample_result}}</p>
+                <p>Test Criteria: {{samples.criteria}}</p>
+                <p>Reference: {{samples.reference}}</p>
+                <p>Comment: {{samples.comments}}</p>
+                <p style="font-size: 15px; text-align: center;"> ------------------------------{END OF COPY}------------------------------</p>
+            </td>
+        </tr>
+    </table>
 </div>
 
 </body>

@@ -45,9 +45,20 @@ class Profile(models.Model):
     role = models.CharField(choices=ROLE, max_length=100, default=None, null=True)
     department = models.CharField(choices=DEPARTMENT, max_length=100, default=None, null=True)
     location = models.CharField(max_length=150, default=None, null=True)
-    timezone = models.CharField(max_length=128, choices=[(tz, tz) for tz in ['UTC'] + pytz.country_timezones('US')],default="UTC")
+    timezone = models.CharField(max_length=128, choices=[(tz, tz) for tz in ['UTC'] + pytz.country_timezones('US')], default="UTC")
     Secret_Key = models.CharField(max_length=100, default=generateHiddenKey)
     email = models.CharField(max_length=100, default=None, null=True)
+    #date_created = models.DateTimeField(default=datetime.now)
+
+'''
+class Tenant(models.Model):
+    organization_name = models.CharField(max_length=125, default=None, null=True)
+    user_count = models.IntegerField(default=None, null=True)
+    subscription_paid = models.BooleanField(default=False)
+    paid_until = models.DateTimeField(default=None)
+    payment_date = models.DateTimeField(default=None)
+'''
+
 
 
 class Sample(models.Model):
@@ -152,8 +163,8 @@ class Cheminventory(models.Model):
 
     quarantine = models.BooleanField(default=False, choices=QUARANTINE)
     open_container = models.BooleanField(choices=STATUS, blank=True, default=True, null=True)
-    #open_date = models.DateTimeField(default=datetime.now, null=True)
-    #open_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='openUser')
+    open_date = models.DateTimeField(default=datetime.now, null=True)
+    open_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='openUser')
 
     inv_disposal = models.BooleanField(choices=DISPOSAL, blank=True, default=False, null=True)
     disposal_by = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='disposalUser')
@@ -164,6 +175,12 @@ class Cheminventory(models.Model):
         # overridden in the query with order_by()
         ordering = ['expiry']
 
+'''
+class instrumentInventory(models.Model):
+    instrument_manufacturer = models.CharField(max_length=100)
+    instrument_name = models.CharField(max_length=100)
+    instrument_id = models.CharField(max_length=100)
+'''
 
 
 

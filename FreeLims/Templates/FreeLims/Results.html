@@ -84,14 +84,14 @@
                 </td>
                 <td>
                     <button class="sample-initiation-btn">
-                        <a class="sample-initiation-link" href="{% url 'Audit_review' sample.id %}" >Audit</a>
+                        <a class="sample-initiation-link" href="{% url 'Audit_review' sample.id %}" target="_blank">Audit</a>
                     </button>
                 </td>
                 {% else %}
                 <td>{{sample.review_by}}</td>
                 <td>
                     <button class="sample-initiation-btn">
-                        <a class="sample-initiation-link" href="{% url 'Audit_review' sample.id %}" >Audit</a>
+                        <a class="sample-initiation-link" href="{% url 'Audit_review' sample.id %}" target="_blank">Audit</a>
                     </button>
                 </td>
                 {% endif %}

@@ -92,7 +92,7 @@ def LogIn(request):
                     username = form.cleaned_data.get('username')
                     Profile.objects.create(
                         user=user,
-                        organization=form.cleaned_data['organization'],
+                        organization=form.cleaned_data['organization'].capitalize(),
                         email=form.cleaned_data['email'],
                     )
                     user.save()
@@ -462,11 +462,10 @@ def Resultsreview(request, pk):
     myfilter = SampleFilter(request.GET, queryset=samples)
     samples = myfilter.qs
     form = resultReviewForm(instance=samplepk)
-    reviewRoles = ('Lead Analyst','Lead QC Analyst','Supervisor','QC Supervisor','Manager','QC Manager','Director', 'QC Director', )
+    reviewRoles = ('Lead Analyst','Lead QC Analyst','Supervisor','QC Supervisor','Manager','QC Manager','Director', 'QC Director')
     if samplepk.organization == userOrg:
         if samplepk.sample_result is not None:
             if str(samplepk.reported_by) != str(request.user.username):
-                print(str(samplepk.reported_by) + str(request.user.username))
                 if user.profile.role in reviewRoles:
                     if samplepk.initiated == True:
                         if request.method == 'POST':
@@ -704,7 +703,7 @@ def InventoryOpen(request, pk):
     user = User.objects.get(pk=request.user.id)
     organization = user.profile.organization
     if inventorypk.quarantine is False:
-        #messages.error(request, 'This Reagent is Open')
+        messages.error(request, 'This Reagent is Open')
         return redirect('Inventory')
     else:
         if inventorypk.organization == organization:
@@ -725,6 +724,7 @@ def InventoryOpen(request, pk):
                             messages.success(request, 'Inventory Item Is Closed')
 
                     else:
+                        return redirect('Inventory')
                         print("ERROR : Form is invalid")
                         print(form.errors)
                 else:
@@ -753,7 +753,6 @@ def BarcodeDownload(request, pk):
     gl_expiry = str(inventory.expiry)
     if inventory.organization == organization:
         ean = barcode.get('Code128', f'{gl_lot}', writer=ImageWriter())
-        #ean.save(f'{gl_lot}_Barcode')
         image = ean.render()
         response = HttpResponse(content_type="image/png")
         image.save(response, "PNG")
@@ -777,6 +776,8 @@ def inventory_export(request):
     return response
 
 @login_required(login_url='login')
-def Method(request):
-    return render(request, 'FreeLims/Method.html')
+def Instrument(request):
+    return render(request, 'FreeLims/Instrument.html')
 
+def Documentation(request):
+    return render(request, 'FreeLims/Documentation.html')

@@ -359,3 +359,140 @@ modal:target {
   visibility: visible;
   opacity: 1;
 }
+Must add Criteria to form
+
+        if 'newPivateKey' in request.POST:
+            secretKey = get_random_secret_key()
+            newKeyForm = privateKeyChangeForm(request.POST, instance=profiles)
+            obj = newKeyForm.save(commit=False)
+            obj.Secret_Key = secretKey
+            obj.save()
+            email_subject = 'GlobaLIMS New Secret Key'
+            email = profiles.email
+            email_body = 'Here is your new Secret Key. Please copy it to a secure location: ' + str(profiles.Secret_Key)
+            send_mail(
+                email_subject,
+                email_body,
+                'caretagus@gmail.com',
+                [email],
+                fail_silently=True,
+            )
+            logout(request)
+            messages.success(request, 'Your New Secret Key Has Been Generated. Please Check Your Email!')
+
+        ++0i(($s(mhh=@gaz)k_jf##-49ar&tv$9=#+le)x7ln3!51%5
+
+        <input type="text" class="registration-input" placeholder="Username" name="userName" >
+        <input type="password" class="registration-input" placeholder="Password" name="pWord">
+
+
+
+<div class="reagent-submit-modal" id="samplesubmit">
+    <div class="reagent-submit-modal-content">
+        <a href="" class="modal__close">Close</a>
+        {% if messages %}
+        {% for message in messages %}
+        {% if 'error' in message.tags %}
+        <div class="error-message" style="margin-left: 15%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% if 'success' in message.tags %}
+        <div class="success-message" style="margin-left: 15%; margin-top: 0;">
+            <p>{{message}}</p>
+        </div>
+        {% endif %}
+        {% endfor %}
+        {% else %}
+        <span class="registration-header" style="margin-left:25px">Sample Log-In Form</span>
+        {% endif %}
+        <form action="" method="POST">
+            {% csrf_token %}
+            <div class="reagent-submit-left">
+                {{form.sample_name}}
+                {{form.sample_description}}
+                {{form.tracking_number}}
+                <span class="reagent-span">Sample Expiry</span>
+                {{form.expiration_date}}
+                <input type="reset" value="Clear Input Field" class="reagent-submit">
+            </div>
+            <div class="reagent-submit-right">
+                {{form.sample_quantity}}
+                {{form.sample_volume}}
+                {{form.sample_type}}
+                <input type="text" class="reagent-input" placeholder="Username" name="username" >
+                <input type="password" class="reagent-input" placeholder="Password" name="password">
+                <input type="submit" Value="Submit" class="reagent-submit">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="sample-submit-modal-sm" id="namefilter">
+    <div class="filter-content-modal-xs">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Filter by Sample Name </span>
+        <form action="" method="get">
+            {% csrf_token %}
+            {{myfilter.form.name}}
+            <input type="submit" Value="Filter" class="registration-submit">
+            <input type="reset" value="Clear Input Field" class="registration-submit">
+        </form>
+    </div>
+</div>
+<div class="sample-submit-modal-sm" id="descfilter">
+    <div class="filter-content-modal-xs">
+        <a href="" class="modal__close">Close</a>
+        <span class="registration-header" style="margin-left:25px">Filter by Description </span>
+        <form action="" method="get">
+            {% csrf_token %}
+            {{myfilter.form.description}}
+            <input type="submit" Value="Filter" class="registration-submit">
+            <input type="reset" value="Clear Input Field" class="registration-submit">
+        </form>
+    </div>
+</div>
+
+
+position: relative;
+    display: flex;
+    width: 200px;
+    height: 75px;
+    resize: vertical;
+    min-height: 25px;
+    max-height: 125px;
+    left: 19%;
+    background: white;
+    border-radius: 20px;
+    margin-top: 10px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    /*background-color: #f2f2f2; */
+    background-repeat:no-repeat;
+    font-family: Times, sans-serif;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+    border: none;
+    cursor:pointer;
+    outline:none;
+    color: #2b6777;
+    font-family: Arial, sans-serif;
+
+registration-input
+
+<div class="error-message" style="margin-left: 15%; margin-top: 0;">
+    <p>{{message}}</p>
+</div>
+
+<div class="success-message" style="margin-left: 15%; margin-top: 0;">
+    <p>{{message}}</p>
+</div>
+
+<img src="https://i.ibb.co/P9zyW62/splashimg3.jpg" alt="splashimg3" border="0">
+<img src="https://i.ibb.co/pKx8k52/splashimg2.jpg" alt="splashimg2" border="0">
+<img src="https://i.ibb.co/0MbCwMr/splashimg1.jpg" alt="splashimg1" border="0">
+
+http://127.0.0.1:8000/Results_review/12/#reviewResult
+

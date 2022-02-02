@@ -119,7 +119,7 @@
 .Top-display-center {
     display: inline-block;
     padding: 0px;
-    margin-right: 2.5%;
+    margin-left: 2%;
     margin-top: 0px;
     width: 400px;
     position: relative;
@@ -1893,3 +1893,18 @@ tr td{
 .disposal-checkbox{
     position: none;
 }
+/* Documentation */
+.documentation-ul{
+    margin-left: -10%;
+}
+.documentation-ul li{
+    list-style-type: none
+}
+.documentation-ul li ul{
+    margin-left: 2%;
+}
+.documentation-ul li h3 a{
+    color: #FFFFF;
+    text-decoration: none;
+}
+
