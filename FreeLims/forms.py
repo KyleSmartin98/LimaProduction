@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, SetPasswordForm
 from django.contrib.auth.models import User
-from .models import Sample, Cheminventory, Profile
+from .models import Sample, Cheminventory, Profile, Tenant
 from django.forms import ModelForm
 
 class SignUpForm(UserCreationForm):
@@ -35,6 +35,7 @@ class SignUpForm(UserCreationForm):
             'class': 'registration-input',
             'required': '',
             'autocomplete': 'off',
+            'name': 'organization',
         })
         self.fields["email"].widget.attrs.update({
             'type': 'text',

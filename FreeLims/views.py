@@ -3,7 +3,7 @@ from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryFo
     OpenForm, editProfile, passwordChangeForm, privateKeyForm, resultReviewForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .models import Sample, User, Cheminventory, Profile
+from .models import Sample, User, Cheminventory, Profile, Tenant
 from django.http import HttpResponse, HttpResponseRedirect
 import csv, shortuuid
 import datetime
@@ -17,6 +17,7 @@ from django.core.mail import send_mail
 from django.template import loader
 from django.core.management.utils import get_random_secret_key
 from django.utils import timezone
+
 
 
 def landingPage(request):
@@ -88,40 +89,86 @@ def LogIn(request):
             if 'register' in request.POST:
                 form = SignUpForm(request.POST)
                 if form.is_valid():
-                    user = form.save()
-                    username = form.cleaned_data.get('username')
-                    Profile.objects.create(
-                        user=user,
-                        organization=form.cleaned_data['organization'].capitalize(),
-                        email=form.cleaned_data['email'],
-                    )
-                    user.save()
-                    profiles = Profile.objects.get(user=user)
-                    if profiles.user is not None:
-                        username = str(profiles.user)
-                        email = profiles.email
-                        organization = profiles.organization
-                        secretKey = profiles.Secret_Key
-                        email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
-                        email_subject = "Your GlobaLIMS Account is Registered!"
-                        context = {
-                            'organization': organization,
-                            'secretKey': secretKey,
-                            'username': username,
-                        }
-                        html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
-                        send_mail(
-                            email_subject,
-                            email_body,
-                            'caretagus@gmail.com',
-                            [email],
-                            fail_silently=True,
-                            html_message=html_message
+                    form.save(commit=False)
+                    #user = form.save(commit=False)
+                    organization = form.cleaned_data['organization']
+                    if Tenant.objects.filter(organization_name=organization.upper()).exists():
+                        tenant_acct = Tenant.objects.get(organization_name=organization.upper())
+                        if tenant_acct.user_count >= 6 and tenant_acct.subscription_paid == False:
+                            messages.error(request, 'You Must Upgrade to a Premium Account for Additional Users!')
+                            return redirect('login')
+                        else:
+                            user= form.save()
+                            Profile.objects.create(
+                                user=user,
+                                organization=organization.upper(),
+                                email=form.cleaned_data['email'],
+                            )
+                            tenant_acct.user_count += 1
+                            tenant_acct.save()
+                            user.save()
+                            profiles = Profile.objects.get(user=user)
+                            if profiles.user is not None:
+                                username = str(profiles.user)
+                                email = profiles.email
+                                organization = profiles.organization
+                                secretKey = profiles.Secret_Key
+                                email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
+                                email_subject = "Your GlobaLIMS Account is Registered!"
+                                context = {
+                                    'organization': organization,
+                                    'secretKey': secretKey,
+                                    'username': username,
+                                }
+                                html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                                send_mail(
+                                    email_subject,
+                                    email_body,
+                                    'caretagus@gmail.com',
+                                    [email],
+                                    fail_silently=True,
+                                    html_message=html_message
+                                )
+                                messages.success(request, 'Account was created for ' + username +
+                                                 '. Please check your email for your account information. ' +
+                                                 ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
+                                return redirect('login')
+                    else:
+                        user = form.save()
+                        Profile.objects.create(
+                            user=user,
+                            organization=organization.upper(),
+                            email=form.cleaned_data['email'],
                         )
-                        messages.success(request, 'Account was created for ' + username +
-                                         '. Please check your email for your account information. ' +
-                                         ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
-                        return redirect('login')
+                        Tenant.objects.create(
+                            organization_name=organization.upper(),
+                            user_count=1
+                        )
+                        user.save()
+                        profiles = Profile.objects.get(user=user)
+                        if profiles.user is not None:
+                            username = str(profiles.user)
+                            email = profiles.email
+                            organization = profiles.organization
+                            secretKey = profiles.Secret_Key
+                            email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
+                            email_subject = "Your GlobaLIMS Account is Registered!"
+                            context = {
+                                'organization': organization,
+                                'secretKey': secretKey,
+                                'username': username,
+                            }
+                            html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                            send_mail(
+                                email_subject,
+                                email_body,
+                                'caretagus@gmail.com',
+                                [email],
+                                fail_silently=True,
+                                html_message=html_message
+                            )
+                else:
+                    form = SignUpForm()
             else:
                 form = SignUpForm()
                 print(form.errors, 'failed')

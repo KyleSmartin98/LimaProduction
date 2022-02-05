@@ -48,18 +48,15 @@ class Profile(models.Model):
     timezone = models.CharField(max_length=128, choices=[(tz, tz) for tz in ['UTC'] + pytz.country_timezones('US')], default="UTC")
     Secret_Key = models.CharField(max_length=100, default=generateHiddenKey)
     email = models.CharField(max_length=100, default=None, null=True)
-    #date_created = models.DateTimeField(default=datetime.now)
+    date_created = models.DateTimeField(default=datetime.now)
+    Active_Status = models.BooleanField(max_length=6, blank=True, default=None, null=True)
 
-'''
 class Tenant(models.Model):
     organization_name = models.CharField(max_length=125, default=None, null=True)
-    user_count = models.IntegerField(default=None, null=True)
+    user_count = models.IntegerField(default=0, null=True)
     subscription_paid = models.BooleanField(default=False)
-    paid_until = models.DateTimeField(default=None)
-    payment_date = models.DateTimeField(default=None)
-'''
-
-
+    paid_until = models.DateTimeField(default=None, blank=True,null=True)
+    payment_date = models.DateTimeField(default=None, blank=True, null=True)
 
 class Sample(models.Model):
     SAMPLE_TYPE = (
