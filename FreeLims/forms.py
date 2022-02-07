@@ -5,7 +5,7 @@ from .models import Sample, Cheminventory, Profile, Tenant
 from django.forms import ModelForm
 
 class SignUpForm(UserCreationForm):
-    error_css_class = 'error-list'
+    #error_css_class = 'error-list'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({
@@ -58,7 +58,14 @@ class SignUpForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("This email is already registered")
         return email
-
+    '''
+    def clean_Tenant(self):
+        organization = self.cleaned_data['organization'].upper()
+        if Tenant.objects.filter(organization_name=organization.upper()).exists():
+            tenant_acct = Tenant.objects.get(organization_name=organization.upper())
+            if tenant_acct.user_count >= 6 and tenant_acct.subscription_paid == False:
+                raise forms.ValidationError("To Add More Users, Upgrade to Premium")
+    '''
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2', 'organization', 'email']

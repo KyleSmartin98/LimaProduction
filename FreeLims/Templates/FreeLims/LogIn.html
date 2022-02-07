@@ -9,6 +9,7 @@
     <title>LIMa-Log In</title>
 </head>
 <body class="Background">
+    <img src="{% static 'FreeLims/LIMA_fulltextv4.png' %}" style="height:100px;width:400px; margin-left: 35.5%; margin-top: 4%;">
     <div class="Log-in-main-div"> <!--Center Container for log-in-->
         {% if messages %}
         {% for message in messages %}
@@ -56,9 +57,24 @@
         <div class="modal" id="registermodal" style="z-axis: 1;">
             <div class="modal-content">
                 <a href="{% url 'login' %}" class="modal__close">Close</a>
+                {% if messages %}
+                {% for message in messages %}
+                {% if 'success' in message.tags %}
+                <div class="success-message" style="margin-top: 50px; margin-left: 1%;">
+                    <p>{{message}}</p>
+                </div>
+                {% else %}
+                {% endif %}
+              {% if 'error' in message.tags %}
+                <div class="error-message" style="margin-top: 50px; margin-left: 1%;">
+                    <p>{{message}}</p>
+                </div>
+                {% else %}
+                {% endif %}
+                {% endfor %}
+                {% else %}
                 <form method="POST" action="" id="signupform">
                     {% csrf_token %}
-                    <!--<span class="close-button">&times;</span>-->
                     <span class="registration-header">Create Account</span>
                     <span class="registration-desc">Username</span>
                     {{form.username}}
@@ -71,6 +87,7 @@
                     {{form.password2}}
                     <input type="submit" Value="Sign Up" class="registration-submit" name="register">
                 </form>
+                {% endif %}
             </div>
         </div>
         <div class="modal" id="changepassword" style="z-axis: 1;">

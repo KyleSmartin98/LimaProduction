@@ -98,7 +98,7 @@ def LogIn(request):
                             messages.error(request, 'You Must Upgrade to a Premium Account for Additional Users!')
                             return redirect('login')
                         else:
-                            user= form.save()
+                            user = form.save()
                             Profile.objects.create(
                                 user=user,
                                 organization=organization.upper(),
@@ -167,8 +167,14 @@ def LogIn(request):
                                 fail_silently=True,
                                 html_message=html_message
                             )
+                            messages.success(request, 'Account was created!'
+                                             '. Please check your email for confirmation. ')
+                            return HttpResponseRedirect("/log-in/")
                 else:
-                    form = SignUpForm()
+                    messages.error(request, str(form.errors))
+                    return redirect('login')
+
+
             else:
                 form = SignUpForm()
                 print(form.errors, 'failed')
