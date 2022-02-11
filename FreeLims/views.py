@@ -17,7 +17,7 @@ from django.core.mail import send_mail
 from django.template import loader
 from django.core.management.utils import get_random_secret_key
 from django.utils import timezone
-
+from .tasks import registrationEmail, secretKeyResetEmail, reportProblemEmail, landingPageContactEmail
 
 
 def landingPage(request):
@@ -28,7 +28,8 @@ def landingPage(request):
         contact_email = request.POST['contact-email']
         contact_sub = request.POST['contact-subject']
         contact_message = request.POST['contact-message']
-
+        landingPageContactEmail
+        '''
         send_mail(
             'Message From: '+ contact_name + ' about ' + contact_sub,
             contact_message,
@@ -36,6 +37,7 @@ def landingPage(request):
             ['caretagus@gmail.com'],
             fail_silently=False,
         )
+        '''
 
         context = {
             'contact_name': contact_name,
@@ -121,6 +123,8 @@ def LogIn(request):
                                     'username': username,
                                 }
                                 html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                                registrationEmail.delay(email_subject, email_body, email, html_message)
+                                """
                                 send_mail(
                                     email_subject,
                                     email_body,
@@ -129,6 +133,7 @@ def LogIn(request):
                                     fail_silently=True,
                                     html_message=html_message
                                 )
+                                """
                                 messages.success(request, 'Account was created for ' + username +
                                                  '. Please check your email for your account information. ' +
                                                  ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
@@ -159,6 +164,8 @@ def LogIn(request):
                                 'username': username,
                             }
                             html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                            registrationEmail.delay(email_subject, email_body, email, html_message)
+                            '''
                             send_mail(
                                 email_subject,
                                 email_body,
@@ -167,6 +174,7 @@ def LogIn(request):
                                 fail_silently=True,
                                 html_message=html_message
                             )
+                            '''
                             messages.success(request, 'Account was created!'
                                              '. Please check your email for confirmation. ')
                             return HttpResponseRedirect("/log-in/")
@@ -249,6 +257,8 @@ def settings_page(request):
                     'secretKey': secretKey,
                 }
                 html_message = loader.render_to_string('FreeLims/secretKeyEmail.html', context)
+                secretKeyResetEmail.delay(email_subject, email_body, email, html_message)
+                '''
                 send_mail(
                     email_subject,
                     email_body,
@@ -257,7 +267,7 @@ def settings_page(request):
                     fail_silently=True,
                     html_message=html_message
                 )
-
+                '''
                 messages.success(request, 'Your New Secret Key Has Been Generated! Check Your Email!')
                 return redirect('settings')
                 print('success')
@@ -271,6 +281,8 @@ def settings_page(request):
                 if email_body != '':
                     profile = Profile.objects.get(id=request.user.id)
                     email = profile.email
+                    reportProblemEmail.delay(email_subject, email_body, email)
+                    '''
                     send_mail(
                         email_subject,
                         email_body,
@@ -278,6 +290,7 @@ def settings_page(request):
                         ['caretagus@gmail.com'],
                         fail_silently=True,
                     )
+                    '''
                     messages.success(request, 'Your Report Has Been Received!')
                 else:
                     messages.error(request, 'Message has No Content')

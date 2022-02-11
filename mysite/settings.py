@@ -147,3 +147,10 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER ='caretagus@gmail.com'
 EMAIL_HOST_PASSWORD = env('EMAIL_PASS')
 ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+"""Celery Broker Info"""
+
+CELERY_BROKER_URL = 'redis://localhost:6379'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
