@@ -1,70 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
-        <meta name="description" content="GlobaLIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
-        <meta name="author" content="Kyle Martin, kylesmartin98@gmail.com" />
-        <title>{{page_title}}</title>
-        {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
-        <link rel="icon"  href="{% static 'FreeLims/LIMA_small_logo.png' %}">
-    </head>
-    {% if 'inventory' in request.path %}
-    <body class="Background" style="overflow-y: hidden;">
-    {% else %}
-    <body class="Background">
-    {% endif %}
-        <div class="Top" style="border-bottom: 1.5px dotted black"> <!--Topline Div/-->
-            <div class="Top-display-left"> <!--Clock Div left justified-->
-                <h2 style="margin-top: 35px; font-family: karrikregular; text-transform: uppercase;">Hello: <strong>{{request.user.profile.first_name}} {{request.user.profile.last_name}}</strong></h2>
-            </div>
-            <div class="Top-display-center"> <!--Freelims header Center-->
-                <img src="{% static 'FreeLims/LIMA_textv4.png' %}" style="height:75px;width:200px;">
-            </div>
-            <div class="Top-display-right-View"> <!--Sign out button-->
-                {% if 'home' in request.path %}
-                <a class="a-PageLink" href="">
-                    <button class="SignInView-btn">
-                        <span>Refresh</span>
-                    </button>
-                </a>
-                {% else %}
-                <a class="a-PageLink" href="{% url 'home' %}">
-                    <button class="SignInView-btn">
-                        <span>Home</span>
-                    </button>
-                </a>
-                {% endif %}
-                {% if user.is_authenticated %}
-                <a class="a-PageLink" href="{% url 'logout' %}">
-                    <button class="SignOutView-btn">
-                        <span> Sign Out </span>
-                    </button>
-                </a>
-                {% else %}
-                <a class="a-PageLink" href="{% url 'login' %}">
-                    <button class="SignInView-btn">
-                        <span> Sign In </span>
-                    </button>
-                </a>
-                {% endif %}
-            </div>
-            <!--<div class="sign-out-modal">
-                <div class="sign-out-modal-content">
-                    <span class="sign-out-prompt">Do you Want to Sign Out? Please Confirm all of Your Work has Been Saved.</span>
-                    <button class="sign-out-modal-btn-yes">
-                        <a href="#">Yes</a>
-                    </button>
-                    <button class="sign-out-modal-btn-no">
-                        <span>No</span>
-                    </button>
-                </div>
-            </div>-->
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=0.95, shrink-to-fit=yes" />
+    <meta name="description" content="GlobaLIMS your one-stop laboratory software. If you have any questions please contact Kylesmartin98@gmail.com" />
+    <meta name="author" content="Kyle Martin, kylesmartin98@gmail.com" />
+    <title>{{page_title}}</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'FreeLims/Style.css' %}">
+    <link rel="icon"  href="{% static 'FreeLims/LIMA_small_logo.png' %}">
+</head>
+{% if 'inventory' in request.path %}
+<body class="Background" style="overflow-y: hidden;">
+{% else %}
+<body class="Background">
+{% endif %}
+<div class="Top" style="border-bottom: 1.5px dotted black"> <!--Topline Div/-->
+    <div class="Top-display-left"> <!--Clock Div left justified-->
+        <h2 style="margin-top: 35px; font-family: karrikregular; text-transform: uppercase;">Hello: <strong>{{request.user.profile.first_name}} {{request.user.profile.last_name}}</strong></h2>
+    </div>
+    <div class="Top-display-center"> <!--Freelims header Center-->
+        <img src="{% static 'FreeLims/LIMA_textv4.png' %}" style="height:75px;width:200px;">
+    </div>
+    <div class="Top-display-right-View"> <!--Sign out button-->
+        {% if 'home' in request.path %}
+        <a class="a-PageLink" href="">
+            <button class="SignInView-btn">
+                <span>Refresh</span>
+            </button>
+        </a>
+        {% else %}
+        <a class="a-PageLink" href="{% url 'home' %}">
+            <button class="SignInView-btn">
+                <span>Home</span>
+            </button>
+        </a>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <a class="a-PageLink" href="{% url 'logout' %}">
+            <button class="SignOutView-btn">
+                <span> Sign Out </span>
+            </button>
+        </a>
+        {% endif %}
+    </div>
+    <!--<div class="sign-out-modal">
+        <div class="sign-out-modal-content">
+            <span class="sign-out-prompt">Do you Want to Sign Out? Please Confirm all of Your Work has Been Saved.</span>
+            <button class="sign-out-modal-btn-yes">
+                <a href="#">Yes</a>
+            </button>
+            <button class="sign-out-modal-btn-no">
+                <span>No</span>
+            </button>
         </div>
-        {% block content %}
-        {% endblock %}
-        {% load static %}
-        <script src="{% static 'FreeLims/app.js' %}"></script>
-    </body>
-</html>
+    </div>-->
+</div>
+{% block content %}
+{% endblock %}
+{% load static %}
+<script src="{% static 'FreeLims/app.js' %}"></script>
+</body>
