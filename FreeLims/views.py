@@ -28,7 +28,7 @@ def landingPage(request):
         contact_email = request.POST['contact-email']
         contact_sub = request.POST['contact-subject']
         contact_message = request.POST['contact-message']
-        landingPageContactEmail
+        landingPageContactEmail.delay(contact_name, contact_email, contact_sub, contact_message)
         '''
         send_mail(
             'Message From: '+ contact_name + ' about ' + contact_sub,
@@ -421,7 +421,7 @@ def Initiatesample(request, pk):
                             obj.initiated_date = str(timezone.now())
                             obj.save()
                             messages.success(request, 'Your Sample Initiation Form Has Been Saved!')
-                            return redirect('Testing')
+                            #return redirect('Testing')
                         else:
                             messages.error(request, 'Your Sample Was Not Saved')
                     else:
