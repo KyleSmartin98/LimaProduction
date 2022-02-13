@@ -3,6 +3,16 @@
 {% load templates %}
 {% load static %}
 {% load tz %}
+<div class="homepage-notification-modal" id="WIP">
+    <div class="homepage-notification-content">
+        <a href="{% url 'home' %}" class="notification-modal-close">
+            <div class="error-message" style="margin-left: 0%; margin-top: 0; width: 265px;">
+                <span class="hompepage-notification-message"><p>This Feature is Under Development!</p></span>
+                <span class="hompepage-notification-close-2 close-text"><p ></p><strong>Close</strong></span>
+            </div>
+        </a>
+    </div>
+</div>
         <div class="Main-Div"> <!--Main Div-->
             <div class="left-flex-container"> <!-- Left Navigation flexbox-->
                 <a class="a-PageLink" href="{% url 'Sample' %}">
@@ -23,7 +33,7 @@
                         <span class="Btn-Text">Result Reporting</span>
                     </button>
                 </a>
-                <a class="a-PageLink" href="{% url 'Trending' %}">
+                <a class="a-PageLink" href= "#WIP"><!--{% url 'Trending' %}-->
                     <button class="Nav-btn"> <!-- Result Trending-->
                         <img src="{% static 'FreeLims/graph.svg' %}" class="Icon-paper"/>
                         <span class="Btn-Text">Result Trending</span>
@@ -35,7 +45,7 @@
                         <span class="Btn-Text">Chemical Inventory</span>
                     </button>
                 </a>
-                <a class="a-PageLink" href="{% url 'Instrument' %}">
+                <a class="a-PageLink" href="#WIP"><!--{% url 'Instrument' %}-->
                     <button class="Nav-btn"> <!-- Method look-up-->
                         <img src="{% static 'FreeLims/Instrument.svg' %}" class="Icon-paper" style="margin-left: 10%"/>
                         <span class="Btn-Text" style="padding: 0px; margin-right: 15%;">Instrument Management</span>
@@ -266,6 +276,4 @@
             </div>
 
         </div>
-        {% load static %}
-        <script src="{% static 'FreeLims/app.js' %}"></script>
 {% endblock %}
