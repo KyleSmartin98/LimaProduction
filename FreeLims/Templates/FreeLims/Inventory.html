@@ -111,7 +111,7 @@
 
 <div class="sample-submit-modal" id="samplesubmit">
     <div class="sample-submit-modal-content">
-        <a href="" class="modal__close">Close</a>
+        <a href="" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         <span class="registration-header">Sample Log-In Form</span>
         <form action="" method="POST">
             {% csrf_token %}
@@ -123,7 +123,7 @@
 </div>
 <div class="reagent-submit-modal" id="addreagent">
     <div class="reagent-submit-modal-content">
-        <a href="" class="modal__close">Close</a>
+        <a href="{% url 'Inventory'%}" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         {% if messages %}
         {% for message in messages %}
         {% if 'error' in message.tags %}
@@ -161,7 +161,6 @@
             </div>
         </form>
     </div>
-</div>
 <!--<div class="reagent-submit-modal" id="disposereagent">
     <div class="reagent-submit-modal-content">
         <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
@@ -170,7 +169,7 @@
 </div>-->
 <div class="sample-submit-modal-sm" id="openreagent">
     <div class="filter-content-modal-xs" style="margin-top:18rem">
-        <a href="{% url 'Inventory' %}" class="modal__close">Close</a>
+        <a href="{% url 'Inventory' %}" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         <span class="registration-header" style="margin-left:25px">Reagent Open </span>
         <form action="" method="POST">
             {% if messages %}
@@ -203,5 +202,6 @@
             {% endif %}
         </form>
     </div>
+</div>
 </div>
 {% endblock %}

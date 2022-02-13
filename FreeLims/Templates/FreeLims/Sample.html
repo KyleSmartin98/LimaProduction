@@ -71,9 +71,11 @@
                 {% endlocaltime %}
                 <td>{{sample.logged_by}}</td>
                 <td>
-                    <button class="buttonDownload">
-                        <a class="inventory-barcode-link" target="_blank" href="{% url 'sampleBarcode_download' sample.id %}" >Download</a>
-                    </button>
+                    <a class="inventory-barcode-link" target="_blank" href="{% url 'sampleBarcode_download' sample.id %}" >
+                        <button class="buttonDownload">
+                            <span>Download</span>
+                        </button>
+                    </a>
                 </td>
             </tr>
           </tbody>
@@ -83,7 +85,7 @@
 </div>
 <div class="reagent-submit-modal" id="samplesubmit">
     <div class="reagent-submit-modal-content">
-        <a href="" class="modal__close">Close</a>
+        <a href="{% url 'Sample' %}" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         {% if messages %}
         {% for message in messages %}
         {% if 'error' in message.tags %}

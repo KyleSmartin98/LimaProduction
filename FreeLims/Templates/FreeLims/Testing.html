@@ -59,9 +59,11 @@
                 {% endlocaltime %}
                 <td>{{sample.logged_by}}</td>
                 <td>
-                    <button class="sample-initiation-btn">
-                        <a class="sample-initiation-link" href="{% url 'Initiate_sample' sample.id %}#initiatesample" >Initiate Sample</a>
-                    </button>
+                    <a class="sample-initiation-link" href="{% url 'Initiate_sample' sample.id %}#initiatesample" >
+                        <button class="sample-initiation-btn">
+                            <span>Initiate Sample</span>
+                        </button>
+                    </a>
                 </td>
 
             </tr>
@@ -73,7 +75,7 @@
 </div>
 <div class="initiation-submit-modal" id="initiatesample">
     <div class="initiation-submit-modal-content">
-        <a href="{% url 'Testing' %}" class="modal__close">Close</a>
+        <a href="{% url 'Testing' %}" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         <span class="registration-header">Sample Initiation Form</span>
         {% if messages %}
         {% for message in messages %}

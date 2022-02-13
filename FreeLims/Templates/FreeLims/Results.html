@@ -127,7 +127,7 @@
 </div>
 <div class="result-submit-modal" id="resultsubmit">
     <div class="result-submit-modal-content">
-        <a href="{% url 'Results' %}" class="modal__close">Close</a>
+        <a href="{% url 'Results' %}" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         <span class="registration-header">Result Submission</span>
         {% if messages %}
         {% for message in messages %}
@@ -163,7 +163,7 @@
 </div>
 <div class="result-submit-modal" id="reviewResult">
     <div class="result-submit-modal-content">
-        <a href="{% url 'Results' %}" class="modal__close">Close</a>
+        <a href="{% url 'Results' %}" class="modal__close"><span class="close-text"><strong>Close</strong></span></a>
         <span class="registration-header">Review Results</span>
         {% if messages %}
         {% for message in messages %}

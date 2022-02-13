@@ -9,6 +9,9 @@
     font-weight: normal;
     font-style: normal;
 }
+.close-text{
+    font-family: Arial, sans-serif;
+}
 .noscroll{
     overflow: hidden;
 }
@@ -226,6 +229,64 @@
 }
 .SignInView-btn:hover{
     background: #26C281;
+}
+/*Notification for Homepage */
+.homepage-notification-modal {
+    position: absolute;
+    left: 575px;
+    top: -130px;
+    margin-Top: 3px;
+    width: 400px;
+    height: 250px;
+    background-color: Transparent;
+    opacity: 0;
+    border-radius: 50px;
+    transform: translate(-50%, -50%);
+    visibility: hidden;
+    z-index: 2;
+    transform: scale(1.1);
+    transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+}
+.homepage-notification-modal:target {
+  visibility: visible;
+  opacity: 1;
+}
+.homepage-notification-content {
+    position: absolute;
+    margin-top: 12.5rem ;
+    width: 300px;
+    min-height: 65px;
+    height: 50px;
+    max-height: 400px;
+    margin-left: 6.5%;
+    background-color: transparent;
+    /*background-color: #c8d8e4;*/
+    padding: 1rem 1.5rem;
+    border-radius: 35px;
+    /*-webkit-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4);
+    -moz-box-shadow: 5px 5px 5px 5px rgba(0,0,0,0.4); */
+    z-index: 2;
+}
+.homepage-notification-content .notification-modal-close .error-message:hover{
+    background: #66ff9e;
+    border-color: #00ff5d;
+
+}
+.homepage-notification-content .notification-modal-close .error-message:hover .hompepage-notification-close-2{
+    display: block;
+
+}
+.homepage-notification-content .notification-modal-close .error-message:hover .hompepage-notification-message{
+    display: none;
+
+}
+.notification-modal-close {
+  width: auto;
+  text-decoration: none;
+  background: transparent;
+}
+.notification-modal-close .hompepage-notification-close-2{
+    display: none;
 }
 /* Main Div for homepage */
 .Main-Div{
@@ -1307,7 +1368,7 @@ th{
 }
 .filter-content-modal-sm {
     position: relative;
-    margin-top: 2.5rem ;
+    margin-top: 3.5rem ;
     width: 350px;
     height: 350px;
     margin-left: 6.5%;
@@ -1630,7 +1691,7 @@ tr td{
     margin-left: 25%;
     top: 5%;
     margin-Top: 3px;
-    width: 300px;
+    width: 700px;
     min-height: 350px;
     height: auto;
     background-color: Transparent;
@@ -1644,11 +1705,12 @@ tr td{
 .reagent-submit-modal:target {
   visibility: visible;
   opacity: 1;
+  overflow: hidden;
 }
 .reagent-submit-modal-content{
     position: relative;
     margin-top: 6.5rem ;
-    width: 600px;
+    width: 625px;
     min-height: 400px;
     height: auto;
     margin-left: 0;
@@ -1822,6 +1884,10 @@ tr td{
 .buttonDownload:hover {
 	background-color: #333;
 	color: white;
+	cursor:pointer;
+}
+.buttonDownload:hover .inventory-barcode-link{
+	color: white;
 }
 
 .buttonDownload:before, .buttonDownload:after {
@@ -1894,6 +1960,7 @@ tr td{
 .inventory-barcode-link:hover{
     text-decoration: none;
     color: white;
+    cursor:pointer;
 }
 .disposal-checkbox{
     position: none;
