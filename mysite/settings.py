@@ -172,6 +172,7 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 """Celery Broker Info"""
 CELERY_BROKER_URL = 'redis://:pfcd004ea644e5ec750f1ff90a59d4baca63cc19d7bb2d7a07060a1adfc203ce6@ec2-3-230-70-180.compute-1.amazonaws.com:21350'
 #CELERY_BROKER_URL = 'redis://localhost:6379'
+BROKER_POOL_LIMIT=None
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
