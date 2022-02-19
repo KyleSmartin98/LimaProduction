@@ -167,11 +167,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER ='caretagus@gmail.com'
-EMAIL_HOST_PASSWORD = os.environ.get['EMAIL_PASS']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASS']
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 """Celery Broker Info"""
-CELERY_BROKER_URL = os.environ.get['REDIS_TLS_URL']
+CELERY_BROKER_URL = os.environ['REDIS_TLS_URL']
 #CELERY_BROKER_URL = 'redis://localhost:6379'redis
 BROKER_POOL_LIMIT=None
 
