@@ -252,11 +252,12 @@ def settings_page(request):
                 profile.save()
                 email_subject='[GlobaLIMS] Your New Secret Key'
                 email_body='Here is Your New Secret Key, Please Copy it to Somewhere Safe!: ' + secretKey
-                email = 'doloclan@gmail.com'#profile.email
+                email = str(profile.email)
                 context = {
                     'secretKey': secretKey,
                 }
                 html_message = loader.render_to_string('FreeLims/secretKeyEmail.html', context)
+                '''
                 secretKeyResetEmail.delay(email_subject, email_body, email, html_message)
                 '''
                 send_mail(
@@ -267,7 +268,7 @@ def settings_page(request):
                     fail_silently=True,
                     html_message=html_message
                 )
-                '''
+
                 messages.success(request, 'Your New Secret Key Has Been Generated! Check Your Email!')
                 return redirect('settings')
                 print('success')
