@@ -171,7 +171,7 @@ EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASS']
 ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 """Celery Broker Info"""
-CELERY_BROKER_URL = os.environ['REDIS_TLS_URL']
+CELERY_BROKER_URL = os.environ['REDIS_URL']
 CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
 #CELERY_BROKER_URL = 'redis://localhost:6379'redis
 #BROKER_POOL_LIMIT=None
