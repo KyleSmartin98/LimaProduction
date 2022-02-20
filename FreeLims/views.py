@@ -252,7 +252,7 @@ def settings_page(request):
                 profile.save()
                 email_subject='[GlobaLIMS] Your New Secret Key'
                 email_body='Here is Your New Secret Key, Please Copy it to Somewhere Safe!: ' + secretKey
-                email = profile.email
+                email = 'doloclan@gmail.com'#profile.email
                 context = {
                     'secretKey': secretKey,
                 }
