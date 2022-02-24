@@ -39,7 +39,7 @@ def landingPage(request):
             contact_message,
             'limalabs@mail.com',
             ['caretagus@gmail.com'],
-            fail_silently=False,
+            fail_silently=True,
         )
 
         context = {
