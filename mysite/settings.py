@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'anymail'
     #'djcelery_email',
 ]
 
@@ -162,6 +163,16 @@ SESSION_EXPIRE_AT_BROWSER_CLOSE = True     # opional, as this will log you out w
 SESSION_COOKIE_AGE = 900                   # 0r 5 * 60, same thing
 SESSION_SAVE_EVERY_REQUEST = True          # Will prrevent from logging you out after 300 seconds
 
+ANYMAIL = {
+
+    "MAILGUN_API_KEY": os.environ['MAILGUN_API_KEY'],
+    "MAILGUN_SENDER_DOMAIN": os.environ['MAILGUN_DOMAIN'],
+
+}
+EMAIL_BACKEND = "anymail.backends.mailgun.EmailBackend"
+DEFAULT_FROM_EMAIL = "limalabs@mail.com"
+SERVER_EMAIL = "limalabs@mail.com"
+"""
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
@@ -169,7 +180,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER ='caretagus@gmail.com'
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_PASS']
 ACCOUNT_EMAIL_VERIFICATION = 'none'
-
+"""
 """Celery Broker Info"""
 CELERY_BROKER_URL = os.environ['REDIS_URL']
 CELERY_RESULT_BACKEND = os.environ['REDIS_URL']
