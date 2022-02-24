@@ -38,7 +38,7 @@ def landingPage(request):
             "FROM: " + contact_email + ", " + contact_name + " About " + contact_sub,
             contact_message,
             'limalabs@mail.com',
-            ['limalabs@mail.com'],
+            ['caretagus@gmail.com'],
             fail_silently=False,
         )
 
