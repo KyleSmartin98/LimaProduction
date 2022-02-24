@@ -36,8 +36,8 @@ def landingPage(request):
         send_mail(
             'Message From: '+ contact_name + ' about ' + contact_sub,
             contact_message,
-            os.environ['EMAIL_ADDRESS'],
-            ['caretagus@gmail.com'],
+            contact_email,
+            ['limalabs@mail.com'],
             fail_silently=False,
         )
 
@@ -131,7 +131,7 @@ def LogIn(request):
                                 send_mail(
                                     email_subject,
                                     email_body,
-                                    os.environ['EMAIL_ADDRESS'],
+                                    'limalabs@mail.com',
                                     [email],
                                     fail_silently=True,
                                     html_message=html_message
@@ -173,7 +173,7 @@ def LogIn(request):
                             send_mail(
                                 email_subject,
                                 email_body,
-                                os.environ['EMAIL_ADDRESS'],
+                                'limalabs@mail.com',
                                 [email],
                                 fail_silently=True,
                                 html_message=html_message
@@ -267,7 +267,7 @@ def settings_page(request):
                 send_mail(
                     email_subject,
                     email_body,
-                    os.environ['EMAIL_ADDRESS'],
+                    'limalabs@mail.com',
                     [email],
                     fail_silently=True,
                     html_message=html_message
@@ -293,7 +293,7 @@ def settings_page(request):
                         email_subject,
                         email_body,
                         email,
-                        os.environ['EMAIL_ADDRESS'],
+                        'limalabs@mail.com',
                         fail_silently=True,
                     )
 
