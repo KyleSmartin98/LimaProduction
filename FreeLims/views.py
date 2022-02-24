@@ -95,7 +95,6 @@ def LogIn(request):
                 form = SignUpForm(request.POST)
                 if form.is_valid():
                     form.save(commit=False)
-                    #user = form.save(commit=False)
                     organization = form.cleaned_data['organization']
                     if Tenant.objects.filter(organization_name=organization.upper()).exists():
                         tenant_acct = Tenant.objects.get(organization_name=organization.upper())
@@ -115,7 +114,7 @@ def LogIn(request):
                             profiles = Profile.objects.get(user=user)
                             if profiles.user is not None:
                                 username = str(profiles.user)
-                                email = profiles.email
+                                email = str(profiles.email)
                                 organization = profiles.organization
                                 secretKey = profiles.Secret_Key
                                 email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
@@ -137,7 +136,6 @@ def LogIn(request):
                                     fail_silently=True,
                                     html_message=html_message
                                 )
-
                                 messages.success(request, 'Account was created for ' + username +
                                                  '. Please check your email for your account information. ' +
                                                  ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
@@ -157,7 +155,7 @@ def LogIn(request):
                         profiles = Profile.objects.get(user=user)
                         if profiles.user is not None:
                             username = str(profiles.user)
-                            email = profiles.email
+                            email = str(profiles.email)
                             organization = profiles.organization
                             secretKey = profiles.Secret_Key
                             email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
@@ -286,7 +284,7 @@ def settings_page(request):
             if email_subject != '':
                 if email_body != '':
                     profile = Profile.objects.get(id=request.user.id)
-                    email = profile.email
+                    email = str(profile.email)
                     '''
                     reportProblemEmail.delay(email_subject, email_body, email)
                     '''
