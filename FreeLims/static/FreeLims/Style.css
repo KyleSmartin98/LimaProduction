@@ -394,7 +394,7 @@
 }
 .Srch-Text{
     color: white;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 25px;
 }
 .search-container {
@@ -848,7 +848,7 @@ input[type="checkbox"]:checked + label{
     align-items: center;
     justify-content: center;
     color: #c8d8e4;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 25px;
 
 }
@@ -995,7 +995,7 @@ input[type="checkbox"]:checked + label{
     align-items: center;
     justify-content: center;
     color: black;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 25px;
 }
 .registration-desc{
@@ -1004,7 +1004,7 @@ input[type="checkbox"]:checked + label{
     display: flex;
     margin-left: 45px;
     color: black;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 20px;
 }
 .registration-input{
@@ -1163,7 +1163,7 @@ th{
 .Table-attributes-Nav-bar-text{
     display: inline;
     position: relative;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 25px;
     color: white;
 }
@@ -1196,7 +1196,7 @@ th{
     position: relative;
     text-decoration: none;
     color: white;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 22.5px;
     color: white;
 }
@@ -1215,7 +1215,7 @@ th{
     cursor: pointer;
     overflow: hidden;
     outline: none;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 22.5px;
     color: white;
 }
@@ -1466,7 +1466,7 @@ th{
     cursor: pointer;
     overflow: hidden;
     outline: none;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 25px;
     color: white;
 }
@@ -1639,7 +1639,7 @@ tr td{
     margin-top: 15px;
     margin-left: 75px;
     color: black;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 20px;
 
 }
@@ -1771,7 +1771,7 @@ tr td{
     align-items: left;
     justify-content: left;
     color: black;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 15px;
 }
 .reagent-quarantine-span{
@@ -1782,7 +1782,7 @@ tr td{
     align-items: left;
     justify-content: left;
     color: black;
-    font-family: "karrikregular";
+    font-family: karrikregular, Arial, sans-serif;
     font-size: 15px;
 }
 .reagent-input-lg{

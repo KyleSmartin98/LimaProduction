@@ -1,3 +1,5 @@
+import os
+
 from django.shortcuts import redirect, render
 from .forms import SignUpForm, SampleForm, InitiateForm, ResultForm, InventoryForm, Qtyform, \
     OpenForm, editProfile, passwordChangeForm, privateKeyForm, resultReviewForm
@@ -28,16 +30,16 @@ def landingPage(request):
         contact_email = request.POST['contact-email']
         contact_sub = request.POST['contact-subject']
         contact_message = request.POST['contact-message']
+        '''
         landingPageContactEmail.delay(contact_name, contact_email, contact_sub, contact_message)
         '''
         send_mail(
             'Message From: '+ contact_name + ' about ' + contact_sub,
             contact_message,
-            contact_email,
+            os.environ['EMAIL_ADDRESS'],
             ['caretagus@gmail.com'],
             fail_silently=False,
         )
-        '''
 
         context = {
             'contact_name': contact_name,
@@ -123,17 +125,18 @@ def LogIn(request):
                                     'username': username,
                                 }
                                 html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                                """
                                 registrationEmail.delay(email_subject, email_body, email, html_message)
                                 """
                                 send_mail(
                                     email_subject,
                                     email_body,
-                                    'caretagus@gmail.com',
+                                    os.environ['EMAIL_ADDRESS'],
                                     [email],
                                     fail_silently=True,
                                     html_message=html_message
                                 )
-                                """
+
                                 messages.success(request, 'Account was created for ' + username +
                                                  '. Please check your email for your account information. ' +
                                                  ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
@@ -164,17 +167,18 @@ def LogIn(request):
                                 'username': username,
                             }
                             html_message = loader.render_to_string('FreeLims/registrationEmail.html', context)
+                            '''
                             registrationEmail.delay(email_subject, email_body, email, html_message)
                             '''
                             send_mail(
                                 email_subject,
                                 email_body,
-                                'caretagus@gmail.com',
+                                os.environ['EMAIL_ADDRESS'],
                                 [email],
                                 fail_silently=True,
                                 html_message=html_message
                             )
-                            '''
+
                             messages.success(request, 'Account was created!'
                                              '. Please check your email for confirmation. ')
                             return HttpResponseRedirect("/log-in/")
@@ -263,7 +267,7 @@ def settings_page(request):
                 send_mail(
                     email_subject,
                     email_body,
-                    'caretagus@gmail.com',
+                    os.environ['EMAIL_ADDRESS'],
                     [email],
                     fail_silently=True,
                     html_message=html_message
@@ -282,16 +286,17 @@ def settings_page(request):
                 if email_body != '':
                     profile = Profile.objects.get(id=request.user.id)
                     email = profile.email
+                    '''
                     reportProblemEmail.delay(email_subject, email_body, email)
                     '''
                     send_mail(
                         email_subject,
                         email_body,
                         email,
-                        ['caretagus@gmail.com'],
+                        os.environ['EMAIL_ADDRESS'],
                         fail_silently=True,
                     )
-                    '''
+
                     messages.success(request, 'Your Report Has Been Received!')
                 else:
                     messages.error(request, 'Message has No Content')
