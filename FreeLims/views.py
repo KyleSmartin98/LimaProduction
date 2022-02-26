@@ -26,10 +26,10 @@ def landingPage(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == "POST":
-        contact_name = str(request.POST['contact-name'])
-        contact_email = request.POST['contact-email']
-        contact_sub = str(request.POST['contact-subject'])
-        contact_message = str(request.POST['contact-message'])
+        contact_name = str(request.POST.get('contact-name'))
+        contact_email = request.POST.get('contact-email')
+        contact_sub = str(request.POST.get('contact-subject'))
+        contact_message = str(request.POST.get('contact-message'))
         '''
         landingPageContactEmail.delay(contact_name, contact_email, contact_sub, contact_message)
         '''
