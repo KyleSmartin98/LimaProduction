@@ -25,9 +25,9 @@ from .tasks import registrationEmail, secretKeyResetEmail, reportProblemEmail, l
 def landingPage(request):
     if request.user.is_authenticated:
         return redirect('home')
-    if request.method == "GET":
+    if request.method == "POST":
         contact_name = str(request.POST.get('contact-name'))
-        email = request.POST.get('contact-email')
+        contact_email = str(request.POST.get('contact-email'))
         contact_sub = str(request.POST.get('contact-subject'))
         contact_message = str(request.POST.get('contact-message'))
         '''
@@ -35,7 +35,7 @@ def landingPage(request):
         '''
 
         send_mail(
-            "FROM: " + email + ", " + contact_name + " About " + contact_sub,
+            "FROM: " + contact_email + ", " + contact_name + " About " + contact_sub,
             contact_message,
             'limalabs@mail.com',
             ['caretagus@gmail.com'],
@@ -154,9 +154,9 @@ def LogIn(request):
                         user.save()
                         profiles = Profile.objects.get(user=user)
                         if profiles.user is not None:
-                            username = form.cleaned_data['username']
-                            email = str(form.cleaned_data['email'])
-                            organization = form.cleaned_data['organization']
+                            username = str(profiles.user)
+                            email = str(profiles.email)
+                            organization = profiles.organization
                             secretKey = profiles.Secret_Key
                             email_body = "Thank you for signing up for GlobaLIMS, the future of lab management! Your organization is: " + organization + ' and your Secret Key is: ' + secretKey + ' Please keep this key in a secure location and never share it with anyone. This key will help you recover your account and change your password!'
                             email_subject = "Your GlobaLIMS Account is Registered!"
