@@ -25,7 +25,7 @@ from .tasks import registrationEmail, secretKeyResetEmail, reportProblemEmail, l
 def landingPage(request):
     if request.user.is_authenticated:
         return redirect('home')
-    if request.method == "GET":
+    if request.method == "POST":
         contact_name = str(request.POST.get('contact-name'))
         contact_email = str(request.POST.get('contact-email'))
         contact_sub = str(request.POST.get('contact-subject'))
