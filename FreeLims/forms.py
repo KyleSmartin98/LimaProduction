@@ -5,7 +5,6 @@ from .models import Sample, Cheminventory, Profile, Tenant
 from django.forms import ModelForm
 
 class SignUpForm(UserCreationForm):
-    #error_css_class = 'error-list'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["username"].widget.attrs.update({
@@ -290,6 +289,7 @@ class DisposeForm(forms.Form):
     class Meta:
         model = Sample
         fields = ['inv_disposal']
+
 class OpenForm(ModelForm):
     #open_container = forms.BooleanField()
     def __init__(self, *args, **kwargs):
