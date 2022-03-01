@@ -137,7 +137,7 @@ def LogIn(request):
                                     html_message=html_message
                                 )
                                 messages.success(request, 'Account was created for ' + username +
-                                                 '. Please check your email for your account information. ' +
+                                                 #'. Please check your email for your account information. ' +
                                                  ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
                                 return redirect('login')
                     else:
@@ -178,8 +178,9 @@ def LogIn(request):
                                 html_message=html_message
                             )
 
-                            messages.success(request, 'Account was created!'
-                                             '. Please check your email for confirmation. ')
+                            messages.success(request, 'Account was created for ' + username +
+                                                 #'. Please check your email for your account information. ' +
+                                                 ' This is Your Secret Key You Must Copy This in a Secure Location: ' + secretKey)
                             return HttpResponseRedirect("/log-in/")
                 else:
                     messages.error(request, str(form.errors))
