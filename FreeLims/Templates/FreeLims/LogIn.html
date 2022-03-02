@@ -48,13 +48,13 @@
             <input type="text" placeholder="Organization" class="Log-in-input">-->
             <input type="submit" Value="Sign In" name="login" class="Log-in-btn">
         </form>
-        <a class="sample-initiation-link" href="#registermodal">
+        <a class="sample-initiation-link" href="#register">
             <button class="register-btn" id="registerbtn">
                 <span>Register</span>
             </button>
         </a>
         <a href="#changepassword" class="a-PageLink "><p style="color: #c8d8e4;font-family: karrikregular;">Forgot Your Password?</p></a>
-        <div class="modal" id="registermodal" style="z-axis: 1;">
+        <div class="modal" id="register" style="z-axis: 1;">
             <div class="modal-content">
                 <a href="{% url 'login' %}" class="modal__close">Close</a>
                 {% if messages %}
