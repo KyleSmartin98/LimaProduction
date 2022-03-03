@@ -300,7 +300,7 @@
     display: block;
     position: relative;
     margin-top: 50px;
-    margin-left: calc(0.05 * 100vh);
+    margin-left: calc(0.1 * 100vh);
     background-color: #2b6777;
     box-shadow: 1px 1px 5px #555 inset;
     border-radius: 40px;
@@ -324,7 +324,7 @@
     min-width: 700px;
     height: 550px;
     margin-top: 50px;
-    margin-left: calc(0.025 * 100vh);
+    margin-left: calc(0.05 * 100vh);
     -webkit-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
     -moz-box-shadow: 5px 5px 5px rgba(0,0,0,0.4);
 }
@@ -338,7 +338,7 @@
     min-width: 199px;
     height: 550px;
     margin-top: 50px;
-    margin-left: calc(0.025 * 100vh);
+    margin-left: calc(0.05 * 100vh);
     margin-right: 0px;
     position: relative;
     padding: 0;
