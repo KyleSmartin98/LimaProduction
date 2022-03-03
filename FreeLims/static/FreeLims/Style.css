@@ -97,13 +97,14 @@
     font-size: 14px;
     color: black;
 }
+/*Updated 03/03/22 */
 .Top {
     overflow: hidden;
     text-align: center;
     justify-content: center;
     display: block;
     position: relative;
-    width: 1400px;
+    width: 100vw;
     overflow-x: hidden;
     z-index: 1;
 
@@ -1093,6 +1094,7 @@ input[type="checkbox"]:checked + label{
 th{
     font-family: Arial;
 }
+/* Modified 03/03/2022 */
 .Table-attributes{
     overflow: visible;
     position: absolute;
@@ -1101,7 +1103,7 @@ th{
     align: center;
     width: 1350px;
     min-width: 75%;
-    margin-left: 25px;
+    margin-left: 10%;
     margin-top: 15px;
     min-height: 85px;
     height: auto;
