@@ -294,6 +294,7 @@
     width: 1200px;
 }
 /* Homepage Left flex box */
+/* updated 03/03/2022 */
 .left-flex-container{
     float: left;
     display: block;
@@ -304,7 +305,7 @@
     box-shadow: 1px 1px 5px #555 inset;
     border-radius: 40px;
     border: 5px #2b6777;
-    width: 300px;
+    width: calc(0.2375*100vw);
     min-width: 299px;
     height: 550px;
     align-items: center;
@@ -319,7 +320,7 @@
     box-shadow: 1px 1px 5px #555 inset;
     border-radius: 40px;
     border: 5px #2b6777;
-    width: 750px;
+    width: calc(0.59375*100vw);
     min-width: 700px;
     height: 550px;
     margin-top: 50px;
@@ -333,7 +334,7 @@
     box-shadow: 1px 1px 5px #555 inset;
     border-radius: 40px;
     border: 5px #2b6777;
-    width: 200px;
+    width: calc(0.1585*100vw);
     min-width: 199px;
     height: 550px;
     margin-top: 50px;
