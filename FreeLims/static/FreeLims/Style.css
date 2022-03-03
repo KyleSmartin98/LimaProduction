@@ -1103,7 +1103,7 @@ th{
     align: center;
     width: 1350px;
     min-width: 75%;
-    margin-left: 2.5%;
+    margin-left: calc(0.025 * 100vw);
     margin-top: 15px;
     min-height: 85px;
     height: auto;
