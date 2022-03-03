@@ -1101,7 +1101,7 @@ th{
     display: inline;
     text-align: center;
     align: center;
-    width: 1350px;
+    width: calc(0.9 * 100vw);
     min-width: 75%;
     margin-left: calc(0.025 * 100vw);
     margin-top: 15px;
